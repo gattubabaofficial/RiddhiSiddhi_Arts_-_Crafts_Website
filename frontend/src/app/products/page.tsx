@@ -89,8 +89,7 @@ export default function CategoryGridPage() {
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-sandalwood-100 flex items-center justify-between text-xs">
-                <span className="text-gold-700 font-semibold">{c.product_count || 0} Products</span>
+              <div className="mt-4 pt-3 border-t border-sandalwood-100 flex items-center justify-end text-xs">
                 <span className="text-sandalwood-900 font-bold flex items-center gap-1 group-hover:text-gold-600">
                   Browse <ChevronRight className="w-4 h-4" />
                 </span>

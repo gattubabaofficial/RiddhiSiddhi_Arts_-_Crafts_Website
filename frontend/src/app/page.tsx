@@ -156,9 +156,6 @@ export default function HomePage() {
               <h3 className="font-serif font-bold text-sandalwood-900 text-base group-hover:text-gold-600 transition-colors">
                 {c.name}
               </h3>
-              <p className="text-xs text-sandalwood-500 mt-1">
-                {c.product_count} items listed
-              </p>
             </Link>
           ))}
         </div>
