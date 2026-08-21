@@ -216,16 +216,10 @@ export default function ProductDetailPage() {
           <div className="pt-4 flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => setEnquiryModalOpen(true)}
-              className="flex-1 bg-gradient-to-r from-gold-500 to-gold-600 text-sandalwood-950 font-bold py-3.5 px-6 rounded-2xl hover:brightness-110 flex items-center justify-center gap-2 shadow-lg transition-all"
+              className="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-sandalwood-950 font-bold py-3.5 px-6 rounded-2xl hover:brightness-110 flex items-center justify-center gap-2 shadow-lg transition-all"
             >
               <Send className="w-4 h-4" /> Request Quote & Customization
             </button>
-            <a
-              href="tel:+917942625339"
-              className="border border-sandalwood-800 bg-sandalwood-950 text-gold-400 font-bold py-3.5 px-6 rounded-2xl hover:bg-sandalwood-900 flex items-center justify-center gap-2 text-sm transition-all"
-            >
-              <Phone className="w-4 h-4" /> Call +91-7942625339
-            </a>
           </div>
 
           <div className="flex items-center gap-4 text-xs text-sandalwood-500 pt-2 border-t border-sandalwood-200">

@@ -79,15 +79,6 @@ export default function ContactPage() {
             <h3 className="font-serif font-bold text-xl text-sandalwood-900">Direct Contact</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-xs text-sandalwood-500 block">Phone / WhatsApp</span>
-                  <a href="tel:+917942625339" className="font-bold text-sandalwood-900 text-base hover:text-gold-600">
-                    +91-7942625339
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs text-sandalwood-500 block">Email Inquiry</span>

@@ -61,7 +61,7 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
         onClose();
       }, 2500);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Failed to submit enquiry. Please try calling +91-7942625339.');
+      setErrorMsg(err.message || 'Failed to submit enquiry. Please try again.');
     } finally {
       setSubmitting(false);
     }

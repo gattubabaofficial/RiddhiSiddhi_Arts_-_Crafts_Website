@@ -161,9 +161,6 @@ export default function AboutPage() {
             <Link href="/contact" className="bg-gold-500 text-sandalwood-950 font-bold px-7 py-3 rounded-full hover:brightness-110">
               Submit Custom Enquiry
             </Link>
-            <a href="tel:+917942625339" className="border border-sandalwood-700 bg-sandalwood-800 text-gold-400 font-bold px-7 py-3 rounded-full hover:bg-sandalwood-700 flex items-center gap-2">
-              <Phone className="w-4 h-4" /> Call +91-7942625339
-            </a>
           </div>
         </div>
       </section>
