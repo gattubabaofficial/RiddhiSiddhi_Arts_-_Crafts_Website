@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-sandalwood-50 text-sandalwood-900 font-sans antialiased selection:bg-gold-500 selection:text-sandalwood-950;
+  }
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #D4AF37 0%, #F3D079 50%, #AA8721 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.wood-card-shadow {
+  box-shadow: 0 10px 30px -10px rgba(44, 26, 13, 0.12), 0 4px 12px -2px rgba(44, 26, 13, 0.08);
+}

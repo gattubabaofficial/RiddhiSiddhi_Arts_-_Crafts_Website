@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<palette guid="f4a271ca-463b-4aac-a8a4-48e2387a1e9f" name="Document Palette">
+	<colors>
+		<page>
+			<color cs="CMYK" name="Black" tints="0,0,0,1" />
+			<color cs="CMYK" name="Orange" tints="0,0.6,1,0" />
+			<color cs="CMYK" name="Yellow" tints="0,0,1,0" />
+			<color cs="CMYK" name="Green" tints="1,0,1,0" />
+			<color cs="CMYK" name="Pink" tints="0,0.4,0.2,0" />
+			<color cs="RGB" name="R2 G29 B98" tints="0.00784314,0.113725,0.384314" />
+			<color cs="RGB" name="R192 G136 B59" tints="0.752941,0.533333,0.231373" />
+			<color cs="CMYK" name="C98 M84 Y23 K60" tints="0.980392,0.843137,0.231373,0.603922" />
+			<color cs="CMYK" name="C23 M50 Y100 K5" tints="0.227451,0.498039,0.996078,0.0509804" />
+			<color cs="CMYK" name="C99 M90 Y35 K54" tints="0.992157,0.901961,0.352941,0.537255" />
+			<color cs="CMYK" name="C100 M92 Y36 K42" tints="1,0.921569,0.360784,0.423529" />
+			<color cs="CMYK" name="Red" tints="0,1,1,0" />
+			<color cs="CMYK" name="C100 M95 Y35 K36" tints="1,0.945098,0.34902,0.364706" />
+			<color cs="CMYK" name="Blue" tints="1,1,0,0" />
+			<color cs="CMYK" name="Cyan" tints="1,0,0,0" />
+			<color cs="CMYK" name="Magenta" tints="0,1,0,0" />
+			<color cs="CMYK" name="Dark Brown" tints="0,0.2,0.2,0.6" />
+			<color cs="CMYK" name="White" tints="0,0,0,0" />
+		</page>
+	</colors>
+</palette>
