@@ -79,15 +79,6 @@ export default function ContactPage() {
             <h3 className="font-serif font-bold text-xl text-sandalwood-900">Direct Contact</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-xs text-sandalwood-500 block">Email Inquiry</span>
-                  <a href="mailto:info@riddhisiddhiarts.com" className="font-semibold text-sandalwood-900 hover:text-gold-600">
-                    info@riddhisiddhiarts.com
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs text-sandalwood-500 block">Factory Address</span>

@@ -32,10 +32,6 @@ export default function Header() {
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-gold-400 font-medium">
-              <Mail className="w-3.5 h-3.5 text-gold-400" />
-              info@riddhisiddhiarts.com
-            </span>
           </div>
         </div>
       </div>

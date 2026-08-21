@@ -69,10 +69,6 @@ export default function Footer() {
             <MapPin className="w-4 h-4 text-gold-400 shrink-0 mt-0.5" />
             <span>Basement, Plot 115, Mohan Nagar Triveni Nagar, Gopalpura By Pass Road, Jaipur - 302018, Rajasthan, India</span>
           </div>
-          <div className="flex items-center gap-2 text-xs">
-            <Mail className="w-4 h-4 text-gold-400 shrink-0" />
-            <a href="mailto:info@riddhisiddhiarts.com" className="hover:text-gold-400">info@riddhisiddhiarts.com</a>
-          </div>
           <div className="pt-2 flex items-center gap-3">
             <span className="bg-sandalwood-900 border border-sandalwood-800 text-gold-400 text-[11px] px-3 py-1.5 rounded-md flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4" />
