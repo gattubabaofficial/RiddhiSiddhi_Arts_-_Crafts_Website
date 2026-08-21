@@ -9,6 +9,7 @@ ENV/
 out/
 dist/
 build/
+next-env.d.ts
 
 # Databases & Cache
 *.db
