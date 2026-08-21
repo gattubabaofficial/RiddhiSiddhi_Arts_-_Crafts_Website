@@ -25,7 +25,7 @@ export interface Product {
   short_description?: string;
   long_description?: string;
   images: string[];
-  is_featured: bool;
+  is_featured: boolean;
   display_order: number;
   specs: SpecItem[];
   similar_product_ids: number[];
