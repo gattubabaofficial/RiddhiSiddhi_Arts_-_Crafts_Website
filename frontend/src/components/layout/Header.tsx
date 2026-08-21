@@ -36,10 +36,6 @@ export default function Header() {
               <Phone className="w-3.5 h-3.5 text-gold-400" />
               +91-7942625339
             </a>
-            <Link href="/admin/login" className="flex items-center gap-1 text-sandalwood-400 hover:text-gold-400 text-xs transition-colors">
-              <User className="w-3.5 h-3.5" />
-              Admin Portal
-            </Link>
           </div>
         </div>
       </div>

@@ -42,7 +42,6 @@ export default function Footer() {
             <li><Link href="/products" className="hover:text-gold-400 transition-colors">Our Product Catalog</Link></li>
             <li><Link href="/about#how-to-test" className="hover:text-gold-400 transition-colors">Sandalwood Authenticity Test</Link></li>
             <li><Link href="/contact" className="hover:text-gold-400 transition-colors">Contact & Custom Quote</Link></li>
-            <li><Link href="/admin/login" className="hover:text-gold-400 transition-colors">Admin Backoffice</Link></li>
           </ul>
         </div>
 
