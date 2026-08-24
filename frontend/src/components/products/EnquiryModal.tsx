@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Upload, Send, CheckCircle, Image as ImageIcon } from 'lucide-react';
+import { X, Upload, Send, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import { fetchAPI, uploadFiles } from '@/lib/api';
 
 interface EnquiryModalProps {
@@ -68,34 +68,35 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="bg-sandalwood-900 border border-sandalwood-700 w-full max-w-lg rounded-2xl p-6 shadow-2xl relative text-sandalwood-100 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+      <div className="bg-brand-navy-950 border border-brand-gold-500/30 w-full max-w-lg rounded-3xl p-6 md:p-8 shadow-2xl relative text-white max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-sandalwood-400 hover:text-gold-400 p-1.5 rounded-full hover:bg-sandalwood-800 transition-colors"
+          className="absolute top-4 right-4 text-brand-gold-300 hover:text-white p-1.5 rounded-full hover:bg-brand-navy-900 transition-colors"
+          aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         {success ? (
           <div className="text-center py-8 space-y-4">
-            <CheckCircle className="w-16 h-16 text-emerald-400 mx-auto animate-bounce" />
-            <h3 className="font-serif text-2xl font-bold text-sandalwood-100">Enquiry Submitted!</h3>
-            <p className="text-sm text-sandalwood-300">
+            <CheckCircle2 className="w-16 h-16 text-brand-gold-400 mx-auto animate-bounce" />
+            <h3 className="font-serif text-2xl font-bold text-white">Enquiry Submitted!</h3>
+            <p className="text-sm text-brand-gold-100/80">
               Thank you for contacting Riddhi Siddhi Arts & Crafts. Our Jaipur team will reach out to you shortly via Phone/WhatsApp.
             </p>
           </div>
         ) : (
           <div>
-            <h3 className="font-serif text-xl font-bold text-sandalwood-100 mb-1">
+            <h3 className="font-serif text-2xl font-bold text-white mb-1">
               Send Product Enquiry & Quote
             </h3>
-            <p className="text-xs text-sandalwood-400 mb-6">
+            <p className="text-xs text-brand-gold-300/80 mb-6">
               {productTitle ? `Inquiring for: ${productTitle}` : 'Customization & Bulk Export Requirements'}
             </p>
 
             {errorMsg && (
-              <div className="bg-rose-950/80 border border-rose-800 text-rose-200 text-xs p-3 rounded-lg mb-4">
+              <div className="bg-rose-950/80 border border-rose-800 text-rose-200 text-xs p-3 rounded-xl mb-4">
                 {errorMsg}
               </div>
             )}
@@ -105,7 +106,7 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
                 <select
                   value={salutation}
                   onChange={(e) => setSalutation(e.target.value)}
-                  className="bg-sandalwood-950 border border-sandalwood-700 rounded-lg px-3 py-2 text-sandalwood-100 focus:border-gold-500"
+                  className="bg-brand-navy-900 border border-brand-gold-500/30 rounded-xl px-3 py-2.5 text-white focus:border-brand-gold-400 focus:outline-none"
                 >
                   <option value="Mr.">Mr.</option>
                   <option value="Ms.">Ms.</option>
@@ -118,7 +119,7 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="flex-1 bg-sandalwood-950 border border-sandalwood-700 rounded-lg px-4 py-2 text-sandalwood-100 placeholder-sandalwood-500 focus:border-gold-500"
+                  className="flex-1 bg-brand-navy-900 border border-brand-gold-500/30 rounded-xl px-4 py-2.5 text-white placeholder-brand-gold-200/40 focus:border-brand-gold-400 focus:outline-none"
                 />
               </div>
 
@@ -129,7 +130,7 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
                   required
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
-                  className="bg-sandalwood-950 border border-sandalwood-700 rounded-lg px-4 py-2 text-sandalwood-100 placeholder-sandalwood-500 focus:border-gold-500"
+                  className="bg-brand-navy-900 border border-brand-gold-500/30 rounded-xl px-4 py-2.5 text-white placeholder-brand-gold-200/40 focus:border-brand-gold-400 focus:outline-none"
                 />
                 <input
                   type="email"
@@ -137,7 +138,7 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-sandalwood-950 border border-sandalwood-700 rounded-lg px-4 py-2 text-sandalwood-100 placeholder-sandalwood-500 focus:border-gold-500"
+                  className="bg-brand-navy-900 border border-brand-gold-500/30 rounded-xl px-4 py-2.5 text-white placeholder-brand-gold-200/40 focus:border-brand-gold-400 focus:outline-none"
                 />
               </div>
 
@@ -148,12 +149,12 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
                   required
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-lg p-3 text-sandalwood-100 placeholder-sandalwood-500 focus:border-gold-500"
+                  className="w-full bg-brand-navy-900 border border-brand-gold-500/30 rounded-xl p-3.5 text-white placeholder-brand-gold-200/40 focus:border-brand-gold-400 focus:outline-none"
                 />
               </div>
 
               {/* Reference Image Upload */}
-              <div className="border-2 border-dashed border-sandalwood-700 bg-sandalwood-950/50 rounded-xl p-4 text-center cursor-pointer hover:border-gold-500 transition-colors">
+              <div className="border-2 border-dashed border-brand-gold-500/30 bg-brand-navy-900/50 rounded-2xl p-4 text-center cursor-pointer hover:border-brand-gold-400 transition-colors">
                 <input
                   type="file"
                   multiple
@@ -163,16 +164,16 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
                   id="enquiry-file-upload"
                 />
                 <label htmlFor="enquiry-file-upload" className="cursor-pointer space-y-1 block">
-                  <Upload className="w-6 h-6 text-gold-400 mx-auto" />
-                  <span className="text-xs font-medium text-sandalwood-300 block">
+                  <Upload className="w-6 h-6 text-brand-gold-400 mx-auto" />
+                  <span className="font-cinzel text-xs font-bold text-white block uppercase tracking-wider">
                     Upload Reference Photos (Optional)
                   </span>
-                  <span className="text-[10px] text-sandalwood-500 block">
+                  <span className="text-[10px] text-brand-gold-200/50 block">
                     Attach images for custom carve designs or specs
                   </span>
                 </label>
                 {files.length > 0 && (
-                  <div className="mt-2 text-xs text-gold-400 font-medium">
+                  <div className="mt-2 text-xs text-brand-gold-300 font-medium">
                     {files.length} file(s) attached
                   </div>
                 )}
@@ -181,7 +182,7 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-sandalwood-950 font-bold py-3 rounded-xl hover:brightness-110 flex items-center justify-center gap-2 shadow-lg transition-all"
+                className="w-full bg-gradient-to-r from-brand-gold-500 via-brand-gold-400 to-brand-gold-600 text-brand-navy-950 font-cinzel font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl hover:brightness-110 flex items-center justify-center gap-2 shadow-lg transition-all"
               >
                 {submitting ? 'Sending Request...' : (
                   <>
@@ -196,3 +197,4 @@ export default function EnquiryModal({ isOpen, onClose, productTitle, productId 
     </div>
   );
 }
+

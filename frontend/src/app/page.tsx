@@ -63,7 +63,7 @@ export default function HomePage() {
     <div className="space-y-16 pb-16">
       
       {/* 1. HERO CAROUSEL */}
-      <section className="relative bg-sandalwood-950 text-sandalwood-50 overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
+      <section className="relative bg-brand-navy-950 text-white overflow-hidden min-h-[520px] md:min-h-[620px] flex items-center">
         {banners.length > 0 ? (
           banners.map((b, idx) => (
             <div
@@ -76,34 +76,34 @@ export default function HomePage() {
                 className="absolute inset-0 bg-cover bg-center brightness-40 transform scale-105"
                 style={{ backgroundImage: `url(${b.image_url})` }}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-sandalwood-950 via-sandalwood-950/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-navy-950 via-brand-navy-950/85 to-transparent" />
 
-              <div className="relative max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center pt-16 pb-12">
+              <div className="relative max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center pt-28 md:pt-36 pb-16">
                 <div className="max-w-2xl space-y-6">
-                  <span className="inline-flex items-center gap-2 bg-sandalwood-900/90 border border-gold-500/40 text-gold-400 text-xs px-3.5 py-1.5 rounded-full font-semibold uppercase tracking-wider">
-                    <ShieldCheck className="w-4 h-4 text-gold-400" />
+                  <span className="inline-flex items-center gap-2 bg-brand-navy-900/90 border border-brand-gold-400/40 text-brand-gold-300 text-xs px-4 py-1.5 rounded-full font-semibold uppercase tracking-[0.15em] font-cinzel shadow-sm">
+                    <ShieldCheck className="w-4 h-4 text-brand-gold-400" />
                     Authentic Mysuru & Jaipuri Sandalwood
                   </span>
-                  <h2 className="font-serif text-4xl md:text-6xl font-bold text-sandalwood-50 leading-tight">
+                  <h2 className="font-serif text-4xl md:text-6xl font-bold text-white leading-tight">
                     {b.heading}
                   </h2>
                   {b.subheading && (
-                    <p className="text-sandalwood-200 text-base md:text-lg leading-relaxed font-sans">
+                    <p className="text-brand-gold-100/80 text-base md:text-lg leading-relaxed font-sans">
                       {b.subheading}
                     </p>
                   )}
                   <div className="pt-2 flex flex-wrap gap-4">
                     <Link
                       href={b.cta_link || '/products'}
-                      className="bg-gradient-to-r from-gold-500 to-gold-600 text-sandalwood-950 font-bold px-7 py-3.5 rounded-full hover:brightness-110 shadow-xl transition-all flex items-center gap-2"
+                      className="bg-gradient-to-r from-brand-gold-500 via-brand-gold-400 to-brand-gold-600 text-brand-navy-950 font-bold font-cinzel tracking-wider text-xs uppercase px-7 py-3.5 rounded-full hover:brightness-110 shadow-xl shadow-brand-gold-500/20 transition-all flex items-center gap-2"
                     >
                       {b.cta_label || 'Explore Catalog'} <ArrowRight className="w-4 h-4" />
                     </Link>
                     <button
                       onClick={() => openQuoteModal('General Wholesale Requirement', 0)}
-                      className="border border-sandalwood-600 bg-sandalwood-900/60 hover:bg-sandalwood-800 text-sandalwood-100 font-semibold px-6 py-3.5 rounded-full transition-all flex items-center gap-2"
+                      className="border border-brand-gold-400/40 bg-brand-navy-900/80 hover:bg-brand-navy-800 text-white font-cinzel text-xs uppercase tracking-wider font-semibold px-6 py-3.5 rounded-full transition-all flex items-center gap-2"
                     >
-                      <Send className="w-4 h-4 text-gold-400" /> Request Custom Quote
+                      <Send className="w-4 h-4 text-brand-gold-400" /> Request Custom Quote
                     </button>
                   </div>
                 </div>
@@ -111,14 +111,14 @@ export default function HomePage() {
             </div>
           ))
         ) : (
-          <div className="max-w-7xl mx-auto px-4 md:px-8 py-20 text-center space-y-4">
-            <h2 className="font-serif text-4xl font-bold text-sandalwood-100">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 pt-32 pb-20 text-center space-y-4">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-white">
               Authentic Indian Sandalwood Handicrafts
             </h2>
-            <p className="text-sandalwood-300 max-w-xl mx-auto">
+            <p className="text-brand-gold-100/80 max-w-xl mx-auto">
               Jaipur’s trusted manufacturer & exporter of Sandalwood Malas, Handcarved Elephants, Rosary Beads & Religious Jewelry.
             </p>
-            <Link href="/products" className="inline-flex bg-gold-500 text-sandalwood-950 font-bold px-6 py-3 rounded-full">
+            <Link href="/products" className="inline-flex bg-brand-gold-500 text-brand-navy-950 font-cinzel font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full">
               Explore Products
             </Link>
           </div>
@@ -129,12 +129,12 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 md:px-8 space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <span className="text-xs uppercase tracking-widest font-bold text-gold-600">Product Line</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-sandalwood-900">
+            <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-600">Product Line</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-navy-900">
               Browse Categories
             </h2>
           </div>
-          <Link href="/products" className="text-sm font-bold text-gold-600 hover:text-sandalwood-900 flex items-center gap-1">
+          <Link href="/products" className="text-xs font-cinzel font-bold uppercase tracking-wider text-brand-gold-600 hover:text-brand-navy-900 flex items-center gap-1">
             View All Categories <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -144,19 +144,19 @@ export default function HomePage() {
             <Link
               key={c.id}
               href={`/products/${c.slug}`}
-              className="group bg-white border border-sandalwood-200 rounded-2xl p-4 text-center wood-card-shadow hover:border-gold-500 transition-all transform hover:-translate-y-1"
+              className="group bg-white border border-brand-sandalwood-200 rounded-2xl p-4 text-center wood-card-shadow hover:border-brand-gold-500 transition-all transform hover:-translate-y-1"
             >
-              <div className="w-full h-40 rounded-xl overflow-hidden mb-4 bg-sandalwood-100 relative">
+              <div className="w-full h-40 rounded-xl overflow-hidden mb-4 bg-brand-sandalwood-100 relative">
                 <img
                   src={c.image_url || 'https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=600&q=80'}
                   alt={c.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
-              <h3 className="font-serif font-bold text-sandalwood-900 text-base group-hover:text-gold-600 transition-colors">
+              <h3 className="font-serif font-bold text-brand-navy-900 text-base group-hover:text-brand-gold-600 transition-colors">
                 {c.name}
               </h3>
-              <p className="text-xs text-sandalwood-500 mt-1">
+              <p className="text-xs text-brand-sandalwood-600 mt-1 font-medium">
                 {c.product_count} items listed
               </p>
             </Link>
@@ -165,14 +165,14 @@ export default function HomePage() {
       </section>
 
       {/* 3. FEATURED PRODUCTS */}
-      <section className="bg-sandalwood-100 py-16">
+      <section className="bg-brand-sandalwood-100/70 py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-10">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs uppercase tracking-widest font-bold text-gold-600">Handcrafted Excellence</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-sandalwood-900">
+            <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-600">Handcrafted Excellence</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-navy-900">
               Featured Handicraft Products
             </h2>
-            <p className="text-sm text-sandalwood-700">
+            <p className="text-sm text-brand-navy-900/70">
               Every item is intricately handcrafted from genuine, fragrant Indian Sandalwood by skilled Jaipuri artisans.
             </p>
           </div>
@@ -181,16 +181,16 @@ export default function HomePage() {
             {featuredProducts.map((p) => (
               <div
                 key={p.id}
-                className="bg-white border border-sandalwood-200 rounded-2xl overflow-hidden wood-card-shadow flex flex-col justify-between hover:border-gold-400 transition-all"
+                className="bg-white border border-brand-sandalwood-200 rounded-2xl overflow-hidden wood-card-shadow flex flex-col justify-between hover:border-brand-gold-400 transition-all"
               >
                 <Link href={`/products/${p.category_name?.toLowerCase().replace(/\s+/g, '-') || 'all'}/${p.slug}`} className="block">
-                  <div className="h-56 bg-sandalwood-50 relative overflow-hidden group">
+                  <div className="h-56 bg-brand-sandalwood-50 relative overflow-hidden group">
                     <img
                       src={p.images[0] || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80'}
                       alt={p.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 bg-sandalwood-950/80 backdrop-blur-sm text-gold-400 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    <span className="absolute top-3 left-3 bg-brand-navy-950/85 backdrop-blur-sm text-brand-gold-300 font-cinzel text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
                       MOQ: {p.moq}
                     </span>
                   </div>
@@ -198,27 +198,27 @@ export default function HomePage() {
 
                 <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <span className="text-[11px] font-bold text-gold-700 uppercase tracking-wider block">
+                    <span className="font-cinzel text-[11px] font-bold text-brand-gold-700 uppercase tracking-wider block">
                       {p.category_name}
                     </span>
                     <Link href={`/products/${p.category_name?.toLowerCase().replace(/\s+/g, '-') || 'all'}/${p.slug}`}>
-                      <h3 className="font-serif font-bold text-sandalwood-900 text-lg hover:text-gold-600 transition-colors line-clamp-1">
+                      <h3 className="font-serif font-bold text-brand-navy-900 text-lg hover:text-brand-gold-600 transition-colors line-clamp-1">
                         {p.title}
                       </h3>
                     </Link>
-                    <p className="text-xs text-sandalwood-600 line-clamp-2">
+                    <p className="text-xs text-brand-navy-950/70 line-clamp-2">
                       {p.short_description}
                     </p>
                   </div>
 
-                  <div className="pt-2 border-t border-sandalwood-100 flex items-center justify-between">
+                  <div className="pt-2 border-t border-brand-sandalwood-100 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-sandalwood-400 block">Wholesale Rate</span>
-                      <span className="font-bold text-sandalwood-900 text-base">{p.price || 'Contact for Price'}</span>
+                      <span className="text-xs text-brand-navy-950/50 block">Wholesale Rate</span>
+                      <span className="font-bold text-brand-navy-900 text-base">{p.price || 'Contact for Price'}</span>
                     </div>
                     <button
                       onClick={() => openQuoteModal(p.title, p.id)}
-                      className="bg-sandalwood-900 hover:bg-gold-500 hover:text-sandalwood-950 text-sandalwood-100 text-xs font-bold px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1"
+                      className="bg-brand-navy-900 hover:bg-brand-gold-500 hover:text-brand-navy-950 text-white font-cinzel text-xs font-bold px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1 uppercase tracking-wider"
                     >
                       <Send className="w-3.5 h-3.5" /> Get Quote
                     </button>
@@ -233,30 +233,30 @@ export default function HomePage() {
       {/* 4. ABOUT COMPANY INFO BLOCK */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-6">
-          <span className="text-xs uppercase tracking-widest font-bold text-gold-600">Company Overview</span>
-          <h2 className="font-serif text-3xl md:text-5xl font-bold text-sandalwood-900 leading-tight">
+          <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-600">Company Overview</span>
+          <h2 className="font-serif text-3xl md:text-5xl font-bold text-brand-navy-900 leading-tight">
             WELCOME TO Riddhi Siddhi Arts & Crafts
           </h2>
-          <p className="text-sandalwood-700 text-base leading-relaxed">
+          <p className="text-brand-navy-950/80 text-base leading-relaxed">
             Headquartered in the cultural capital of Jaipur, Rajasthan, <strong>Riddhi Siddhi Arts & Crafts</strong> (Proprietor: Ghanshyam Agrawal) is a premier manufacturer, exporter, and supplier of authentic Indian Sandalwood handicraft items.
           </p>
-          <p className="text-sandalwood-600 text-sm leading-relaxed">
+          <p className="text-brand-navy-950/70 text-sm leading-relaxed">
             We specialize in crafting 108 Japa Malas, handcarved royal sandalwood elephants, loose sandalwood beads (4mm to 22mm), designer bracelets, religious wristlets, and Muslim Tashbih prayer beads. Every piece preserves the natural aromatic essence and timeless luxury of pure Mysore sandalwood.
           </p>
 
           <div className="grid grid-cols-2 gap-4 pt-2">
-            <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-sandalwood-200 wood-card-shadow">
-              <CheckCircle2 className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-brand-sandalwood-200 wood-card-shadow">
+              <CheckCircle2 className="w-5 h-5 text-brand-gold-600 shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-serif font-bold text-sandalwood-900 text-sm">100% Genuine Wood</h4>
-                <p className="text-xs text-sandalwood-500">Pure Indian Mysore Sandalwood</p>
+                <h4 className="font-serif font-bold text-brand-navy-900 text-sm">100% Genuine Wood</h4>
+                <p className="text-xs text-brand-navy-950/60">Pure Indian Mysore Sandalwood</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-sandalwood-200 wood-card-shadow">
-              <Award className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-brand-sandalwood-200 wood-card-shadow">
+              <Award className="w-5 h-5 text-brand-gold-600 shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-serif font-bold text-sandalwood-900 text-sm">Global Exporter</h4>
-                <p className="text-xs text-sandalwood-500">IEC & GST Verified Supplier</p>
+                <h4 className="font-serif font-bold text-brand-navy-900 text-sm">Global Exporter</h4>
+                <p className="text-xs text-brand-navy-950/60">IEC & GST Verified Supplier</p>
               </div>
             </div>
           </div>
@@ -264,7 +264,7 @@ export default function HomePage() {
           <div>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 bg-sandalwood-900 hover:bg-sandalwood-800 text-gold-400 font-bold px-6 py-3 rounded-full text-sm transition-all"
+              className="inline-flex items-center gap-2 bg-brand-navy-900 hover:bg-brand-navy-800 text-brand-gold-300 font-cinzel text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-full transition-all shadow-md"
             >
               Read Full Brand Story <ArrowRight className="w-4 h-4" />
             </Link>
@@ -279,21 +279,21 @@ export default function HomePage() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute -bottom-6 -left-6 bg-sandalwood-950 text-sandalwood-50 p-6 rounded-2xl border border-sandalwood-800 shadow-2xl max-w-xs hidden sm:block">
-            <span className="font-serif text-3xl font-bold text-gold-400 block">Jaipur Craft</span>
-            <p className="text-xs text-sandalwood-300">Master wood carvers preserving centuries of royal Rajasthani heritage.</p>
+          <div className="absolute -bottom-6 -left-6 bg-brand-navy-950 text-white p-6 rounded-2xl border border-brand-gold-500/30 shadow-2xl max-w-xs hidden sm:block">
+            <span className="font-serif text-2xl font-bold text-brand-gold-400 block">Jaipur Craft</span>
+            <p className="text-xs text-brand-gold-100/70 mt-1">Master wood carvers preserving centuries of royal Rajasthani heritage.</p>
           </div>
         </div>
       </section>
 
       {/* 5. REELS & VIDEO SHOWCASE */}
       {reels.length > 0 && (
-        <section className="bg-sandalwood-950 text-sandalwood-50 py-16">
+        <section className="bg-brand-navy-950 text-white py-16">
           <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
               <div>
-                <span className="text-xs uppercase tracking-widest font-bold text-gold-400">Workshop & Craft Videos</span>
-                <h2 className="font-serif text-3xl md:text-4xl font-bold text-sandalwood-100">
+                <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-400">Workshop & Craft Videos</span>
+                <h2 className="font-serif text-3xl md:text-4xl font-bold text-white">
                   Short Reels & Workshop Demonstrations
                 </h2>
               </div>
@@ -301,8 +301,8 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {reels.map((r) => (
-                <div key={r.id} className="bg-sandalwood-900 border border-sandalwood-800 rounded-2xl overflow-hidden shadow-xl space-y-3 p-4">
-                  <div className="w-full h-64 bg-sandalwood-950 rounded-xl overflow-hidden relative group">
+                <div key={r.id} className="bg-brand-navy-900 border border-brand-gold-500/20 rounded-2xl overflow-hidden shadow-xl space-y-3 p-4">
+                  <div className="w-full h-64 bg-brand-navy-950 rounded-xl overflow-hidden relative group">
                     <iframe
                       src={r.video_url}
                       title={r.title}
@@ -310,7 +310,7 @@ export default function HomePage() {
                       allowFullScreen
                     />
                   </div>
-                  <h3 className="font-serif font-semibold text-sm text-sandalwood-100 line-clamp-2">
+                  <h3 className="font-serif font-semibold text-sm text-white line-clamp-2">
                     {r.title}
                   </h3>
                 </div>
@@ -324,26 +324,26 @@ export default function HomePage() {
       {reviews.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 md:px-8 space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs uppercase tracking-widest font-bold text-gold-600">Client Feedback</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-sandalwood-900">
+            <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-600">Client Feedback</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-navy-900">
               What Our Buyers Say
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {reviews.map((rev) => (
-              <div key={rev.id} className="bg-white border border-sandalwood-200 rounded-2xl p-6 wood-card-shadow space-y-4">
-                <div className="flex items-center gap-1 text-gold-500">
+              <div key={rev.id} className="bg-white border border-brand-sandalwood-200 rounded-2xl p-6 wood-card-shadow space-y-4">
+                <div className="flex items-center gap-1 text-brand-gold-500">
                   {[...Array(rev.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-gold-500" />
+                    <Star key={i} className="w-4 h-4 fill-brand-gold-500" />
                   ))}
                 </div>
-                <p className="text-sm text-sandalwood-800 italic leading-relaxed">
+                <p className="text-sm text-brand-navy-950/80 italic leading-relaxed">
                   "{rev.text}"
                 </p>
-                <div className="pt-2 border-t border-sandalwood-100 flex items-center justify-between">
-                  <span className="font-serif font-bold text-sm text-sandalwood-900">{rev.user_name}</span>
-                  <span className="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                <div className="pt-2 border-t border-brand-sandalwood-100 flex items-center justify-between">
+                  <span className="font-serif font-bold text-sm text-brand-navy-900">{rev.user_name}</span>
+                  <span className="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
                     Verified Buyer
                   </span>
                 </div>
@@ -354,19 +354,19 @@ export default function HomePage() {
       )}
 
       {/* 7. BRAND COLLABORATIONS & CERTIFICATES */}
-      <section className="bg-sandalwood-100 py-12 border-y border-sandalwood-200">
+      <section className="bg-brand-sandalwood-100/60 py-12 border-y border-brand-sandalwood-200">
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6 text-center">
-          <span className="text-xs uppercase tracking-widest font-semibold text-sandalwood-600 block">
+          <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-semibold text-brand-navy-900/70 block">
             Certifications & Registered Trade Licenses
           </span>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            <div className="bg-white px-6 py-3 rounded-xl border border-sandalwood-300 font-serif font-bold text-sandalwood-900 text-sm shadow-sm">
-              GST Registration: <span className="text-gold-600">08ADOPA9061E1ZK</span>
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+            <div className="bg-white px-6 py-3 rounded-xl border border-brand-sandalwood-300 font-serif font-bold text-brand-navy-900 text-sm shadow-sm">
+              GST Registration: <span className="text-brand-gold-600 font-mono">08ADOPA9061E1ZK</span>
             </div>
-            <div className="bg-white px-6 py-3 rounded-xl border border-sandalwood-300 font-serif font-bold text-sandalwood-900 text-sm shadow-sm">
+            <div className="bg-white px-6 py-3 rounded-xl border border-brand-sandalwood-300 font-serif font-bold text-brand-navy-900 text-sm shadow-sm">
               IEC Code Certified Exporter
             </div>
-            <div className="bg-white px-6 py-3 rounded-xl border border-sandalwood-300 font-serif font-bold text-sandalwood-900 text-sm shadow-sm">
+            <div className="bg-white px-6 py-3 rounded-xl border border-brand-sandalwood-300 font-serif font-bold text-brand-navy-900 text-sm shadow-sm">
               Trustseal Verified Manufacturer
             </div>
           </div>
@@ -375,16 +375,16 @@ export default function HomePage() {
 
       {/* 8. LOCATION & GOOGLE MAP */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="bg-sandalwood-900 text-sandalwood-100 p-8 rounded-3xl space-y-6 flex flex-col justify-between">
+        <div className="bg-brand-navy-950 text-white p-8 rounded-3xl space-y-6 flex flex-col justify-between border border-brand-gold-500/20 shadow-xl">
           <div className="space-y-4">
-            <span className="text-xs uppercase tracking-widest font-bold text-gold-400">Visit Workshop</span>
+            <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-400">Visit Workshop</span>
             <h3 className="font-serif text-2xl font-bold">Factory & Office Address</h3>
-            <p className="text-sm text-sandalwood-300 leading-relaxed">
+            <p className="text-sm text-brand-gold-100/80 leading-relaxed">
               Basement, Plot 115, Mohan Nagar Triveni Nagar, Gopalpura By Pass Road, Jaipur - 302018, Rajasthan, India
             </p>
             <div className="space-y-2 text-sm pt-2">
-              <p><span className="text-gold-400 font-medium">Proprietor:</span> Ghanshyam Agrawal</p>
-              <p><span className="text-gold-400 font-medium">GSTIN:</span> 08ADOPA9061E1ZK</p>
+              <p><span className="text-brand-gold-400 font-medium font-cinzel">Proprietor:</span> Ghanshyam Agrawal</p>
+              <p><span className="text-brand-gold-400 font-medium font-cinzel">GSTIN:</span> <span className="font-mono">08ADOPA9061E1ZK</span></p>
             </div>
           </div>
 
@@ -392,13 +392,13 @@ export default function HomePage() {
             href="https://maps.google.com/?q=26.87013,75.77491"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-gold-500 text-sandalwood-950 font-bold py-3 px-6 rounded-full text-center flex items-center justify-center gap-2 hover:brightness-110 transition-all"
+            className="bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-navy-950 font-cinzel font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full text-center flex items-center justify-center gap-2 transition-all shadow-md"
           >
             <MapPin className="w-4 h-4" /> Get Directions on Google Maps
           </a>
         </div>
 
-        <div className="lg:col-span-2 w-full h-[380px] rounded-3xl overflow-hidden border border-sandalwood-300 wood-card-shadow">
+        <div className="lg:col-span-2 w-full h-[380px] rounded-3xl overflow-hidden border border-brand-sandalwood-300 wood-card-shadow">
           <iframe
             src="https://maps.google.com/maps?q=26.87013,75.77491&z=15&output=embed"
             width="100%"

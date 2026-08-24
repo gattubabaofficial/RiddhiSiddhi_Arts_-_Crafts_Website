@@ -4,16 +4,45 @@
 
 @layer base {
   body {
-    @apply bg-sandalwood-50 text-sandalwood-900 font-sans antialiased selection:bg-gold-500 selection:text-sandalwood-950;
+    background-color: #FDFBF7;
+    color: #010F34;
+    font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #C0883B;
+    color: #FFFFFF;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    letter-spacing: -0.025em;
+    color: #021D62;
   }
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, #D4AF37 0%, #F3D079 50%, #AA8721 100%);
+  background: linear-gradient(135deg, #DFAC5B 0%, #C0883B 50%, #855420 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.wood-card-shadow {
-  box-shadow: 0 10px 30px -10px rgba(44, 26, 13, 0.12), 0 4px 12px -2px rgba(44, 26, 13, 0.08);
+.navy-gradient-bg {
+  background: linear-gradient(135deg, #021D62 0%, #0A2454 50%, #010F34 100%);
 }
+
+.gold-border-glow {
+  box-shadow: 0 0 15px rgba(192, 136, 59, 0.25);
+}
+
+.wood-card-shadow {
+  box-shadow: 0 10px 30px -10px rgba(2, 29, 98, 0.08), 0 4px 12px -2px rgba(192, 136, 59, 0.06);
+}
+
+.brand-arch-badge {
+  border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+}
+
+
