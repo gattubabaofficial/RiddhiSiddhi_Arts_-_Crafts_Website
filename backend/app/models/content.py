@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, JSON
-from datetime import datetime
+from app.core.time import now_utc
 from app.core.database import Base
 
 class HomeSection(Base):
@@ -13,7 +13,7 @@ class HomeSection(Base):
     image_url = Column(Text, nullable=True)
     is_visible = Column(Boolean, default=True)
     display_order = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)
 
 class AboutBlock(Base):
     __tablename__ = "about_blocks"
@@ -24,7 +24,7 @@ class AboutBlock(Base):
     content = Column(Text, nullable=False)
     images = Column(JSON, default=[])
     display_order = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)
 
 class SiteSettings(Base):
     __tablename__ = "site_settings"
@@ -50,4 +50,4 @@ class SiteSettings(Base):
         "meta_title": "Riddhi Siddhi Arts & Crafts | Sandalwood Handicrafts Jaipur",
         "meta_description": "Manufacturer, Exporter & Supplier of authentic Indian Sandalwood Handicrafts, Malas, Japa Malas, Elephants & Beads in Jaipur."
     })
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)

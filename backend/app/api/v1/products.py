@@ -1,18 +1,55 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from typing import List, Optional, Sequence, Tuple
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_, func
-from typing import List, Optional
-import re
-from app.core.database import get_db
-from app.models.catalog import Product, Category
-from app.models.admin import AdminUser
-from app.schemas.catalog import ProductCreate, ProductUpdate, ProductOut
+
 from app.api.v1.auth import get_current_admin
+from app.core.database import get_db
+from app.core.slugs import slug_is_taken, slugify, unique_slug
+from app.models.admin import AdminUser
+from app.models.catalog import Category, Product
+from app.schemas.catalog import ProductCreate, ProductOut, ProductUpdate
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
-def slugify(text: str) -> str:
-    return re.sub(r'[\W_]+', '-', text.lower()).strip('-')
+MAX_PAGE_SIZE = 100
+DEFAULT_PAGE_SIZE = 24
+MAX_SIMILAR = 12
+
+
+def _to_out(product: Product, category_name: Optional[str]) -> ProductOut:
+    out = ProductOut.model_validate(product)
+    out.category_name = category_name
+    return out
+
+
+def _with_category():
+    return select(Product, Category.name.label("category_name")).join(
+        Category, Product.category_id == Category.id
+    )
+
+
+def _rows_to_out(rows: Sequence[Tuple[Product, Optional[str]]]) -> List[ProductOut]:
+    return [_to_out(product, name) for product, name in rows]
+
+
+async def _require_category(db: AsyncSession, category_id: int) -> None:
+    exists = await db.execute(select(Category.id).where(Category.id == category_id))
+    if exists.first() is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Category {category_id} does not exist.",
+        )
+
+
+async def _load_product(db: AsyncSession, product_id: int) -> Product:
+    result = await db.execute(select(Product).where(Product.id == product_id))
+    product = result.scalars().first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
 
 @router.get("", response_model=List[ProductOut])
 async def list_products(
@@ -20,11 +57,11 @@ async def list_products(
     category_slug: Optional[str] = None,
     featured: Optional[bool] = None,
     search: Optional[str] = None,
-    limit: int = 100,
-    offset: int = 0,
-    db: AsyncSession = Depends(get_db)
+    limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
+    offset: int = Query(0, ge=0),
+    db: AsyncSession = Depends(get_db),
 ):
-    query = select(Product, Category.name.label("category_name")).join(Category, Product.category_id == Category.id)
+    query = _with_category()
 
     if category_id:
         query = query.where(Product.category_id == category_id)
@@ -33,55 +70,84 @@ async def list_products(
     if featured is not None:
         query = query.where(Product.is_featured == featured)
     if search:
+        term = f"%{search.strip()}%"
         query = query.where(
             or_(
-                Product.title.ilike(f"%{search}%"),
-                Product.short_description.ilike(f"%{search}%"),
-                Product.long_description.ilike(f"%{search}%")
+                Product.title.ilike(term),
+                Product.short_description.ilike(term),
+                Product.long_description.ilike(term),
             )
         )
 
-    query = query.order_by(Product.display_order.asc(), Product.id.desc()).offset(offset).limit(limit)
-    result = await db.execute(query)
-    rows = result.all()
+    query = (
+        query.order_by(Product.display_order.asc(), Product.id.desc())
+        .offset(offset)
+        .limit(limit)
+    )
+    return _rows_to_out((await db.execute(query)).all())
 
-    out = []
-    for prod, cat_name in rows:
-        p_dict = ProductOut.model_validate(prod)
-        p_dict.category_name = cat_name
-        out.append(p_dict)
-    return out
 
 @router.get("/{slug_or_id}", response_model=ProductOut)
 async def get_product_detail(slug_or_id: str, db: AsyncSession = Depends(get_db)):
-    query = select(Product, Category.name.label("category_name")).join(Category, Product.category_id == Category.id)
-    
+    query = _with_category()
     if slug_or_id.isdigit():
-        result = await db.execute(query.where(Product.id == int(slug_or_id)))
+        query = query.where(Product.id == int(slug_or_id))
     else:
-        result = await db.execute(query.where(Product.slug == slug_or_id))
-    
-    row = result.first()
+        query = query.where(Product.slug == slug_or_id)
+
+    row = (await db.execute(query)).first()
     if not row:
         raise HTTPException(status_code=404, detail="Product not found")
-    
-    prod, cat_name = row
-    p_dict = ProductOut.model_validate(prod)
-    p_dict.category_name = cat_name
-    return p_dict
+    return _to_out(*row)
+
+
+@router.get("/{slug_or_id}/similar", response_model=List[ProductOut])
+async def get_similar_products(
+    slug_or_id: str,
+    limit: int = Query(4, ge=1, le=MAX_SIMILAR),
+    db: AsyncSession = Depends(get_db),
+):
+    """Curated `similar_product_ids` when the admin has set them, otherwise the
+    rest of the same category. The curated list was previously stored and then
+    ignored by every reader."""
+    lookup = select(Product)
+    if slug_or_id.isdigit():
+        lookup = lookup.where(Product.id == int(slug_or_id))
+    else:
+        lookup = lookup.where(Product.slug == slug_or_id)
+
+    product = (await db.execute(lookup)).scalars().first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    curated = [pid for pid in (product.similar_product_ids or []) if pid != product.id]
+    if curated:
+        rows = (
+            await db.execute(_with_category().where(Product.id.in_(curated[:limit])))
+        ).all()
+        by_id = {row[0].id: row for row in rows}
+        return _rows_to_out([by_id[pid] for pid in curated[:limit] if pid in by_id])
+
+    fallback = (
+        _with_category()
+        .where(Product.category_id == product.category_id, Product.id != product.id)
+        .order_by(Product.display_order.asc(), Product.id.desc())
+        .limit(limit)
+    )
+    return _rows_to_out((await db.execute(fallback)).all())
+
 
 @router.post("", response_model=ProductOut, status_code=status.HTTP_201_CREATED)
 async def create_product(
     payload: ProductCreate,
     db: AsyncSession = Depends(get_db),
-    admin: AdminUser = Depends(get_current_admin)
+    admin: AdminUser = Depends(get_current_admin),
 ):
-    slug = payload.slug or slugify(payload.title)
-    existing = await db.execute(select(Product).where(Product.slug == slug))
-    if existing.scalars().first():
-        slug = f"{slug}-{int(func.now())}"
+    await _require_category(db, payload.category_id)
 
-    prod = Product(
+    slug = await unique_slug(db, Product, payload.slug or payload.title)
+
+    product = Product(
         category_id=payload.category_id,
         title=payload.title,
         slug=slug,
@@ -91,83 +157,63 @@ async def create_product(
         short_description=payload.short_description,
         long_description=payload.long_description,
         images=payload.images,
+        videos=payload.videos,
         is_featured=payload.is_featured,
         display_order=payload.display_order,
         specs=payload.specs,
-        similar_product_ids=payload.similar_product_ids
+        similar_product_ids=payload.similar_product_ids,
     )
-    db.add(prod)
+    db.add(product)
     await db.commit()
-    await db.refresh(prod)
+    await db.refresh(product)
 
-    cat_res = await db.execute(select(Category.name).where(Category.id == prod.category_id))
-    cat_name = cat_res.scalar()
+    name = await db.scalar(select(Category.name).where(Category.id == product.category_id))
+    return _to_out(product, name)
 
-    p_dict = ProductOut.model_validate(prod)
-    p_dict.category_name = cat_name
-    return p_dict
 
 @router.put("/{prod_id}", response_model=ProductOut)
 async def update_product(
     prod_id: int,
     payload: ProductUpdate,
     db: AsyncSession = Depends(get_db),
-    admin: AdminUser = Depends(get_current_admin)
+    admin: AdminUser = Depends(get_current_admin),
 ):
-    result = await db.execute(select(Product).where(Product.id == prod_id))
-    prod = result.scalars().first()
-    if not prod:
-        raise HTTPException(status_code=404, detail="Product not found")
+    product = await _load_product(db, prod_id)
+    changes = payload.model_dump(exclude_unset=True)
 
-    if payload.category_id is not None:
-        prod.category_id = payload.category_id
-    if payload.title is not None:
-        prod.title = payload.title
-        if not payload.slug:
-            prod.slug = slugify(payload.title)
-    if payload.slug is not None:
-        prod.slug = payload.slug
-    if payload.price is not None:
-        prod.price = payload.price
-    if payload.currency is not None:
-        prod.currency = payload.currency
-    if payload.moq is not None:
-        prod.moq = payload.moq
-    if payload.short_description is not None:
-        prod.short_description = payload.short_description
-    if payload.long_description is not None:
-        prod.long_description = payload.long_description
-    if payload.images is not None:
-        prod.images = payload.images
-    if payload.is_featured is not None:
-        prod.is_featured = payload.is_featured
-    if payload.display_order is not None:
-        prod.display_order = payload.display_order
-    if payload.specs is not None:
-        prod.specs = payload.specs
-    if payload.similar_product_ids is not None:
-        prod.similar_product_ids = payload.similar_product_ids
+    if "category_id" in changes and changes["category_id"] is not None:
+        await _require_category(db, changes["category_id"])
+
+    # Renaming must not rewrite the slug: the old URL is already indexed and
+    # linked. Changing the public address of a product is an explicit action.
+    if changes.get("slug") is not None:
+        requested = slugify(changes["slug"])
+        if await slug_is_taken(db, Product, requested, exclude_id=product.id):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Slug '{requested}' is already used by another product.",
+            )
+        product.slug = requested
+    changes.pop("slug", None)
+
+    for field, value in changes.items():
+        if value is not None:
+            setattr(product, field, value)
 
     await db.commit()
-    await db.refresh(prod)
+    await db.refresh(product)
 
-    cat_res = await db.execute(select(Category.name).where(Category.id == prod.category_id))
-    cat_name = cat_res.scalar()
+    name = await db.scalar(select(Category.name).where(Category.id == product.category_id))
+    return _to_out(product, name)
 
-    p_dict = ProductOut.model_validate(prod)
-    p_dict.category_name = cat_name
-    return p_dict
 
 @router.delete("/{prod_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product(
     prod_id: int,
     db: AsyncSession = Depends(get_db),
-    admin: AdminUser = Depends(get_current_admin)
+    admin: AdminUser = Depends(get_current_admin),
 ):
-    result = await db.execute(select(Product).where(Product.id == prod_id))
-    prod = result.scalars().first()
-    if not prod:
-        raise HTTPException(status_code=404, detail="Product not found")
-    await db.delete(prod)
+    product = await _load_product(db, prod_id)
+    await db.delete(product)
     await db.commit()
     return None

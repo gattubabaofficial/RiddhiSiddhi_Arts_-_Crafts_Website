@@ -40,7 +40,7 @@ export default function AboutPage() {
             The Story Behind Riddhi Siddhi Arts
           </h2>
           <p className="text-brand-navy-950/80 text-sm leading-relaxed">
-            Founded and spearheaded by <strong>Mr. Ghanshyam Agrawal</strong>, Riddhi Siddhi Arts & Crafts has grown into one of Jaipur's most revered manufacturers and exporters of authentic sandalwood handicraft items.
+            Founded and spearheaded by <strong>Mr. Ghanshyam Agrawal</strong>, Riddhi Siddhi Arts &amp; Crafts has grown into one of Jaipur&rsquo;s most revered manufacturers and exporters of authentic sandalwood handicraft items.
           </p>
           <p className="text-brand-navy-950/70 text-sm leading-relaxed">
             Operating from Triveni Nagar, Gopalpura By Pass Road, Jaipur, our enterprise combines traditional Rajasthani wood carving heritage with strict quality control. From harvesting genuine aged sandalwood logs to precision lathe-turning 108 Japa beads and hand-carving royal elephant lattice sculptures, every stage is driven by artisanal devotion.
@@ -50,7 +50,7 @@ export default function AboutPage() {
             <h4 className="font-serif font-bold text-brand-navy-900 text-base">Ghanshyam Agrawal</h4>
             <p className="font-cinzel text-xs text-brand-gold-700 font-semibold uppercase tracking-wider">Proprietor & Master Artisan Director</p>
             <p className="text-xs text-brand-navy-950/70 italic leading-relaxed">
-              "Our mission is to bring sacred, genuine Mysuru sandalwood artifacts to spiritual seekers and art connoisseurs across the globe with transparent pricing and uncompromised authenticity."
+              &ldquo;Our mission is to bring sacred, genuine Mysuru sandalwood artifacts to spiritual seekers and art connoisseurs across the globe with transparent pricing and uncompromised authenticity.&rdquo;
             </p>
           </div>
         </div>

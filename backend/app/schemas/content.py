@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 
@@ -21,8 +21,7 @@ class HomeSectionOut(BaseModel):
     display_order: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class AboutBlockUpdate(BaseModel):
     title: Optional[str] = None
@@ -39,8 +38,7 @@ class AboutBlockOut(BaseModel):
     display_order: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class SiteSettingsUpdate(BaseModel):
     company_name: Optional[str] = None
@@ -72,5 +70,4 @@ class SiteSettingsOut(BaseModel):
     seo_meta: Dict[str, Any]
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

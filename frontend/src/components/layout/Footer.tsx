@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Phone, Mail, MapPin, ShieldCheck, Award } from 'lucide-react';
+import { Phone, MapPin, ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
   const pathname = usePathname();
@@ -74,10 +74,10 @@ export default function Footer() {
           <ul className="space-y-2.5 text-xs">
             <li><Link href="/products/sandalwood-japa-mala" className="hover:text-white transition-colors">Sandalwood Japa Mala</Link></li>
             <li><Link href="/products/sandalwood-beads-mala" className="hover:text-white transition-colors">Sandalwood Beads Mala</Link></li>
-            <li><Link href="/products/sandalwood-elephant" className="hover:text-white transition-colors">Handcarved Elephants</Link></li>
-            <li><Link href="/products/sandalwood-beads" className="hover:text-white transition-colors">Loose Sandalwood Beads</Link></li>
-            <li><Link href="/products/sandalwood-bracelet" className="hover:text-white transition-colors">Designer Sandalwood Bracelets</Link></li>
-            <li><Link href="/products/sandalwood-tashbih" className="hover:text-white transition-colors">Muslim Tashbih Misbahah</Link></li>
+            <li><Link href="/products/handcarved-elephants" className="hover:text-white transition-colors">Handcarved Elephants</Link></li>
+            <li><Link href="/products/loose-sandalwood-beads" className="hover:text-white transition-colors">Loose Sandalwood Beads</Link></li>
+            <li><Link href="/products/designer-sandalwood-bracelets" className="hover:text-white transition-colors">Designer Sandalwood Bracelets</Link></li>
+            <li><Link href="/products/muslim-tashbih-misbahah" className="hover:text-white transition-colors">Muslim Tashbih Misbahah</Link></li>
           </ul>
         </div>
 

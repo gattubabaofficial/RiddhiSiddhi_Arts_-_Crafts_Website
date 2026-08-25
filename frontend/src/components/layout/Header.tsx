@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, Send, Menu, X, Phone, MapPin, ShieldCheck, ChevronRight, Heart, User } from 'lucide-react';
+import { Search, Send, Menu, X, Phone, MapPin, ChevronRight, Heart, User } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -12,18 +12,11 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
 
-  // Hide header on admin pages
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
+  const isAdminRoute = pathname?.startsWith('/admin') ?? false;
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -41,6 +34,14 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  // Hide the header on admin pages. This must come AFTER every hook: returning
+  // early above the useEffects changed the hook count between renders, so
+  // navigating from /admin to a public page crashed with "rendered fewer hooks
+  // than expected".
+  if (isAdminRoute) {
+    return null;
+  }
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -52,10 +53,10 @@ export default function Header() {
   return (
     <>
       <header
-        className={`w-full z-40 transition-all duration-300 ${
+        className={`w-full z-40 fixed top-0 left-0 right-0 transition-all duration-300 ${
           scrolled
-            ? 'fixed top-0 left-0 right-0 bg-brand-navy-950/90 backdrop-blur-md shadow-xl border-b border-brand-gold-500/20 py-2.5'
-            : 'absolute top-0 left-0 right-0 bg-transparent border-none py-3.5 md:py-5'
+            ? 'bg-brand-navy-950/95 backdrop-blur-md shadow-xl border-b border-brand-gold-500/20 py-2.5'
+            : 'bg-brand-navy-950/80 backdrop-blur-sm border-b border-brand-gold-500/10 py-3.5 md:py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-2 md:gap-4">

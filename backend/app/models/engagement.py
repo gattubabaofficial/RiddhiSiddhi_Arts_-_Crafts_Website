@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, ForeignKey, JSON
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from app.core.time import now_utc
 from app.core.database import Base
 
 class Review(Base):
@@ -15,7 +15,7 @@ class Review(Base):
     images = Column(JSON, default=[]) # User uploaded images
     status = Column(String(50), default="pending", index=True) # pending, approved, rejected
     featured_on_home = Column(Boolean, default=False, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)
 
     product = relationship("Product", back_populates="reviews")
 
@@ -32,4 +32,4 @@ class Enquiry(Base):
     product_id = Column(Integer, nullable=True) # Linked product if initiated from product page
     product_title = Column(String(255), nullable=True)
     status = Column(String(50), default="new", index=True) # new, in_progress, closed
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)

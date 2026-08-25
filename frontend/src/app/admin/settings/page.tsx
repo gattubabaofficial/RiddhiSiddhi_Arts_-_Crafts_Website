@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { fetchAPI, uploadFiles } from '@/lib/api';
+import { fetchAPI } from '@/lib/api';
 import { SiteSettings } from '@/types';
 import { Save, CheckCircle } from 'lucide-react';
 
@@ -26,14 +26,14 @@ export default function AdminSettingsPage() {
       try {
         const res = await fetchAPI<SiteSettings>('/settings');
         setSettings(res);
-        setCompanyName(res.company_name);
-        setProprietor(res.proprietor);
-        setPhone(res.phone);
-        setEmail(res.email);
-        setGstNumber(res.gst_number);
-        setAddress(res.address);
-        setLatitude(res.latitude);
-        setLongitude(res.longitude);
+        setCompanyName(res.company_name || '');
+        setProprietor(res.proprietor || '');
+        setPhone(res.phone || '');
+        setEmail(res.email || '');
+        setGstNumber(res.gst_number || '');
+        setAddress(res.address || '');
+        setLatitude(res.latitude || '26.87013');
+        setLongitude(res.longitude || '75.77491');
         setMetaTitle(res.seo_meta?.meta_title || '');
         setMetaDescription(res.seo_meta?.meta_description || '');
       } finally {
@@ -66,143 +66,143 @@ export default function AdminSettingsPage() {
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
-    } catch (err) {
+    } catch {
       alert('Failed saving site settings');
     }
   };
 
-  if (loading) return <div className="text-sandalwood-400">Loading site settings...</div>;
+  if (loading) return <div className="text-brand-gold-300 font-cinzel">Loading site settings...</div>;
 
   return (
     <div className="space-y-8 max-w-4xl">
       
       <div>
-        <h1 className="font-serif text-3xl font-bold text-sandalwood-100">Site Settings</h1>
-        <p className="text-xs text-sandalwood-400">Configure global company information, Jaipur address, GST, and SEO tags.</p>
+        <h1 className="font-serif text-3xl font-bold text-white tracking-wide">Site Settings</h1>
+        <p className="text-xs text-brand-gold-200/70 mt-1">Configure global company information, Jaipur address, GST, and SEO tags.</p>
       </div>
 
       {saved && (
-        <div className="bg-emerald-900/60 border border-emerald-700 text-emerald-200 p-4 rounded-2xl flex items-center gap-2 text-xs">
-          <CheckCircle className="w-5 h-5 text-emerald-400" />
+        <div className="bg-emerald-900/80 border border-emerald-500 text-emerald-200 p-4 rounded-2xl flex items-center gap-2 text-xs shadow-lg">
+          <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
           Settings updated successfully! Changes reflect on public website immediately.
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-sandalwood-900 border border-sandalwood-800 rounded-3xl p-8 space-y-6 text-xs text-sandalwood-100">
+      <form onSubmit={handleSubmit} className="bg-brand-navy-900 border border-brand-gold-500/20 rounded-3xl p-6 sm:p-8 space-y-6 text-xs text-white shadow-2xl">
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Company Name</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Company Name</label>
             <input
               type="text"
               required
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Proprietor Name</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Proprietor Name</label>
             <input
               type="text"
               required
               value={proprietor}
               onChange={(e) => setProprietor(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Official Phone</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Official Phone</label>
             <input
               type="text"
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Official Email</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Official Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">GST Registration No.</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">GST Registration No.</label>
             <input
               type="text"
               required
               value={gstNumber}
               onChange={(e) => setGstNumber(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sandalwood-300 font-semibold mb-1">Full Factory / Office Address</label>
+          <label className="block text-brand-gold-300 font-semibold mb-1">Full Factory / Office Address</label>
           <textarea
             rows={3}
             required
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+            className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400 leading-relaxed"
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Google Map Latitude</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Google Map Latitude</label>
             <input
               type="text"
               value={latitude}
               onChange={(e) => setLatitude(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Google Map Longitude</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Google Map Longitude</label>
             <input
               type="text"
               value={longitude}
               onChange={(e) => setLongitude(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
         </div>
 
-        <div className="border-t border-sandalwood-800 pt-4 space-y-4">
-          <h3 className="font-serif font-bold text-base text-gold-400">SEO Default Meta Tags</h3>
+        <div className="border-t border-brand-navy-800 pt-4 space-y-4">
+          <h3 className="font-serif font-bold text-base text-brand-gold-400">SEO Default Meta Tags</h3>
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Meta Title</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Meta Title</label>
             <input
               type="text"
               value={metaTitle}
               onChange={(e) => setMetaTitle(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400"
             />
           </div>
           <div>
-            <label className="block text-sandalwood-300 font-semibold mb-1">Meta Description</label>
+            <label className="block text-brand-gold-300 font-semibold mb-1">Meta Description</label>
             <textarea
               rows={2}
               value={metaDescription}
               onChange={(e) => setMetaDescription(e.target.value)}
-              className="w-full bg-sandalwood-950 border border-sandalwood-700 rounded-xl p-3 text-sandalwood-100"
+              className="w-full bg-brand-navy-950 border border-brand-gold-500/30 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold-400 leading-relaxed"
             />
           </div>
         </div>
 
         <button
           type="submit"
-          className="bg-gold-500 text-sandalwood-950 font-bold px-8 py-3 rounded-xl hover:brightness-110 flex items-center gap-2 text-sm shadow-lg transition-all"
+          className="bg-gradient-to-r from-brand-gold-500 via-brand-gold-400 to-brand-gold-600 text-brand-navy-950 font-bold font-cinzel text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl hover:brightness-110 flex items-center gap-2 shadow-lg shadow-brand-gold-500/20 cursor-pointer transition-all"
         >
           <Save className="w-4 h-4" /> Save All Settings
         </button>

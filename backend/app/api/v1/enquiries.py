@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import List, Optional
+from app.core.config import settings
 from app.core.database import get_db
+from app.core.ratelimit import RateLimiter
 from app.models.engagement import Enquiry
 from app.models.catalog import Product
 from app.models.admin import AdminUser
@@ -11,7 +13,18 @@ from app.api.v1.auth import get_current_admin
 
 router = APIRouter(prefix="/enquiries", tags=["Enquiries"])
 
-@router.post("", response_model=EnquiryOut, status_code=status.HTTP_201_CREATED)
+submit_rate_limit = RateLimiter(
+    scope="enquiries",
+    max_requests=settings.PUBLIC_SUBMIT_LIMIT,
+    window_seconds=settings.PUBLIC_SUBMIT_WINDOW_SECONDS,
+)
+
+@router.post(
+    "",
+    response_model=EnquiryOut,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(submit_rate_limit)],
+)
 async def submit_enquiry(payload: EnquiryCreate, db: AsyncSession = Depends(get_db)):
     prod_title = payload.product_title
     if payload.product_id and not prod_title:
@@ -37,13 +50,14 @@ async def submit_enquiry(payload: EnquiryCreate, db: AsyncSession = Depends(get_
 @router.get("", response_model=List[EnquiryOut])
 async def list_enquiries(
     status_filter: Optional[str] = None,
+    limit: int = Query(200, ge=1, le=500),
     db: AsyncSession = Depends(get_db),
     admin: AdminUser = Depends(get_current_admin)
 ):
     query = select(Enquiry).order_by(Enquiry.created_at.desc())
     if status_filter:
         query = query.where(Enquiry.status == status_filter)
-    result = await db.execute(query)
+    result = await db.execute(query.limit(limit))
     return result.scalars().all()
 
 @router.put("/{enquiry_id}/status", response_model=EnquiryOut)

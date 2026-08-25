@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from datetime import datetime
+from app.core.time import now_utc
 from app.core.database import Base
 
 class AdminUser(Base):
@@ -9,4 +9,4 @@ class AdminUser(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     role = Column(String(50), default="superadmin", nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)

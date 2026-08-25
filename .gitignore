@@ -18,8 +18,10 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Environment variables & Logs
+# Environment variables, secrets & Logs
 .env
+.env.local
+.secret_key
 *.log
 
 # IDE & OS
@@ -27,3 +29,9 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+
+# User-uploaded media (served from disk, not source)
+uploads/
+backend/uploads/
+!uploads/.gitkeep
+!backend/uploads/.gitkeep

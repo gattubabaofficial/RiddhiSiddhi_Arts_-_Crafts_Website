@@ -1,127 +1,163 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 from typing import List, Optional
-from app.core.database import get_db
-from app.models.engagement import Review
-from app.models.catalog import Product
-from app.models.admin import AdminUser
-from app.schemas.engagement import ReviewCreate, ReviewUpdate, ReviewOut
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.api.v1.auth import get_current_admin
+from app.core.config import settings
+from app.core.database import get_db
+from app.core.ratelimit import RateLimiter
+from app.models.admin import AdminUser
+from app.models.catalog import Product
+from app.models.engagement import Review
+from app.schemas.engagement import (
+    ReviewCreate,
+    ReviewOut,
+    ReviewPublicOut,
+    ReviewUpdate,
+)
 
 router = APIRouter(prefix="/reviews", tags=["Reviews"])
 
-@router.get("", response_model=List[ReviewOut])
-async def list_reviews(
-    product_id: Optional[int] = None,
-    status_filter: Optional[str] = "approved",
-    featured_only: Optional[bool] = None,
-    db: AsyncSession = Depends(get_db)
-):
-    query = select(Review, Product.title.label("product_title")).outerjoin(Product, Review.product_id == Product.id)
+VALID_STATUSES = {"pending", "approved", "rejected"}
 
-    if status_filter:
-        query = query.where(Review.status == status_filter)
+submit_rate_limit = RateLimiter(
+    scope="reviews",
+    max_requests=settings.PUBLIC_SUBMIT_LIMIT,
+    window_seconds=settings.PUBLIC_SUBMIT_WINDOW_SECONDS,
+)
+
+
+def _with_product():
+    return select(Review, Product.title.label("product_title")).outerjoin(
+        Product, Review.product_id == Product.id
+    )
+
+
+def _to_public(review: Review, product_title: Optional[str]) -> ReviewPublicOut:
+    out = ReviewPublicOut.model_validate(review)
+    out.product_title = product_title
+    return out
+
+
+def _to_admin(review: Review, product_title: Optional[str]) -> ReviewOut:
+    out = ReviewOut.model_validate(review)
+    out.product_title = product_title
+    return out
+
+
+@router.get("", response_model=List[ReviewPublicOut])
+async def list_public_reviews(
+    product_id: Optional[int] = None,
+    featured_only: Optional[bool] = None,
+    limit: int = Query(50, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+):
+    """Approved reviews only, and never the reviewer's email address.
+
+    There is deliberately no status filter here: the previous version accepted
+    `?status_filter=pending`, which published the unmoderated queue -- along with
+    every reviewer's email -- to anyone who asked.
+    """
+    query = _with_product().where(Review.status == "approved")
+
     if product_id:
         query = query.where(Review.product_id == product_id)
     if featured_only:
-        query = query.where(Review.featured_on_home == True)
+        query = query.where(Review.featured_on_home.is_(True))
 
-    query = query.order_by(Review.created_at.desc())
-    result = await db.execute(query)
-    rows = result.all()
+    query = query.order_by(Review.created_at.desc()).limit(limit)
+    return [_to_public(rev, title) for rev, title in (await db.execute(query)).all()]
 
-    out = []
-    for rev, p_title in rows:
-        r_dict = ReviewOut.model_validate(rev)
-        r_dict.product_title = p_title
-        out.append(r_dict)
-    return out
 
 @router.get("/admin/all", response_model=List[ReviewOut])
 async def list_all_reviews_admin(
+    status_filter: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
-    admin: AdminUser = Depends(get_current_admin)
+    admin: AdminUser = Depends(get_current_admin),
 ):
-    query = select(Review, Product.title.label("product_title")).outerjoin(Product, Review.product_id == Product.id).order_by(Review.created_at.desc())
-    result = await db.execute(query)
-    rows = result.all()
+    query = _with_product()
+    if status_filter:
+        query = query.where(Review.status == status_filter)
+    query = query.order_by(Review.created_at.desc())
+    return [_to_admin(rev, title) for rev, title in (await db.execute(query)).all()]
 
-    out = []
-    for rev, p_title in rows:
-        r_dict = ReviewOut.model_validate(rev)
-        r_dict.product_title = p_title
-        out.append(r_dict)
-    return out
 
-@router.post("", response_model=ReviewOut, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=ReviewPublicOut,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(submit_rate_limit)],
+)
 async def submit_review(payload: ReviewCreate, db: AsyncSession = Depends(get_db)):
-    rev = Review(
+    review = Review(
         product_id=payload.product_id,
         user_name=payload.user_name,
         user_email=payload.user_email,
         rating=payload.rating,
         text=payload.text,
         images=payload.images,
-        status="pending", # Needs admin approval
-        featured_on_home=False
+        status="pending",  # Always: approval is an admin action.
+        featured_on_home=False,
     )
-    db.add(rev)
+    db.add(review)
     await db.commit()
-    await db.refresh(rev)
+    await db.refresh(review)
 
-    p_title = None
-    if rev.product_id:
-        p_res = await db.execute(select(Product.title).where(Product.id == rev.product_id))
-        p_title = p_res.scalar()
+    title = None
+    if review.product_id:
+        title = await db.scalar(
+            select(Product.title).where(Product.id == review.product_id)
+        )
+    return _to_public(review, title)
 
-    r_dict = ReviewOut.model_validate(rev)
-    r_dict.product_title = p_title
-    return r_dict
 
 @router.put("/{review_id}", response_model=ReviewOut)
 async def update_review(
     review_id: int,
     payload: ReviewUpdate,
     db: AsyncSession = Depends(get_db),
-    admin: AdminUser = Depends(get_current_admin)
+    admin: AdminUser = Depends(get_current_admin),
 ):
     result = await db.execute(select(Review).where(Review.id == review_id))
-    rev = result.scalars().first()
-    if not rev:
+    review = result.scalars().first()
+    if not review:
         raise HTTPException(status_code=404, detail="Review not found")
 
-    if payload.status is not None:
-        rev.status = payload.status
-    if payload.featured_on_home is not None:
-        rev.featured_on_home = payload.featured_on_home
-    if payload.rating is not None:
-        rev.rating = payload.rating
-    if payload.text is not None:
-        rev.text = payload.text
+    changes = payload.model_dump(exclude_unset=True)
+
+    if changes.get("status") is not None and changes["status"] not in VALID_STATUSES:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"status must be one of: {', '.join(sorted(VALID_STATUSES))}",
+        )
+
+    for field, value in changes.items():
+        if value is not None:
+            setattr(review, field, value)
 
     await db.commit()
-    await db.refresh(rev)
+    await db.refresh(review)
 
-    p_title = None
-    if rev.product_id:
-        p_res = await db.execute(select(Product.title).where(Product.id == rev.product_id))
-        p_title = p_res.scalar()
+    title = None
+    if review.product_id:
+        title = await db.scalar(
+            select(Product.title).where(Product.id == review.product_id)
+        )
+    return _to_admin(review, title)
 
-    r_dict = ReviewOut.model_validate(rev)
-    r_dict.product_title = p_title
-    return r_dict
 
 @router.delete("/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_review(
     review_id: int,
     db: AsyncSession = Depends(get_db),
-    admin: AdminUser = Depends(get_current_admin)
+    admin: AdminUser = Depends(get_current_admin),
 ):
     result = await db.execute(select(Review).where(Review.id == review_id))
-    rev = result.scalars().first()
-    if not rev:
+    review = result.scalars().first()
+    if not review:
         raise HTTPException(status_code=404, detail="Review not found")
-    await db.delete(rev)
+    await db.delete(review)
     await db.commit()
     return None

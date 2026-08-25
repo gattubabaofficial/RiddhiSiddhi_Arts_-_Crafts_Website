@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, List, Any, Dict
 from datetime import datetime
 
@@ -25,8 +25,7 @@ class CategoryOut(CategoryBase):
     created_at: datetime
     product_count: Optional[int] = 0
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class SpecItem(BaseModel):
     label: str
@@ -42,6 +41,7 @@ class ProductBase(BaseModel):
     short_description: Optional[str] = None
     long_description: Optional[str] = None
     images: List[str] = []
+    videos: List[str] = []
     is_featured: bool = False
     display_order: int = 0
     specs: List[Dict[str, Any]] = []
@@ -60,6 +60,7 @@ class ProductUpdate(BaseModel):
     short_description: Optional[str] = None
     long_description: Optional[str] = None
     images: Optional[List[str]] = None
+    videos: Optional[List[str]] = None
     is_featured: Optional[bool] = None
     display_order: Optional[int] = None
     specs: Optional[List[Dict[str, Any]]] = None
@@ -71,5 +72,4 @@ class ProductOut(ProductBase):
     created_at: datetime
     category_name: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -1,5 +1,6 @@
 import asyncio
 import os
+import secrets
 import shutil
 from sqlalchemy import select
 from app.core.database import AsyncSessionLocal, init_db, Base, engine
@@ -13,16 +14,29 @@ async def seed_data():
     await init_db()
 
     async with AsyncSessionLocal() as session:
-        # Check if Admin exists
-        res = await session.execute(select(AdminUser).where(AdminUser.email == "admin@riddhisiddhi.com"))
+        # Admin account. The password comes from the environment; when it is
+        # absent a random one is generated and printed once. Never a shipped
+        # default -- "admin123" was reachable on every deployment of this code.
+        admin_email = (os.environ.get("SEED_ADMIN_EMAIL") or "").strip() or "admin@riddhisiddhi.com"
+        res = await session.execute(select(AdminUser).where(AdminUser.email == admin_email))
         if not res.scalars().first():
-            admin = AdminUser(
-                email="admin@riddhisiddhi.com",
-                password_hash=get_password_hash("admin123"),
+            admin_password = (os.environ.get("SEED_ADMIN_PASSWORD") or "").strip()
+            generated = not admin_password
+            if generated:
+                admin_password = secrets.token_urlsafe(18)
+
+            session.add(AdminUser(
+                email=admin_email,
+                password_hash=get_password_hash(admin_password),
                 role="superadmin"
-            )
-            session.add(admin)
-            print("Created superadmin: admin@riddhisiddhi.com / admin123")
+            ))
+            print(f"Created superadmin: {admin_email}")
+            if generated:
+                print("=" * 68)
+                print(f"  Generated admin password: {admin_password}")
+                print("  Store it now - it is not shown again and is not saved anywhere.")
+                print("  Set SEED_ADMIN_PASSWORD to choose your own instead.")
+                print("=" * 68)
 
         # Copy local whatsapp images if available
         root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -71,19 +85,34 @@ async def seed_data():
         products_data = [
             {
                 "category": "Sandalwood Japa Mala",
-                "title": "Sandalwood Japa Loose Mala Beads",
+                "title": "Sandalwood Beads Sandalwood Japa Mala Loose Mala Beads",
                 "slug": "sandalwood-japa-loose-mala-beads",
                 "price": "₹190/Piece",
-                "moq": "50 Pieces",
-                "short_description": "Pure Indian sandalwood Japa beads suitable for meditation and prayer.",
-                "long_description": "Crafted from authentic Mysuru Indian Sandalwood, these 108 Japa loose mala beads retain their soothing, long-lasting natural fragrance. Available in sizes ranging from 4mm to 22mm.",
+                "moq": "800 Piece",
+                "short_description": "Pure Indian Sandalwood (Mysore) Japa Mala & Loose Beads (SW-B-41). 108 beads, round polished natural dark golden brown with high aroma for religious chanting & aroma jewelry.",
+                "long_description": "Sandalwood Beads Sandalwood Japa Mala Loose Mala Beads sandalwood is one of the traditional materials used for chanting Beads and INDIA is the most popular for sandalwood over the globe the world’s best quality of sandalwood found in India only. It is said that sandalwood from Malayagiri Mountain is the superior most quality of sandalwood in world it is called now MYSORE. Best Quality of Sandalwood found in southern part of India and used for Medicine, Oil, Fragrance, Carvings, Beads and incense also sandalwood oil and other by products used in cosmetics and valuable medicines. A soothing, peaceful and fragrant wood from India it is said to attract positive subtle vibrations, bring clear perception, promote tranquility and a positive frame of mind. Sandalwood is an antidepressant, antiseptic, insecticide, and wood. It can assist in the healing of cells and is used to assist the immune system in any healing process or to prevent illness. Our company makes different sizes (6 mm 8 mm 10mm 12mm 15mm 18mm and 20mm sizes on regular basis) and style in sandalwood rosary mala beads.",
                 "images": [mala_img, bead_img],
                 "is_featured": True,
                 "specs": [
-                    {"label": "Wood Origin", "value": "Indian Sandalwood"},
-                    {"label": "Bead Size Range", "value": "4mm - 22mm"},
-                    {"label": "Total Beads", "value": "108 Beads"},
-                    {"label": "Usage", "value": "Meditation / Japa / Rosary"}
+                    {"label": "Product Code", "value": "SW-B-41"},
+                    {"label": "Brand", "value": "Riddhi Siddhi"},
+                    {"label": "Wood Origin", "value": "Indian Sandalwood (Mysore / Malayagiri)"},
+                    {"label": "Material", "value": "100% Genuine Sandalwood"},
+                    {"label": "Bead Size", "value": "4-22mm (6mm, 8mm, 10mm, 12mm, 15mm, 18mm, 20mm, 22mm)"},
+                    {"label": "Size", "value": "Max. 22 mm"},
+                    {"label": "Number Of Beads", "value": "108 beads"},
+                    {"label": "Total Beads", "value": "27 Beads / 108 Beads"},
+                    {"label": "Bead Shape", "value": "Round"},
+                    {"label": "Shape", "value": "Round"},
+                    {"label": "Color", "value": "Natural Dark Golden Brown"},
+                    {"label": "Fragrance Level", "value": "High Aroma (Long-lasting Natural Essence)"},
+                    {"label": "Finish", "value": "Polished"},
+                    {"label": "String Material", "value": "Cotton Thread"},
+                    {"label": "Usage / Application", "value": "Religious, Aroma Jewellery, Mala, Bracelet, Chanting"},
+                    {"label": "Age", "value": "50++"},
+                    {"label": "Packaging Type", "value": "Carefully pack the beads in plastic bags and finally packed in corrugated box."},
+                    {"label": "Country of Origin", "value": "Made in India"},
+                    {"label": "Minimum Order Quantity (MOQ)", "value": "800 Piece"}
                 ]
             },
             {

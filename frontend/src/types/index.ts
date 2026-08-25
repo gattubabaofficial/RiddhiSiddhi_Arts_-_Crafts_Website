@@ -1,12 +1,23 @@
+/**
+ * Mirrors the backend Pydantic schemas in backend/app/schemas/.
+ *
+ * Previously these interfaces carried both the real field names and a parallel
+ * set that no endpoint ever returned (`sku`, `min_order_quantity`, `sort_order`,
+ * `is_active`, `description`). Because every one was optional, TypeScript could
+ * not tell the two apart, and the homepage fallback data silently used the
+ * phantom set -- so placeholder content rendered differently from live content.
+ * Keep this file in step with the backend schemas.
+ */
+
 export interface Category {
   id: number;
   name: string;
   slug: string;
-  image_url?: string;
-  description?: string;
-  display_order: number;
+  image_url?: string | null;
+  description?: string | null;
+  display_order?: number;
   product_count?: number;
-  created_at: string;
+  created_at?: string;
 }
 
 export interface SpecItem {
@@ -19,32 +30,39 @@ export interface Product {
   category_id: number;
   title: string;
   slug: string;
-  price?: string;
-  currency: string;
-  moq: string;
-  short_description?: string;
-  long_description?: string;
+  price?: string | null;
+  currency?: string;
+  /** Minimum order quantity, e.g. "10 Pieces". */
+  moq?: string;
+  short_description?: string | null;
+  long_description?: string | null;
   images: string[];
+  videos?: string[];
   is_featured: boolean;
-  display_order: number;
-  specs: SpecItem[];
-  similar_product_ids: number[];
-  category_name?: string;
-  created_at: string;
+  display_order?: number;
+  specs?: SpecItem[];
+  similar_product_ids?: number[];
+  category_name?: string | null;
+  created_at?: string;
 }
 
+/** What the public /reviews endpoint returns. Never includes user_email. */
 export interface Review {
   id: number;
-  product_id?: number;
+  product_id?: number | null;
   user_name: string;
-  user_email?: string;
   rating: number;
   text: string;
-  images: string[];
+  images?: string[];
   status: 'pending' | 'approved' | 'rejected';
-  featured_on_home: boolean;
-  product_title?: string;
-  created_at: string;
+  featured_on_home?: boolean;
+  product_title?: string | null;
+  created_at?: string;
+}
+
+/** Admin-only view from /reviews/admin/all. */
+export interface AdminReview extends Review {
+  user_email?: string | null;
 }
 
 export interface Enquiry {
@@ -54,9 +72,9 @@ export interface Enquiry {
   mobile: string;
   email: string;
   message: string;
-  images: string[];
-  product_id?: number;
-  product_title?: string;
+  images?: string[];
+  product_id?: number | null;
+  product_title?: string | null;
   status: 'new' | 'in_progress' | 'closed';
   created_at: string;
 }
@@ -65,31 +83,31 @@ export interface Reel {
   id: number;
   title: string;
   video_url: string;
-  thumbnail_url?: string;
-  is_trending: boolean;
-  display_order: number;
-  created_at: string;
+  thumbnail_url?: string | null;
+  is_trending?: boolean;
+  display_order?: number;
+  created_at?: string;
 }
 
 export interface HeroBanner {
   id: number;
   image_url: string;
   heading: string;
-  subheading?: string;
-  cta_label?: string;
-  cta_link?: string;
-  display_order: number;
+  subheading?: string | null;
+  cta_label?: string | null;
+  cta_link?: string | null;
+  display_order?: number;
   is_active: boolean;
-  created_at: string;
+  created_at?: string;
 }
 
 export interface Collaboration {
   id: number;
   title: string;
   logo_url: string;
-  link?: string;
-  display_order: number;
-  created_at: string;
+  link?: string | null;
+  display_order?: number;
+  created_at?: string;
 }
 
 export interface SiteSettings {
@@ -109,10 +127,10 @@ export interface SiteSettings {
     instagram?: string;
     youtube?: string;
   };
-  logo_url?: string;
-  seo_meta: {
+  logo_url?: string | null;
+  seo_meta?: {
     meta_title?: string;
     meta_description?: string;
   };
-  updated_at: string;
+  updated_at?: string;
 }

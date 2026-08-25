@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
 
@@ -23,8 +23,7 @@ class ReelOut(ReelBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class HeroBannerBase(BaseModel):
     image_url: str
@@ -51,8 +50,7 @@ class HeroBannerOut(HeroBannerBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CollaborationBase(BaseModel):
     title: str
@@ -67,5 +65,4 @@ class CollaborationOut(CollaborationBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

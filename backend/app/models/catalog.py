@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, ForeignKey, JSON
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from app.core.time import now_utc
 from app.core.database import Base
 
 class Category(Base):
@@ -12,7 +12,7 @@ class Category(Base):
     image_url = Column(Text, nullable=True)
     description = Column(Text, nullable=True)
     display_order = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)
 
     products = relationship("Product", back_populates="category", cascade="all, delete-orphan")
 
@@ -29,11 +29,12 @@ class Product(Base):
     short_description = Column(Text, nullable=True)
     long_description = Column(Text, nullable=True)
     images = Column(JSON, default=[]) # List of image URLs
+    videos = Column(JSON, default=[]) # List of video URLs (uploaded mp4 or external embed)
     is_featured = Column(Boolean, default=False, index=True)
     display_order = Column(Integer, default=0)
     specs = Column(JSON, default=[]) # List of dicts: [{"label": "Wood Origin", "value": "Indian Sandalwood"}]
     similar_product_ids = Column(JSON, default=[]) # Array of integer product IDs
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=now_utc)
 
     category = relationship("Category", back_populates="products")
     reviews = relationship("Review", back_populates="product", cascade="all, delete-orphan")
