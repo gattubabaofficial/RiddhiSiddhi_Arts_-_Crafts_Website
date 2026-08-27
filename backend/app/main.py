@@ -86,11 +86,18 @@ app.include_router(api_router)
 
 
 @app.get("/")
-async def root():
+@app.get("/api/v1")
+async def root_status():
     return {
-        "message": "Welcome to Riddhi Siddhi Arts & Crafts API",
-        "docs": None if settings.is_production else "/docs",
-        "status": "online",
+        "status": "healthy",
+        "project": settings.PROJECT_NAME,
+        "environment": settings.ENVIRONMENT,
+        "endpoints": {
+            "products": "/api/v1/products",
+            "categories": "/api/v1/categories",
+            "enquiries": "/api/v1/enquiries",
+            "reviews": "/api/v1/reviews",
+        },
     }
 
 
