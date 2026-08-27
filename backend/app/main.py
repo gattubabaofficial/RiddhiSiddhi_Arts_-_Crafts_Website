@@ -18,6 +18,21 @@ logger = logging.getLogger("uvicorn")
 async def lifespan(app: FastAPI):
     settings.upload_path.mkdir(parents=True, exist_ok=True)
     await init_db()
+    
+    # Auto-seed initial catalog, categories, and superadmin if database is fresh/empty
+    try:
+        from app.core.database import AsyncSessionLocal
+        from app.models import Category
+        from sqlalchemy import select
+        from seed import seed_data
+        async with AsyncSessionLocal() as session:
+            res = await session.execute(select(Category))
+            if not res.scalars().first():
+                logger.info("Empty database detected on startup. Auto-seeding default catalog...")
+                await seed_data()
+    except Exception as e:
+        logger.warning("Auto-seed on startup skipped/failed: %s", e)
+
     logger.info("Started in %s mode", settings.ENVIRONMENT)
     yield
 
