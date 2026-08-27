@@ -69,7 +69,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${plusJakarta.variable} ${cinzel.variable}`}>
-      <body suppressHydrationWarning className="flex flex-col min-h-screen font-sans bg-brand-sandalwood-50 text-brand-navy-950">
+      <body suppressHydrationWarning className="flex flex-col min-h-screen font-sans bg-white text-black">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

@@ -46,6 +46,22 @@ export default function ProductDetailPage() {
   const [reviewSubmitting, setReviewSubmitting] = useState(false);
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
+  const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const carouselRef = React.useRef<HTMLDivElement>(null);
+
+  const handleCarouselScroll = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      if (maxScroll > 0) {
+        setScrollProgress(scrollLeft / maxScroll);
+      }
+      const newIdx = Math.round(scrollLeft / clientWidth);
+      setActiveMediaIdx(newIdx);
+    }
+  };
+
   useEffect(() => {
     async function loadProductDetail() {
       try {
@@ -59,7 +75,7 @@ export default function ProductDetailPage() {
         setSimilarProducts(simRes.filter(p => p.id !== prodRes.id));
         setReviews(revRes);
       } catch (err) {
-        console.error('Failed loading product details:', err);
+        console.error('Failed to load product detail:', err);
       } finally {
         setLoading(false);
       }
@@ -69,13 +85,13 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 400) {
+      if (window.scrollY > 450) {
         setScrolledPast(true);
       } else {
         setScrolledPast(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -142,7 +158,6 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Build the list of continuous seamless full-fill images
   const allImages = (product.images && product.images.length > 0)
     ? product.images
     : ['https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1600&q=90'];
@@ -215,12 +230,68 @@ export default function ProductDetailPage() {
       <div className="w-full pt-16 md:pt-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
           
-          {/* LEFT HALF: 100% FULL-FIT CONTINUOUS VERTICAL STACK WITH NO GAP BETWEEN PICTURES */}
-          <div className="w-full flex flex-col p-0 m-0 bg-[#EFEFEF]">
+          {/* MOBILE VIEW (< lg): Touch Horizontal Swipe Gallery with 2-inch Sliding Line Indicator */}
+          <div className="w-full lg:hidden bg-[#F6F5F2] relative">
+            <div
+              ref={carouselRef}
+              onScroll={handleCarouselScroll}
+              className="w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x"
+            >
+              {continuousMediaList.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="w-full min-w-full shrink-0 snap-center h-[46vh] sm:h-[54vh] max-h-[480px] relative bg-[#F6F5F2] flex items-center justify-center overflow-hidden"
+                >
+                  {item.type === 'video' ? (
+                    item.url.includes('youtube.com') || item.url.includes('youtu.be') ? (
+                      <iframe
+                        src={getEmbedUrl(item.url)}
+                        title="Workshop Demonstration"
+                        className="w-full h-full border-0"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <video
+                        src={getMediaUrl(item.url)}
+                        controls
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover"
+                      />
+                    )
+                  ) : (
+                    <img
+                      src={getMediaUrl(item.url)}
+                      alt={`${product.title} - View ${idx + 1}`}
+                      className="w-full h-full object-cover object-center select-none"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Full-Width Bottom Edge Track with Royal Blue Sliding Segment */}
+            {continuousMediaList.length > 1 && (
+              <div className="absolute bottom-0 left-0 right-0 z-20 w-full h-[2px] bg-neutral-200 pointer-events-none">
+                <div
+                  className="h-full bg-[#0B3C84] transition-transform duration-100 ease-out"
+                  style={{
+                    width: `${(1 / continuousMediaList.length) * 100}%`,
+                    transform: `translateX(${scrollProgress * (continuousMediaList.length - 1) * 100}%)`,
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* DESKTOP VIEW (>= lg): 100% Full-Fit Continuous Vertical Stack */}
+          <div className="hidden lg:flex w-full flex-col p-0 m-0 bg-[#EFEFEF]">
             {continuousMediaList.map((item, idx) => (
               <div
                 key={idx}
-                className="w-full h-[75vh] sm:h-[88vh] lg:h-screen p-0 m-0 bg-[#EFEFEF] relative overflow-hidden flex items-center justify-center border-0"
+                className="w-full h-screen p-0 m-0 bg-[#EFEFEF] relative overflow-hidden flex items-center justify-center border-0"
               >
                 {item.type === 'video' ? (
                   item.url.includes('youtube.com') || item.url.includes('youtu.be') ? (

@@ -23,6 +23,19 @@
   }
 }
 
+/* Hide scrollbar for Chrome, Safari, Opera, Edge, Firefox */
+.no-scrollbar::-webkit-scrollbar,
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  height: 0px;
+}
+.no-scrollbar,
+html, body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .gold-gradient-text {
   background: linear-gradient(135deg, #DFAC5B 0%, #C0883B 50%, #855420 100%);
   -webkit-background-clip: text;
@@ -43,6 +56,162 @@
 
 .brand-arch-badge {
   border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+}
+
+/* Custom 25% slow-start & faded into fast sweep drawer animations */
+@keyframes luxuryDrawerSlideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translateX(-78%);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes luxuryDrawerSlideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(-22%);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-drawer-in {
+  animation: luxuryDrawerSlideIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-drawer-out {
+  animation: luxuryDrawerSlideOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Louis Vuitton Staggered Link Cascade Loading Animation */
+@keyframes lvLinkCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lv-link-item {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.animate-drawer-in .lv-link-item {
+  animation: lvLinkCascade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-drawer-in .lv-link-1 { animation-delay: 0.25s; }
+.animate-drawer-in .lv-link-2 { animation-delay: 0.33s; }
+.animate-drawer-in .lv-link-3 { animation-delay: 0.41s; }
+.animate-drawer-in .lv-link-4 { animation-delay: 0.49s; }
+.animate-drawer-in .lv-link-5 { animation-delay: 0.57s; }
+.animate-drawer-in .lv-link-footer { animation-delay: 0.65s; }
+
+/* Sub-Menu Slide In / Slide Out with 25% Slow-Start Physics */
+@keyframes luxurySubmenuSlideIn {
+  0% {
+    transform: translateX(45px);
+    opacity: 0.1;
+  }
+  25% {
+    transform: translateX(32px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes luxurySubmenuSlideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(-15px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-45px);
+    opacity: 0;
+  }
+}
+
+.animate-submenu-in {
+  animation: luxurySubmenuSlideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-submenu-out {
+  animation: luxurySubmenuSlideOut 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Directional Underline Animation: Enters Left, Exits Right (Blue #0B3C84) */
+.animated-underline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #0B3C84;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.35s ease-out;
+  pointer-events: none;
+}
+.animated-underline:hover::after,
+.group:hover .animated-underline::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* White Button Line: Already present -> Exits to Right on hover -> Re-enters from Left on leave (White #FFFFFF) */
+.animated-underline-reverse-white {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.animated-underline-reverse-white::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #FFFFFF;
+  transform: scaleX(1);
+  transform-origin: bottom left;
+  transition: transform 0.35s ease-out;
+  pointer-events: none;
+}
+.animated-underline-reverse-white:hover::after,
+.group:hover .animated-underline-reverse-white::after {
+  transform: scaleX(0);
+  transform-origin: bottom right;
 }
 
 

@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { fetchAPI, getMediaUrl } from '@/lib/api';
 import { Category, Product } from '@/types';
-import { Send, ChevronRight } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import EnquiryModal from '@/components/products/EnquiryModal';
 
 export default function CategoryListingPage() {
@@ -18,6 +18,14 @@ export default function CategoryListingPage() {
 
   const [enquiryModalOpen, setEnquiryModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [activeSub, setActiveSub] = useState<string>('View All');
+  const [wishlist, setWishlist] = useState<Record<number, boolean>>({});
+
+  const toggleWishlist = (productId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setWishlist((prev) => ({ ...prev, [productId]: !prev[productId] }));
+  };
 
   useEffect(() => {
     async function loadCategoryProducts() {
@@ -42,89 +50,138 @@ export default function CategoryListingPage() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 pt-32 pb-20 text-center text-brand-navy-900 font-cinzel">
+      <div className="max-w-7xl mx-auto px-4 pt-36 pb-20 text-center text-neutral-800 font-sans text-sm tracking-widest uppercase">
         Loading category items...
       </div>
     );
   }
 
+  const subcategories = [
+    { title: 'View All' },
+    ...(categorySlug === 'sandalwood-japa-mala' ? [
+      { title: '108 Beads Japa Mala' },
+      { title: 'Muslim Tashbih' },
+      { title: 'Beads Mala & Garlands' },
+      { title: 'Wrist Malas' }
+    ] : categorySlug === 'handcarved-elephants' ? [
+      { title: 'Undercut Net Elephants' },
+      { title: 'Solid Royal Elephants' },
+      { title: 'Temple Deities' },
+      { title: 'Heritage Boxes' }
+    ] : categorySlug === 'loose-sandalwood-beads' ? [
+      { title: 'Calibrated Round Beads' },
+      { title: 'Raw Beads' },
+      { title: 'Cylindrical Spacers' },
+      { title: 'Sandalwood Billets' }
+    ] : categorySlug === 'designer-sandalwood-bracelets' ? [
+      { title: 'Stretchable Bracelets' },
+      { title: 'Silver Capped' },
+      { title: 'Sacred Pendants' },
+      { title: 'Braided Cord' }
+    ] : categorySlug === 'muslim-tashbih-misbahah' ? [
+      { title: '33 Beads Pocket' },
+      { title: '99 Beads Full' },
+      { title: 'Carved Imame' }
+    ] : [
+      { title: 'Standard' },
+      { title: 'Custom Artisan' }
+    ])
+  ];
+
+  const filteredProducts = activeSub === 'View All' 
+    ? products 
+    : products.filter(p => p.title.toLowerCase().includes(activeSub.toLowerCase()) || p.short_description?.toLowerCase().includes(activeSub.toLowerCase()));
+
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 pt-28 md:pt-32 pb-16 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 pt-32 md:pt-36 lg:pt-40 pb-24 space-y-6">
       
-      {/* Breadcrumbs */}
-      <div className="flex items-center gap-2 text-xs text-brand-navy-950/60">
-        <Link href="/" className="hover:text-brand-gold-600 font-medium">Home</Link>
-        <ChevronRight className="w-3 h-3 text-brand-gold-600" />
-        <Link href="/products" className="hover:text-brand-gold-600 font-medium">Our Products</Link>
-        <ChevronRight className="w-3 h-3 text-brand-gold-600" />
-        <span className="font-bold text-brand-navy-900 capitalize">{category?.name || categorySlug.replace(/-/g, ' ')}</span>
-      </div>
-
-      {/* Category Banner */}
-      <div className="bg-brand-navy-950 text-white p-8 md:p-12 rounded-3xl space-y-4 border border-brand-gold-500/20 shadow-xl">
-        <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-400 block">Category Catalog</span>
-        <h1 className="font-serif text-3xl md:text-5xl font-bold">
-          {category?.name || categorySlug.replace(/-/g, ' ').toUpperCase()}
+      {/* Category Header (Matching Louis Vuitton Clean Sans-Serif Typography) */}
+      <div>
+        <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl font-normal text-neutral-900 tracking-tight leading-tight">
+          {category?.name || categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
         </h1>
-        {category?.description && (
-          <p className="text-sm text-brand-gold-100/80 max-w-2xl leading-relaxed font-sans">
-            {category.description}
-          </p>
-        )}
       </div>
 
-      {/* Product Cards Grid */}
-      {products.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-3xl border border-brand-sandalwood-200 wood-card-shadow space-y-4">
-          <p className="text-brand-navy-900/70 font-medium">No products found in this category yet.</p>
-          <Link href="/products" className="inline-flex bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-navy-950 font-cinzel font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition-colors shadow">
-            Browse All Categories
-          </Link>
+      {/* Horizontal Subcategory Navigation (Exact Louis Vuitton Sub-Nav) */}
+      <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 md:-mx-8 md:px-8 pt-1">
+        <div className="flex items-center gap-6 sm:gap-8 md:gap-9 whitespace-nowrap min-w-max pb-2">
+          {subcategories.map((sub, idx) => {
+            const isActive = activeSub === sub.title;
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveSub(sub.title)}
+                className={`text-xs sm:text-[13px] font-sans tracking-wide transition-colors cursor-pointer py-1 select-none ${
+                  isActive
+                    ? 'text-black font-medium border-b-[1.5px] border-black'
+                    : 'text-neutral-500 hover:text-black animated-underline'
+                }`}
+              >
+                {sub.title}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Product Cards Grid (Matching Louis Vuitton Studio Grid) */}
+      {filteredProducts.length === 0 ? (
+        <div className="text-center py-20 bg-transparent space-y-4">
+          <p className="text-neutral-600 font-sans text-sm">No items found in this section.</p>
+          <button
+            type="button"
+            onClick={() => setActiveSub('View All')}
+            className="inline-flex bg-black text-white font-sans text-xs uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-neutral-800 transition-colors"
+          >
+            View All {category?.name || 'Category'} Items
+          </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((p) => (
-            <div key={p.id} className="bg-white border border-brand-sandalwood-200 rounded-2xl overflow-hidden wood-card-shadow flex flex-col justify-between hover:border-brand-gold-400 transition-all">
-              <Link href={`/products/${categorySlug}/${p.slug}`}>
-                <div className="h-56 bg-brand-sandalwood-50 relative overflow-hidden group">
-                  <img
-                    src={getMediaUrl(p.images[0]) || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80'}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-brand-navy-950/85 backdrop-blur-sm text-brand-gold-300 font-cinzel text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                    MOQ: {p.moq}
-                  </span>
-                </div>
-              </Link>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-0 gap-y-8 sm:gap-y-12 pt-2">
+          {filteredProducts.map((p) => {
+            const isWishlisted = !!wishlist[p.id];
+            return (
+              <div key={p.id} className="group flex flex-col cursor-pointer select-none">
+                {/* Clean Studio Photo Frame Touching Edge-to-Edge with Zero Gap */}
+                <div className="relative w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden">
+                  <Link href={`/products/${categorySlug}/${p.slug}`} className="block w-full h-full">
+                    <img
+                      src={getMediaUrl(p.images[0]) || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80'}
+                      alt={p.title}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  </Link>
 
-              <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                <div className="space-y-2">
-                  <Link href={`/products/${categorySlug}/${p.slug}`}>
-                    <h3 className="font-serif font-bold text-brand-navy-900 text-base hover:text-brand-gold-600 line-clamp-1">
+                  {/* Top-Right Minimalist Wishlist Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => toggleWishlist(p.id, e)}
+                    aria-label="Add to wishlist"
+                    className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/70 hover:bg-white text-neutral-700 hover:text-black transition-colors"
+                  >
+                    <Heart
+                      className={`w-4 h-4 transition-colors ${
+                        isWishlisted ? 'fill-red-500 text-red-500' : 'text-neutral-700'
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Minimalist Product Typography Underneath */}
+                <div className="pt-3 sm:pt-4 px-2 sm:px-3 space-y-1">
+                  <Link href={`/products/${categorySlug}/${p.slug}`} className="block">
+                    <h3 className="text-xs sm:text-[13px] md:text-sm font-sans text-neutral-900 group-hover:text-black font-normal leading-snug line-clamp-1">
                       {p.title}
                     </h3>
                   </Link>
-                  <p className="text-xs text-brand-navy-950/70 line-clamp-2">
-                    {p.short_description}
+                  <p className="text-xs sm:text-[13px] font-sans text-neutral-600 font-normal">
+                    {p.price ? (p.price.startsWith('₹') ? p.price : `₹${p.price}`) : 'Ask for Wholesale Quote'}
                   </p>
                 </div>
-
-                <div className="pt-3 border-t border-brand-sandalwood-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] text-brand-navy-950/50 block">Wholesale Rate</span>
-                    <span className="font-bold text-brand-navy-900 text-sm">{p.price || 'Ask Quote'}</span>
-                  </div>
-                  <button
-                    onClick={() => openQuoteModal(p)}
-                    className="bg-brand-navy-900 hover:bg-brand-gold-500 hover:text-brand-navy-950 text-white font-cinzel text-xs font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 uppercase tracking-wider cursor-pointer"
-                  >
-                    <Send className="w-3 h-3" /> Get Quote
-                  </button>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

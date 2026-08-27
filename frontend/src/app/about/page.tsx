@@ -2,182 +2,195 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Award, CheckCircle2, ShieldCheck, HelpCircle, Flame, Eye, Sparkles, Building, Phone } from 'lucide-react';
+import { Eye, Sparkles, ShieldCheck, CheckCircle2, Phone, Send, Award, MapPin } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AboutPage() {
   return (
-    <div className="space-y-16 pb-16">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 pt-32 md:pt-36 lg:pt-40 pb-24 space-y-16 sm:space-y-20">
       
-      {/* Header Banner */}
-      <section className="bg-brand-navy-950 text-white pt-32 md:pt-36 pb-16 text-center border-b border-brand-gold-500/20">
-        <div className="max-w-4xl mx-auto px-4 space-y-4">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-white p-1.5 shadow-lg border border-brand-gold-400/40 relative overflow-hidden mb-2">
-            <Image
-              src="/logo-compact.jpeg"
-              alt="Riddhi Siddhi Arts & Crafts Logo"
-              fill
-              className="object-contain p-1"
-            />
-          </div>
-          <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-400 block">
-            Jaipur Sandalwood Heritage & Craftsmanship
-          </span>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white">
-            About Riddhi Siddhi Arts & Crafts
-          </h1>
-          <p className="text-brand-gold-100/80 text-base leading-relaxed max-w-2xl mx-auto">
-            Jaipur’s trusted Manufacturer, Exporter & Supplier of 100% Genuine Indian Mysuru Sandalwood Handicrafts, Malas, Beads & Spiritual Statues.
-          </p>
-        </div>
+      {/* Editorial Header */}
+      <section className="text-center max-w-4xl mx-auto space-y-4">
+        <span className="font-cinzel text-[11px] sm:text-xs uppercase tracking-[0.25em] font-bold text-[#B3873E] block">
+          Jaipur Sandalwood Heritage & Craftsmanship
+        </span>
+        <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#0B3C84] tracking-tight leading-tight">
+          The Atelier of Riddhi Siddhi
+        </h1>
+        <p className="text-neutral-600 text-sm sm:text-base font-sans leading-relaxed max-w-2xl mx-auto">
+          Jaipur’s trusted Manufacturer, Exporter & Supplier of 100% Genuine Indian Mysuru Sandalwood Handicrafts, Sacred Malas, Beads & Handcarved Sculptures.
+        </p>
       </section>
 
-      {/* CEO & Brand Story */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Brand Narrative & Master Artisan Story */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
         <div className="space-y-6">
-          <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-600">Proprietor Narrative</span>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-navy-900">
-            The Story Behind Riddhi Siddhi Arts
-          </h2>
-          <p className="text-brand-navy-950/80 text-sm leading-relaxed">
-            Founded and spearheaded by <strong>Mr. Ghanshyam Agrawal</strong>, Riddhi Siddhi Arts &amp; Crafts has grown into one of Jaipur&rsquo;s most revered manufacturers and exporters of authentic sandalwood handicraft items.
+          <div className="space-y-2">
+            <span className="font-cinzel text-xs uppercase tracking-wider font-semibold text-[#0B3C84]">
+              Proprietor Narrative
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-neutral-900 font-normal leading-snug">
+              Preserving Ancient Sandalwood Carving Traditions
+            </h2>
+          </div>
+          <p className="text-neutral-700 text-sm sm:text-[15px] font-sans leading-relaxed">
+            Founded and spearheaded by <strong>Mr. Ghanshyam Agrawal</strong>, Riddhi Siddhi Arts &amp; Crafts has flourished into one of Jaipur&rsquo;s most revered manufacturers and export ateliers of authentic sandalwood artifacts.
           </p>
-          <p className="text-brand-navy-950/70 text-sm leading-relaxed">
-            Operating from Triveni Nagar, Gopalpura By Pass Road, Jaipur, our enterprise combines traditional Rajasthani wood carving heritage with strict quality control. From harvesting genuine aged sandalwood logs to precision lathe-turning 108 Japa beads and hand-carving royal elephant lattice sculptures, every stage is driven by artisanal devotion.
+          <p className="text-neutral-600 text-sm sm:text-[15px] font-sans leading-relaxed">
+            Operating from Triveni Nagar, Jaipur, our enterprise combines centuries of Rajasthani wood carving heritage with stringent botanical authenticity. From acquiring matured high-oil sandalwood logs to precision lathe-turning 108 Japa malas and hand-carving royal undercut lattice elephants, every artifact undergoes master artisanal curation.
           </p>
 
-          <div className="bg-brand-sandalwood-100/80 border border-brand-sandalwood-300 p-6 rounded-2xl space-y-2 wood-card-shadow">
-            <h4 className="font-serif font-bold text-brand-navy-900 text-base">Ghanshyam Agrawal</h4>
-            <p className="font-cinzel text-xs text-brand-gold-700 font-semibold uppercase tracking-wider">Proprietor & Master Artisan Director</p>
-            <p className="text-xs text-brand-navy-950/70 italic leading-relaxed">
-              &ldquo;Our mission is to bring sacred, genuine Mysuru sandalwood artifacts to spiritual seekers and art connoisseurs across the globe with transparent pricing and uncompromised authenticity.&rdquo;
+          <div className="bg-[#F6F5F2] border border-neutral-200/80 p-6 rounded-2xl space-y-2">
+            <h4 className="font-serif font-bold text-[#0B3C84] text-base">Ghanshyam Agrawal</h4>
+            <p className="font-cinzel text-[11px] text-[#B3873E] font-semibold uppercase tracking-wider">
+              Proprietor & Master Artisan Director
+            </p>
+            <p className="text-xs sm:text-sm text-neutral-600 italic font-sans leading-relaxed pt-1">
+              &ldquo;Our mission is to bring sacred, genuine Mysuru sandalwood artifacts to spiritual seekers and wholesale connoisseurs across the globe with total transparency, botanical purity, and honest pricing.&rdquo;
             </p>
           </div>
         </div>
 
-        <div className="w-full h-96 rounded-3xl overflow-hidden wood-card-shadow border-4 border-white bg-brand-sandalwood-200">
+        {/* Clean Studio Workshop Image Frame */}
+        <div className="relative w-full aspect-[4/5] bg-[#F6F5F2] rounded-2xl overflow-hidden shadow-sm">
           <img
             src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80"
-            alt="Ghanshyam Agrawal Sandalwood Workshop"
-            className="w-full h-full object-cover"
+            alt="Riddhi Siddhi Sandalwood Workshop and Artisans"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       </section>
 
-      {/* Vision & Mission */}
-      <section className="bg-brand-sandalwood-100/60 py-16 border-y border-brand-sandalwood-200">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-3xl border border-brand-sandalwood-200 wood-card-shadow space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-brand-navy-950 text-brand-gold-400 flex items-center justify-center shadow-md">
-              <Eye className="w-6 h-6" />
-            </div>
-            <h3 className="font-serif font-bold text-2xl text-brand-navy-900">Our Vision</h3>
-            <p className="text-sm text-brand-navy-950/75 leading-relaxed">
-              To be the globally recognized benchmark for genuine Indian sandalwood craftsmanship, expanding the reach of Jaipuri art while preserving ancient wood carving traditions and ethical sourcing.
-            </p>
+      {/* Vision & Mission Minimalist Pillars */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <div className="bg-white p-8 rounded-2xl border border-neutral-200/80 shadow-sm space-y-4 hover:border-[#0B3C84] transition-colors">
+          <div className="w-11 h-11 rounded-xl bg-[#0B3C84] text-white flex items-center justify-center shadow-sm">
+            <Eye className="w-5 h-5" />
           </div>
+          <h3 className="font-serif text-xl sm:text-2xl text-neutral-900 font-normal">Our Vision</h3>
+          <p className="text-sm text-neutral-600 font-sans leading-relaxed">
+            To be the globally recognized benchmark for genuine Indian sandalwood craftsmanship, elevating Rajasthani heritage woodworking while maintaining strict sustainability and ethical sourcing.
+          </p>
+        </div>
 
-          <div className="bg-white p-8 rounded-3xl border border-brand-sandalwood-200 wood-card-shadow space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-brand-navy-950 text-brand-gold-400 flex items-center justify-center shadow-md">
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <h3 className="font-serif font-bold text-2xl text-brand-navy-900">Our Mission</h3>
-            <p className="text-sm text-brand-navy-950/75 leading-relaxed">
-              To provide wholesale buyers, temples, exporters, and individual collectors with 100% verified sandalwood malas, statues, and beads with guaranteed aroma, fine finish, and prompt export fulfillment.
-            </p>
+        <div className="bg-white p-8 rounded-2xl border border-neutral-200/80 shadow-sm space-y-4 hover:border-[#0B3C84] transition-colors">
+          <div className="w-11 h-11 rounded-xl bg-[#0B3C84] text-white flex items-center justify-center shadow-sm">
+            <Sparkles className="w-5 h-5" />
           </div>
+          <h3 className="font-serif text-xl sm:text-2xl text-neutral-900 font-normal">Our Mission</h3>
+          <p className="text-sm text-neutral-600 font-sans leading-relaxed">
+            To deliver verified 100% natural sandalwood malas, sculptures, and calibrated loose beads with persistent natural aroma, flawless finish, and prompt wholesale fulfillment worldwide.
+          </p>
         </div>
       </section>
 
-      {/* Company Facts Panel */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 space-y-6">
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-brand-navy-900 text-center">
-          Company Facts & Credentials
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div className="bg-brand-navy-950 text-white p-4 rounded-2xl text-center space-y-1 border border-brand-gold-500/20 shadow-md">
-            <span className="font-cinzel text-[10px] text-brand-gold-400 block uppercase tracking-wider">Nature of Business</span>
-            <span className="font-bold text-sm block">Manufacturer & Exporter</span>
+      {/* Company Credentials Metadata Grid */}
+      <section className="space-y-6">
+        <div className="text-center space-y-1">
+          <span className="font-cinzel text-xs uppercase tracking-wider text-[#B3873E] font-semibold">
+            Institutional Verification
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl text-[#0B3C84] font-normal">
+            Company Facts & Credentials
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div className="bg-white p-4 rounded-xl text-center space-y-1 border border-neutral-200/80 shadow-sm">
+            <span className="font-cinzel text-[10px] text-[#0B3C84] block uppercase tracking-wider font-semibold">Business Type</span>
+            <span className="font-sans font-medium text-xs sm:text-sm text-neutral-900 block">Manufacturer & Exporter</span>
           </div>
-          <div className="bg-brand-navy-950 text-white p-4 rounded-2xl text-center space-y-1 border border-brand-gold-500/20 shadow-md">
-            <span className="font-cinzel text-[10px] text-brand-gold-400 block uppercase tracking-wider">Location</span>
-            <span className="font-bold text-sm block">Jaipur, Rajasthan</span>
+          <div className="bg-white p-4 rounded-xl text-center space-y-1 border border-neutral-200/80 shadow-sm">
+            <span className="font-cinzel text-[10px] text-[#0B3C84] block uppercase tracking-wider font-semibold">Origin Location</span>
+            <span className="font-sans font-medium text-xs sm:text-sm text-neutral-900 block">Jaipur, Rajasthan</span>
           </div>
-          <div className="bg-brand-navy-950 text-white p-4 rounded-2xl text-center space-y-1 border border-brand-gold-500/20 shadow-md">
-            <span className="font-cinzel text-[10px] text-brand-gold-400 block uppercase tracking-wider">GST Number</span>
-            <span className="font-mono text-xs block text-brand-gold-300 font-bold">08ADOPA9061E1ZK</span>
+          <div className="bg-white p-4 rounded-xl text-center space-y-1 border border-neutral-200/80 shadow-sm">
+            <span className="font-cinzel text-[10px] text-[#0B3C84] block uppercase tracking-wider font-semibold">GST Registration</span>
+            <span className="font-mono text-xs text-neutral-900 font-bold block">08ADOPA9061E1ZK</span>
           </div>
-          <div className="bg-brand-navy-950 text-white p-4 rounded-2xl text-center space-y-1 border border-brand-gold-500/20 shadow-md">
-            <span className="font-cinzel text-[10px] text-brand-gold-400 block uppercase tracking-wider">Primary Wood</span>
-            <span className="font-bold text-sm block">Indian Mysuru Sandalwood</span>
+          <div className="bg-white p-4 rounded-xl text-center space-y-1 border border-neutral-200/80 shadow-sm">
+            <span className="font-cinzel text-[10px] text-[#0B3C84] block uppercase tracking-wider font-semibold">Primary Wood</span>
+            <span className="font-sans font-medium text-xs sm:text-sm text-neutral-900 block">Mysuru Santalum Album</span>
           </div>
-          <div className="bg-brand-navy-950 text-white p-4 rounded-2xl text-center space-y-1 border border-brand-gold-500/20 shadow-md">
-            <span className="font-cinzel text-[10px] text-brand-gold-400 block uppercase tracking-wider">Bead Sizes</span>
-            <span className="font-bold text-sm block">4mm to 22mm</span>
+          <div className="bg-white p-4 rounded-xl text-center space-y-1 border border-neutral-200/80 shadow-sm">
+            <span className="font-cinzel text-[10px] text-[#0B3C84] block uppercase tracking-wider font-semibold">Calibrated Sizes</span>
+            <span className="font-sans font-medium text-xs sm:text-sm text-neutral-900 block">4mm to 22mm Beads</span>
           </div>
-          <div className="bg-brand-navy-950 text-white p-4 rounded-2xl text-center space-y-1 border border-brand-gold-500/20 shadow-md">
-            <span className="font-cinzel text-[10px] text-brand-gold-400 block uppercase tracking-wider">Export Reach</span>
-            <span className="font-bold text-sm block">Global Dispatch</span>
+          <div className="bg-white p-4 rounded-xl text-center space-y-1 border border-neutral-200/80 shadow-sm">
+            <span className="font-cinzel text-[10px] text-[#0B3C84] block uppercase tracking-wider font-semibold">Logistics</span>
+            <span className="font-sans font-medium text-xs sm:text-sm text-neutral-900 block">Worldwide Dispatch</span>
           </div>
         </div>
       </section>
 
       {/* Real vs Fake Sandalwood Educational Guide */}
-      <section id="how-to-test" className="max-w-7xl mx-auto px-4 md:px-8 space-y-10">
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-600">Buyer Protection & Education</span>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-navy-900">
+      <section id="how-to-test" className="space-y-8 pt-4">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
+          <span className="font-cinzel text-xs uppercase tracking-wider font-semibold text-[#B3873E]">
+            Buyer Protection & Authenticity
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0B3C84] font-normal">
             Real vs Fake Sandalwood: How to Test Authenticity
           </h2>
-          <p className="text-sm text-brand-navy-950/70">
-            Due to the high market value of genuine Indian Sandalwood (Santalum album), counterfeit synthetic scented beads are prevalent. Here is our official artisan guide to testing real sandalwood:
+          <p className="text-xs sm:text-sm text-neutral-600 font-sans">
+            Genuine Indian Sandalwood (*Santalum album*) possesses distinctive natural characteristics that distinguish it from synthetic imitations:
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white border border-brand-sandalwood-200 rounded-3xl p-6 wood-card-shadow space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-navy-950 text-brand-gold-400 font-cinzel flex items-center justify-center font-bold">1</div>
-            <h3 className="font-serif font-bold text-lg text-brand-navy-900">Natural Persistent Aroma</h3>
-            <p className="text-xs text-brand-navy-950/70 leading-relaxed">
-              Genuine sandalwood scent comes from natural essential oil inside the wood fibers. It does not fade quickly. Synthetic beads lose scent in days, whereas genuine beads retain aroma for decades.
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#F6F5F2] border border-neutral-200/80 rounded-2xl p-6 space-y-3">
+            <div className="w-8 h-8 rounded-lg bg-[#0B3C84] text-white font-cinzel flex items-center justify-center text-xs font-bold">
+              1
+            </div>
+            <h3 className="font-serif text-lg text-neutral-900 font-medium">Natural Persistent Aroma</h3>
+            <p className="text-xs sm:text-[13px] text-neutral-600 font-sans leading-relaxed">
+              Genuine sandalwood scent originates from natural essential oils infused deep within the heartwood fibers. It never evaporates completely and endures for decades, unlike synthetically fragranced imitations.
             </p>
           </div>
 
-          <div className="bg-white border border-brand-sandalwood-200 rounded-3xl p-6 wood-card-shadow space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-navy-950 text-brand-gold-400 font-cinzel flex items-center justify-center font-bold">2</div>
-            <h3 className="font-serif font-bold text-lg text-brand-navy-900">Sinking / Grain Density Test</h3>
-            <p className="text-xs text-brand-navy-950/70 leading-relaxed">
-              Mature heartwood of Indian Sandalwood is dense and heavy. When placed in water, genuine high-grade sandalwood sinks or hovers near the bottom, unlike light softwood imitations.
+          <div className="bg-[#F6F5F2] border border-neutral-200/80 rounded-2xl p-6 space-y-3">
+            <div className="w-8 h-8 rounded-lg bg-[#0B3C84] text-white font-cinzel flex items-center justify-center text-xs font-bold">
+              2
+            </div>
+            <h3 className="font-serif text-lg text-neutral-900 font-medium">Grain Density & Water Test</h3>
+            <p className="text-xs sm:text-[13px] text-neutral-600 font-sans leading-relaxed">
+              Mature heartwood of Indian Sandalwood is dense, heavy, and tightly grained. When immersed in water, genuine high-grade beads submerge toward the bottom, in contrast to light porous softwoods.
             </p>
           </div>
 
-          <div className="bg-white border border-brand-sandalwood-200 rounded-3xl p-6 wood-card-shadow space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-navy-950 text-brand-gold-400 font-cinzel flex items-center justify-center font-bold">3</div>
-            <h3 className="font-serif font-bold text-lg text-brand-navy-900">Friction Warmth Activation</h3>
-            <p className="text-xs text-brand-navy-950/70 leading-relaxed">
-              Rubbing genuine sandalwood beads vigorously between your palms generates mild warmth which releases a sweet, woody, soothing fragrance.
+          <div className="bg-[#F6F5F2] border border-neutral-200/80 rounded-2xl p-6 space-y-3">
+            <div className="w-8 h-8 rounded-lg bg-[#0B3C84] text-white font-cinzel flex items-center justify-center text-xs font-bold">
+              3
+            </div>
+            <h3 className="font-serif text-lg text-neutral-900 font-medium">Friction Warmth Activation</h3>
+            <p className="text-xs sm:text-[13px] text-neutral-600 font-sans leading-relaxed">
+              Vigorously rubbing genuine sandalwood beads between palms creates mild warmth that instantly releases a sweet, warm, woody balsamic fragrance without artificial undertones.
             </p>
           </div>
         </div>
       </section>
 
       {/* CTA Box */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="bg-brand-navy-950 text-white rounded-3xl p-8 md:p-12 text-center space-y-6 border border-brand-gold-500/20 shadow-2xl">
-          <h2 className="font-serif text-3xl font-bold text-white">
-            Need Custom Sandalwood Carvings or Bulk Mala Orders?
-          </h2>
-          <p className="text-brand-gold-100/80 max-w-xl mx-auto text-sm">
-            Contact Ghanshyam Agrawal directly or submit your custom specifications with reference images online.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <Link
-              href="/contact"
-              className="bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-navy-950 font-cinzel font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full hover:brightness-110 shadow-lg transition-all"
-            >
-              Submit Custom Enquiry
-            </Link>
-          </div>
+      <section className="bg-[#F6F5F2] border border-neutral-200/80 rounded-3xl p-8 sm:p-12 text-center space-y-6">
+        <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#0B3C84] font-normal">
+          Custom Carvings & Wholesale Enquiries
+        </h2>
+        <p className="text-neutral-600 max-w-xl mx-auto text-xs sm:text-sm font-sans">
+          Contact our master atelier directly for wholesale bulk rates, custom deity sculptures, or specific mala requirements.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4 pt-2">
+          <Link
+            href="/contact"
+            className="bg-[#0B3C84] hover:bg-[#082C62] text-white font-cinzel font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full transition-colors shadow-sm flex items-center gap-2"
+          >
+            <Send className="w-4 h-4" /> Submit Custom Enquiry
+          </Link>
+          <a
+            href="tel:+917942625339"
+            className="bg-white hover:bg-neutral-50 text-[#0B3C84] border border-neutral-300 font-cinzel font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full transition-colors shadow-sm flex items-center gap-2"
+          >
+            <Phone className="w-4 h-4 text-[#B3873E]" /> Call Us Directly
+          </a>
         </div>
       </section>
     </div>

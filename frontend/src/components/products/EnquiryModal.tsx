@@ -108,7 +108,7 @@ export default function EnquiryModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white border border-black/10 w-full max-w-xl rounded-3xl p-6 md:p-8 shadow-2xl relative text-[#19110B] max-h-[92vh] overflow-y-auto">
+      <div className="bg-white border border-black/10 w-full max-w-xl rounded-3xl p-5 sm:p-7 md:p-8 shadow-2xl relative text-[#19110B] max-h-[90vh] overflow-y-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-black/50 hover:text-black p-1.5 rounded-full hover:bg-black/5 transition-colors cursor-pointer"
@@ -264,7 +264,7 @@ export default function EnquiryModal({
                   placeholder="Requirement details, quantity, custom engraving..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full bg-white border border-black/15 rounded-xl p-3 text-black placeholder:text-black/35 focus:border-black focus:outline-none leading-relaxed text-xs"
+                  className="w-full bg-white border border-black/15 rounded-xl p-3 text-black placeholder:text-black/35 focus:border-black focus:outline-none leading-relaxed text-xs resize-none no-scrollbar"
                 />
               </div>
 
