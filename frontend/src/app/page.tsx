@@ -10,50 +10,50 @@ import EnquiryModal from '@/components/products/EnquiryModal';
 const DEFAULT_BANNERS: HeroBanner[] = [
   {
     id: 1,
-    heading: 'Royal Sandalwood Handicrafts & Heritage Malas',
-    subheading: 'Jaipur’s premier manufacturer & exporter of certified pure Mysuru Chandan artifacts, Japa malas, handcarved elephants, and loose beads.',
-    image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1600',
-    cta_label: 'Explore Catalog',
-    cta_link: '/products',
+    heading: 'Authentic Mysore Sandalwood Handicrafts & Malas',
+    subheading: 'Jaipur’s leading manufacturer & exporter of certified pure Chandan artifacts, Japa malas, handcarved elephants & beads.',
+    image_url: '/static/uploads/banners/hero_banner_1_template_photo_2.jpg',
+    cta_label: 'Explore Sandalwood Catalog',
+    cta_link: '/products/sandalwood-beads',
     display_order: 1,
     is_active: true,
   },
   {
     id: 2,
-    heading: 'Handcarved Sandalwood Elephants & Bespoke Artifacts',
-    subheading: 'Masterfully sculpted net-cut jaali elephants, temple deities, and luxury bespoke handicraft pieces crafted by Jaipur master artisans.',
-    image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=1600',
-    cta_label: 'View Masterpieces',
-    cta_link: '/products/handcarved-elephants',
+    heading: 'Royal Handcrafted Sandalwood Rosaries & Japa Malas',
+    subheading: '108 beads natural aromatic malas meticulously hand-strung for meditation, temple rituals, and spiritual chanting.',
+    image_url: '/static/uploads/banners/hero_banner_2_template_photo_3.jpg',
+    cta_label: 'Browse Rosary Malas',
+    cta_link: '/products/sandalwood-rosary',
     display_order: 2,
     is_active: true,
   },
   {
     id: 3,
-    heading: '108 Beads Pure Sandalwood Japa Malas',
-    subheading: 'Naturally fragrant, calibrated 6mm–12mm beads strung for meditation, spiritual practice, and wholesale export with certificate of authenticity.',
-    image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1600',
-    cta_label: 'Browse Malas',
-    cta_link: '/products/sandalwood-japa-mala',
+    heading: 'Exquisite Sandalwood Carved Bracelets & Jewelry',
+    subheading: 'Artisanal wrist malas, intricately carved deity charms, and luxury aromatic wooden jewelry crafted in Rajasthan.',
+    image_url: '/static/uploads/banners/hero_banner_3_template_photo_4.jpg',
+    cta_label: 'View Jewelry Collection',
+    cta_link: '/products/crafted-sandalwood-jewelery',
     display_order: 3,
     is_active: true,
   },
 ];
 
 const DEFAULT_CATEGORIES: Category[] = [
-  { id: 1, name: 'Sandalwood Japa Mala', slug: 'sandalwood-japa-mala', description: 'Certified 108 beads pure chandan rosaries for meditation & prayer', image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600', display_order: 1 },
-  { id: 2, name: 'Sandalwood Beads Mala', slug: 'sandalwood-beads-mala', description: 'Handcrafted spiritual necklaces and decorative malas', image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=600', display_order: 2 },
-  { id: 3, name: 'Handcarved Elephants', slug: 'handcarved-elephants', description: 'Intricate Jaali net-cut elephants and heritage figurines', image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=600', display_order: 3 },
-  { id: 4, name: 'Loose Sandalwood Beads', slug: 'loose-sandalwood-beads', description: 'Calibrated beads from 6mm to 20mm with natural fragrant oil content', image_url: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=600', display_order: 4 },
-  { id: 5, name: 'Designer Sandalwood Bracelets', slug: 'designer-sandalwood-bracelets', description: 'Stretchable wrist malas and silver/gold capped luxury jewelry', image_url: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600', display_order: 5 },
-  { id: 6, name: 'Muslim Tashbih Misbahah', slug: 'muslim-tashbih-misbahah', description: 'Authentic 33 & 99 beads islamic prayer beads exported globally', image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600', display_order: 6 },
+  { id: 1, name: 'Sandalwood Beads', slug: 'sandalwood-beads', description: 'Certified pure Mysore sandalwood loose and rosary beads with natural essential aroma', image_url: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg', display_order: 1 },
+  { id: 2, name: 'Sandalwood Rosary', slug: 'sandalwood-rosary', description: '108 beads and custom prayer malas hand-turned for spiritual chanting and meditation', image_url: '/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg', display_order: 2 },
+  { id: 3, name: 'Crafted Sandalwood Jewelery', slug: 'crafted-sandalwood-jewelery', description: 'Intricate carved deity pendants, beads necklaces and artisanal jewelry', image_url: '/static/uploads/products/108-mala-bead-sandalwood-mala-beads-mala-necklace_108-mala-bead-sandalwood-mala-beads-mala-necklace.jpg', display_order: 3 },
+  { id: 4, name: 'Sandalwood Beads Semi Finished', slug: 'sandalwood-beads-semi-finished', description: 'Unpolished and semi-finished raw sandalwood beads for craftsmen & global export', image_url: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg', display_order: 4 },
+  { id: 5, name: 'Sandalwood Bracelet', slug: 'sandalwood-bracelet', description: 'Stretchable wrist malas, dhikr bracelets, and luxury designer wooden cuffs', image_url: '/static/uploads/products/15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong_0_20-mm-sandalwood-semi-finished-beads-500x500.png', display_order: 5 },
+  { id: 6, name: 'Whitewood Handicrafts', slug: 'whitewood-handicrafts', description: 'Traditional Rajasthani wood sculptures, decorative pots, jaali elephants and artifacts', image_url: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg', display_order: 6 },
 ];
 
 const DEFAULT_PRODUCTS: Product[] = [
-  { id: 1, title: 'Authentic 108 Beads Mysore Sandalwood Japa Mala (8mm)', slug: 'authentic-108-beads-mysore-sandalwood-japa-mala-8mm', short_description: 'Certified pure Mysore Sandalwood Japa Mala with natural long-lasting aroma. Perfect for meditation and spiritual practice.', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800'], moq: '10 Pieces', is_featured: true, category_id: 1 },
-  { id: 2, title: 'Handcarved Sandalwood Undercut Net Jaali Elephant (6 Inch)', slug: 'handcarved-sandalwood-undercut-net-jaali-elephant-6-inch', short_description: 'Masterpiece single-piece undercut carving containing a baby elephant inside. Jaipur royal heritage artifact.', images: ['https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=800'], moq: '2 Pieces', is_featured: true, category_id: 3 },
-  { id: 3, title: 'Calibrated Loose Sandalwood Beads (10mm, Grade A)', slug: 'calibrated-loose-sandalwood-beads-10mm-grade-a', short_description: 'Uniform spherical sandalwood beads with high natural essential oil content. Ideal for luxury jewelry crafting.', images: ['https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=800'], moq: '500 Pieces', is_featured: true, category_id: 4 },
-  { id: 4, title: 'Pure Sandalwood Islamic Tashbih 99 Beads (8mm)', slug: 'pure-sandalwood-islamic-tashbih-99-beads-8mm', short_description: 'Handcrafted 99-bead Islamic prayer rosary with traditional imame and dividers, carved from pure fragrant sandalwood.', images: ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800'], moq: '25 Pieces', is_featured: true, category_id: 6 },
+  { id: 1, title: '10 mm Indian Sandalwood Mala', slug: '10-mm-indian-sandalwood-mala', short_description: 'Certified pure Mysore Sandalwood Japa Mala with natural long-lasting aroma. Perfect for meditation and spiritual practice.', images: ['/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'], moq: '10 Pieces', is_featured: true, category_id: 1 },
+  { id: 2, title: '10 mm Sandalwood Tasbih Rosary', slug: '10-mm-sandalwood-tasbih-supplier-in-uae', short_description: 'Natural aromatic chandan rosary mala hand-strung by Jaipur artisans with authentic sandalwood fragrance.', images: ['/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg'], moq: '10 Pieces', is_featured: true, category_id: 2 },
+  { id: 3, title: '10 mm Sandalwood Hand Chain', slug: '10-mm-sandalwood-hand-chain-in-china', short_description: 'Exquisite sandalwood hand chain and wrist mala with natural smooth finish and soothing essential aroma.', images: ['/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png'], moq: '10 Pieces', is_featured: true, category_id: 17 },
+  { id: 4, title: 'Elephant Wood Carving Sculpture', slug: 'elephant-carving-statue', short_description: 'Masterfully hand-carved traditional wooden royal elephant created by Jaipur royal handicraft artisans.', images: ['/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg'], moq: '1 Piece', is_featured: true, category_id: 15 },
 ];
 
 interface SubCategoryItem {
@@ -69,6 +69,7 @@ interface ParentUniverse {
   title: string;
   subtitle: string;
   description: string;
+  coverImage: string;
   heroImage: string;
   exploreLink: string;
   subcategories: SubCategoryItem[];
@@ -80,150 +81,154 @@ const PARENT_UNIVERSES: ParentUniverse[] = [
     title: 'Sacred Malas & Rosaries',
     subtitle: 'SPIRITUAL CHANTING & DEVOTIONAL JEWELRY',
     description: 'Certified 108 pure Mysuru Sandalwood Japa malas, hand-strung spiritual necklaces, and authentic Islamic Tashbih prayer beads.',
-    heroImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1600',
-    exploreLink: '/products/sandalwood-japa-mala',
+    coverImage: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
+    heroImage: '/static/uploads/banners/hero_banner_2_template_photo_3.jpg',
+    exploreLink: '/products/sandalwood-rosary',
     subcategories: [
       {
         name: '108 Beads Pure Japa Mala',
-        slug: 'sandalwood-japa-mala',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600',
+        slug: 'sandalwood-rosary',
+        image: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
         tagline: 'Traditional Chanting Rosary (6mm–12mm)',
         specs: 'Certified 100% Mysuru Chandan'
       },
       {
-        name: 'Sandalwood Beads Mala',
-        slug: 'sandalwood-beads-mala',
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=600',
+        name: 'Sandalwood Beads',
+        slug: 'sandalwood-beads',
+        image: '/static/uploads/products/10-mm-sandalwood-beads-unpolished_0_sandalwood-beads-unpolished-500x500.jpg',
         tagline: 'Decorative & Temple Spiritual Necklaces',
-        specs: 'Handcrafted Silk Tassel Finish'
+        specs: 'Natural Essential Aroma'
       },
       {
-        name: 'Muslim Tashbih Misbahah',
-        slug: 'muslim-tashbih-misbahah',
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
+        name: 'Islamic Tasbih Beads',
+        slug: 'sandalwood-rosary',
+        image: '/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg',
         tagline: '33 & 99 Beads Islamic Prayer Rosary',
-        specs: 'Carved Imame & Custom Dividers'
+        specs: 'Hand-Turned Imame'
       },
       {
-        name: 'Compact Wrist Malas',
-        slug: 'designer-sandalwood-bracelets',
-        image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600',
-        tagline: '27 Beads Meditation Wrist Counters',
-        specs: 'Elastic & Adjustable Pull Threads'
+        name: 'Religious Sandalwood Jewelry',
+        slug: 'religious-sandalwood-jewellery',
+        image: '/static/uploads/products/religious-sandalwood-prayer-beads_0_religious-sandalwood-prayer-beads-500x500.jpg',
+        tagline: 'Amulets & Mantra Beads',
+        specs: 'Jaipur Master Knotting'
       }
     ]
   },
   {
     id: 'elephants',
-    title: 'Royal Handcarved Sculptures',
+    title: 'Royal Sculptures & Idols',
     subtitle: 'JAIPUR MASTER ARTISAN HERITAGE',
     description: 'Bespoke single-piece undercut net-jaali elephants, baby-inside-mother carvings, and sacred temple deities.',
-    heroImage: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=1600',
-    exploreLink: '/products/handcarved-elephants',
+    coverImage: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
+    heroImage: '/static/uploads/banners/hero_banner_5_template_photo_6.jpg',
+    exploreLink: '/products/sandalwood-religious-god-statues',
     subcategories: [
       {
-        name: 'Undercut Net Jaali Elephants',
-        slug: 'handcarved-elephants',
-        image: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Single Piece Baby Inside Masterpiece',
-        specs: '2 inch to 12 inch Carvings'
+        name: 'Deity God Statues',
+        slug: 'sandalwood-religious-god-statues',
+        image: '/static/uploads/products/hindu-god-idol-sandalwood-ganesha_0_hindu-god-idol-sandalwood-ganesha-500x500.jpg',
+        tagline: 'Ganesha & Divine Altar Statues',
+        specs: 'Solid Pure Sandalwood'
       },
       {
-        name: 'Solid Carved Royal Elephants',
-        slug: 'handcarved-elephants',
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Howdah Trunk-Up Royal Figurines',
-        specs: 'Antique Wax & Natural Polish'
+        name: 'Whitewood Handicrafts',
+        slug: 'whitewood-handicrafts',
+        image: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
+        tagline: 'Undercut Net Jaali Elephants',
+        specs: 'Single Piece Carving'
       },
       {
-        name: 'Temple Deities & Idols',
-        slug: 'handcarved-elephants',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Ganesha, Krishna & Divine Statues',
-        specs: 'Sacred Altar Carvings'
+        name: 'Religious Handicrafts',
+        slug: 'religious-handicraft-sandalwood',
+        image: '/static/uploads/products/aromatic-muslim-bead_Aromatic-Muslim-Bead.jpg',
+        tagline: 'Sacred Temple Puja Crafts',
+        specs: 'Master Artisanal Finish'
       },
       {
-        name: 'Heritage Wooden Artifacts',
-        slug: 'handcarved-elephants',
-        image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Boxes, Incense Stands & Decorative Art',
-        specs: 'Bespoke Royal Artifacts'
+        name: 'Royal Gift Items',
+        slug: 'sandalwood-gift-items',
+        image: '/static/uploads/products/mysore-sandal-beads-souvenirs-craft-japa-mala_0_mysore-sandal-beads-souvenirs-craft-japa-mala-500x500.jpg',
+        tagline: 'Heritage Boxes & Souvenirs',
+        specs: 'Luxury Presentation'
       }
     ]
   },
   {
     id: 'beads',
-    title: 'Loose Sandalwood Beads',
+    title: 'Loose Beads & Semi Finished Craft',
     subtitle: 'CALIBRATED JEWELRY COMPONENT SUPPLY',
     description: 'Precision spherical, cylindrical, and oval fragrant sandalwood beads from 4mm to 22mm for custom rosaries and luxury jewelry.',
-    heroImage: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=1600',
-    exploreLink: '/products/loose-sandalwood-beads',
+    coverImage: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-beads-500x500.jpg',
+    heroImage: '/static/uploads/banners/hero_banner_4_template_photo_5.jpg',
+    exploreLink: '/products/sandalwood-beads-semi-finished',
     subcategories: [
       {
-        name: 'Calibrated Round Beads (6mm–20mm)',
-        slug: 'loose-sandalwood-beads',
-        image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=600',
-        tagline: 'High Essential Oil Aroma Content',
-        specs: 'Wholesale Packs (500–10,000 pcs)'
+        name: 'Semi Finished Beads',
+        slug: 'sandalwood-beads-semi-finished',
+        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
+        tagline: 'Raw Unpolished Beads',
+        specs: 'Wholesale Export Packs'
       },
       {
-        name: 'Semi-Finished Raw Beads',
-        slug: 'loose-sandalwood-beads',
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Natural Unpolished Wood Texture',
-        specs: 'For Custom Artisans & Crafters'
+        name: 'Natural Brown Wooden Beads',
+        slug: 'natural-brown-wooden-beads',
+        image: '/static/uploads/products/brown-beads_Brown-Beads.jpg',
+        tagline: 'Rustic Dark & Golden Beads',
+        specs: 'Natural Wood Grain'
       },
       {
-        name: 'Cylindrical & Barrel Spacer Beads',
-        slug: 'loose-sandalwood-beads',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Mala Markers & Guru Bead Sets',
+        name: 'Wooden Beads',
+        slug: 'wooden-beads',
+        image: '/static/uploads/products/10-mm-sandalwood-beads-unpolished_0_sandalwood-beads-unpolished-500x500.jpg',
+        tagline: 'Hardwood & Rosewood Beads',
         specs: 'Precision Center-Drilled'
       },
       {
-        name: 'Aged Sandalwood Billets & Logs',
-        slug: 'loose-sandalwood-beads',
-        image: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Govt Certified Sourced Mysore Wood',
-        specs: '100% Genuine Heartwood'
+        name: 'Pure Sandalwood Products',
+        slug: 'sandalwood-product',
+        image: '/static/uploads/products/pure-sandalwood-prayer-beads_Pure-Sandalwood-Prayer-Beads.jpg',
+        tagline: 'Billets, Logs & Wood Craft',
+        specs: '100% Pure Santalum Album'
       }
     ]
   },
   {
     id: 'bracelets',
-    title: 'Designer Bracelets & Jewelry',
+    title: 'Designer Bracelets & Hand Chains',
     subtitle: 'CONTEMPORARY SPIRITUAL LUXURY',
-    description: 'Everyday fragrant wrist malas, silver capped statement bracelets, and protective sandalwood amulets.',
-    heroImage: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=1600',
-    exploreLink: '/products/designer-sandalwood-bracelets',
+    description: 'Everyday fragrant wrist malas, hand chains, carved charms, and protective sandalwood jewelry.',
+    coverImage: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
+    heroImage: '/static/uploads/banners/hero_banner_3_template_photo_4.jpg',
+    exploreLink: '/products/sandalwood-bracelet',
     subcategories: [
       {
-        name: 'Stretchable Wrist Malas',
-        slug: 'designer-sandalwood-bracelets',
-        image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Durable Elastic Fit (8mm & 10mm)',
+        name: 'Sandalwood Hand Chain',
+        slug: 'sandalwood-hand-chain',
+        image: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
+        tagline: 'Artisanal Wrist Mala Chain',
         specs: 'Unisex Daily Spiritual Wear'
       },
       {
-        name: 'Sterling Silver Capped Bracelets',
-        slug: 'designer-sandalwood-bracelets',
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
-        tagline: '925 Silver & Gold Accent Fittings',
-        specs: 'Luxury Export Grade'
+        name: 'Sandalwood Bracelets',
+        slug: 'sandalwood-bracelet',
+        image: '/static/uploads/products/15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong_0_20-mm-sandalwood-semi-finished-beads-500x500.png',
+        tagline: 'Tiger Sandalwood Wristlet',
+        specs: 'Elastic Stretch Fit'
       },
       {
-        name: 'Sacred Wooden Pendants',
-        slug: 'designer-sandalwood-bracelets',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Om, Gayatri & Protective Symbols',
-        specs: 'Hand-Engraved Sandalwood'
+        name: 'Carved Bracelets',
+        slug: 'sandalwood-carvings-bracelets',
+        image: '/static/uploads/products/10-mm-white-sandalwood-jap-mala-in-hong-kong_0_gemstone-mala-with-sandalwood-beads-500x500.jpg',
+        tagline: 'Embossed Motifs & Mantras',
+        specs: 'Master Engraved'
       },
       {
-        name: 'Luxury Gift Box Sets',
-        slug: 'designer-sandalwood-bracelets',
-        image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80&w=600',
-        tagline: 'Mala & Bracelet Meditation Sets',
-        specs: 'Velvet Presentation Box'
+        name: 'Crafted Jewelry',
+        slug: 'crafted-sandalwood-jewelery',
+        image: '/static/uploads/products/108-mala-bead-sandalwood-mala-beads-mala-necklace_108-mala-bead-sandalwood-mala-beads-mala-necklace.jpg',
+        tagline: 'Pendants & Statement Pieces',
+        specs: 'Jaipur Art Studio'
       }
     ]
   }
@@ -388,11 +393,11 @@ export default function HomePage() {
                 className="group flex flex-col cursor-pointer"
               >
                 {/* Full Frame Studio Photo Container */}
-                <div className="w-full aspect-[3/4] bg-[#F6F5F2] overflow-hidden relative mb-4 rounded-none border-none">
+                <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden relative mb-4 rounded-none border-none flex items-center justify-center p-3 sm:p-4">
                   <img
-                    src={universe.heroImage}
+                    src={universe.coverImage || universe.heroImage}
                     alt={universe.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
                 </div>
@@ -475,11 +480,11 @@ export default function HomePage() {
                     className="group flex flex-col cursor-pointer"
                   >
                     {/* Subcategory Studio Card Frame */}
-                    <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden mb-3 relative rounded-none border-none">
+                    <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden mb-3 relative rounded-none border-none flex items-center justify-center p-3 sm:p-4">
                       <img
                         src={sub.image}
                         alt={sub.name}
-                        className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-contain object-center group-hover:scale-106 transition-transform duration-700 ease-out select-none"
                       />
                       <span className="absolute top-2.5 left-2.5 bg-white/95 text-black font-cinzel text-[8px] sm:text-[9px] font-bold px-2 py-0.5 tracking-wider shadow-sm">
                         {sub.specs}
@@ -528,11 +533,11 @@ export default function HomePage() {
                   className="bg-white rounded-none border-none flex flex-col justify-between group"
                 >
                   <Link href={`/products/${catSlug}/${p.slug}`} className="block">
-                    <div className="w-full aspect-[4/5] bg-[#F6F5F2] relative overflow-hidden rounded-none border-none">
+                    <div className="w-full aspect-[4/5] bg-[#F6F5F2] relative overflow-hidden rounded-none border-none flex items-center justify-center p-3 sm:p-4">
                       <img
-                        src={getMediaUrl(p.images[0]) || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80'}
+                        src={getMediaUrl(p.images[0]) || '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'}
                         alt={p.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none"
                       />
                       <span className="absolute top-3 left-3 bg-white/95 text-black font-cinzel text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider shadow-sm">
                         MOQ: {p.moq}

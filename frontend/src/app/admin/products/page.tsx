@@ -254,7 +254,7 @@ export default function AdminProductsPage() {
                 <td className="py-3.5 px-4">
                   <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-brand-gold-500/30 bg-brand-navy-950">
                     <img
-                      src={getMediaUrl(p.images[0]) || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=200&q=80'}
+                      src={getMediaUrl(p.images[0]) || '/static/uploads/products/sandalwood-japa-mala_sandalwood-japa-mala.jpg'}
                       alt=""
                       className="w-full h-full object-cover"
                     />

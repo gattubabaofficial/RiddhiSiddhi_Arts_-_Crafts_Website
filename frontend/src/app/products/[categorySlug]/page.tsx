@@ -144,12 +144,12 @@ export default function CategoryListingPage() {
             return (
               <div key={p.id} className="group flex flex-col cursor-pointer select-none">
                 {/* Clean Studio Photo Frame Touching Edge-to-Edge with Zero Gap */}
-                <div className="relative w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden">
-                  <Link href={`/products/${categorySlug}/${p.slug}`} className="block w-full h-full">
+                <div className="relative w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden flex items-center justify-center p-3 sm:p-4">
+                  <Link href={`/products/${categorySlug}/${p.slug}`} className="w-full h-full flex items-center justify-center">
                     <img
-                      src={getMediaUrl(p.images[0]) || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80'}
+                      src={getMediaUrl(p.images[0]) || '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'}
                       alt={p.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                      className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none"
                     />
                   </Link>
 

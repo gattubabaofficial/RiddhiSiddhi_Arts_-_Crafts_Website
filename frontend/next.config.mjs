@@ -24,6 +24,14 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: '*.imimg.com' },
+      { protocol: 'https', hostname: '5.imimg.com' },
+      { protocol: 'https', hostname: '3.imimg.com' },
+      { protocol: 'https', hostname: '4.imimg.com' },
+      { protocol: 'https', hostname: '2.imimg.com' },
+      { protocol: 'https', hostname: 'cpimg.tistatic.com' },
+      { protocol: 'https', hostname: 'tiimg.tistatic.com' },
+      { protocol: 'https', hostname: 'i.ytimg.com' },
       { protocol: 'http', hostname: 'localhost' },
       { protocol: 'http', hostname: '127.0.0.1' },
     ],

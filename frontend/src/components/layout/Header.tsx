@@ -26,59 +26,59 @@ const CATEGORIES_SUBTREE: MenuItemNode[] = [
   {
     id: 'malas',
     title: 'Sacred Malas & Rosaries',
-    href: '/products/sandalwood-japa-mala',
+    href: '/products/sandalwood-rosary',
     tagline: 'Spiritual Chanting & Devotional Jewelry',
     visualCards: [
       {
         title: 'Authentic 108 Beads Japa Mala',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600',
-        link: '/products/sandalwood-japa-mala'
+        image: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
+        link: '/products/sandalwood-rosary'
       },
       {
-        title: 'Traditional Islamic Tashbih 99',
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
-        link: '/products/muslim-tashbih-misbahah'
+        title: 'Traditional Islamic Tashbih',
+        image: '/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg',
+        link: '/products/sandalwood-rosary'
       },
       {
         title: 'Temple Pooja Beads Mala',
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=600',
-        link: '/products/sandalwood-beads-mala'
+        image: '/static/uploads/products/10-mm-sandalwood-beads-unpolished_0_sandalwood-beads-unpolished-500x500.jpg',
+        link: '/products/sandalwood-beads'
       },
       {
-        title: 'Meditation Wrist Malas',
-        image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600',
-        link: '/products/designer-sandalwood-bracelets'
+        title: 'Aromatic Prayer Rosary',
+        image: '/static/uploads/products/religious-sandalwood-prayer-beads_0_religious-sandalwood-prayer-beads-500x500.jpg',
+        link: '/products/religious-sandalwood-jewellery'
       }
     ],
     children: [
       {
         id: 'mala-108',
         title: '108 Beads Pure Japa Mala',
-        href: '/products/sandalwood-japa-mala',
+        href: '/products/sandalwood-rosary',
         tagline: 'Certified 100% Mysuru Chandan'
       },
       {
         id: 'tashbih',
         title: 'Muslim Tashbih & Misbahah',
-        href: '/products/muslim-tashbih-misbahah',
+        href: '/products/sandalwood-rosary',
         tagline: '33 & 99 Beads Islamic Prayer Beads'
       },
       {
         id: 'mala-garlands',
         title: 'Sandalwood Beads Mala & Garlands',
-        href: '/products/sandalwood-beads-mala',
+        href: '/products/sandalwood-rosary',
         tagline: 'Temple Pooja & Silk Tassel Malas'
       },
       {
         id: 'wrist-malas',
         title: 'Compact Meditation Wristlets',
-        href: '/products/designer-sandalwood-bracelets',
+        href: '/products/sandalwood-bracelet',
         tagline: '27 Beads Meditation Counters'
       },
       {
         id: 'all-malas',
         title: 'Explore All Sacred Malas',
-        href: '/products/sandalwood-japa-mala',
+        href: '/products/sandalwood-rosary',
         tagline: 'View Complete Mala Collection'
       }
     ]
@@ -86,59 +86,59 @@ const CATEGORIES_SUBTREE: MenuItemNode[] = [
   {
     id: 'sculptures',
     title: 'Royal Handcarved Sculptures',
-    href: '/products/handcarved-elephants',
+    href: '/products/sandalwood-religious-god-statues',
     tagline: 'Jaipur Master Artisan Heritage',
     visualCards: [
       {
-        title: 'Single-Piece Undercut Net Elephant',
-        image: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=600',
-        link: '/products/handcarved-elephants'
+        title: 'Temple Deity God Statues',
+        image: '/static/uploads/products/hindu-god-idol-sandalwood-ganesha_0_hindu-god-idol-sandalwood-ganesha-500x500.jpg',
+        link: '/products/sandalwood-religious-god-statues'
       },
       {
-        title: 'Howdah Trunk-Up Royal Elephant',
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
-        link: '/products/handcarved-elephants'
+        title: 'Undercut Net Jaali Elephant',
+        image: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
+        link: '/products/whitewood-handicrafts'
       },
       {
-        title: 'Temple Deities & Statues',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
-        link: '/products/handcarved-elephants'
+        title: 'Royal Heritage Gift Items',
+        image: '/static/uploads/products/mysore-sandal-beads-souvenirs-craft-japa-mala_0_mysore-sandal-beads-souvenirs-craft-japa-mala-500x500.jpg',
+        link: '/products/sandalwood-gift-items'
       },
       {
-        title: 'Heritage Artifacts & Boxes',
-        image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80&w=600',
-        link: '/products/handcarved-elephants'
+        title: 'Religious Handicrafts',
+        image: '/static/uploads/products/aromatic-muslim-bead_Aromatic-Muslim-Bead.jpg',
+        link: '/products/religious-handicraft-sandalwood'
       }
     ],
     children: [
       {
         id: 'net-elephants',
         title: 'Undercut Net Jaali Elephants',
-        href: '/products/handcarved-elephants',
+        href: '/products/whitewood-handicrafts',
         tagline: 'Single Piece Baby-Inside Masterpiece'
       },
       {
         id: 'solid-elephants',
         title: 'Solid Carved Royal Elephants',
-        href: '/products/handcarved-elephants',
+        href: '/products/whitewood-handicrafts',
         tagline: 'Trunk-Up Royal Figurines'
       },
       {
         id: 'temple-idols',
         title: 'Temple Deities & Sacred Idols',
-        href: '/products/handcarved-elephants',
+        href: '/products/sandalwood-religious-god-statues',
         tagline: 'Ganesha & Divine Altar Statues'
       },
       {
         id: 'wooden-artifacts',
         title: 'Heritage Boxes & Incense Stands',
-        href: '/products/handcarved-elephants',
+        href: '/products/sandalwood-gift-items',
         tagline: 'Bespoke Royal Wooden Art'
       },
       {
         id: 'all-sculptures',
         title: 'Explore All Sculptures & Artifacts',
-        href: '/products/handcarved-elephants',
+        href: '/products/sandalwood-religious-god-statues',
         tagline: 'View Complete Sculpture Collection'
       }
     ]
@@ -146,59 +146,59 @@ const CATEGORIES_SUBTREE: MenuItemNode[] = [
   {
     id: 'beads',
     title: 'Loose Sandalwood Beads',
-    href: '/products/loose-sandalwood-beads',
+    href: '/products/sandalwood-beads-semi-finished',
     tagline: 'Calibrated Jewelry Component Supply',
     visualCards: [
       {
-        title: 'Calibrated 10mm Spherical Beads',
-        image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=600',
-        link: '/products/loose-sandalwood-beads'
+        title: 'Semi Finished Beads',
+        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-beads-500x500.jpg',
+        link: '/products/sandalwood-beads-semi-finished'
       },
       {
-        title: 'Raw Natural Unpolished Beads',
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=600',
-        link: '/products/loose-sandalwood-beads'
+        title: 'Unpolished Sandalwood Beads',
+        image: '/static/uploads/products/10-mm-sandalwood-beads-unpolished_0_sandalwood-beads-unpolished-500x500.jpg',
+        link: '/products/wooden-beads'
       },
       {
-        title: 'Carved Spacers & Drum Beads',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600',
-        link: '/products/loose-sandalwood-beads'
+        title: 'Natural Brown Beads',
+        image: '/static/uploads/products/brown-beads_Brown-Beads.jpg',
+        link: '/products/natural-brown-wooden-beads'
       },
       {
-        title: 'Certified Mysore Billets & Logs',
-        image: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=600',
-        link: '/products/loose-sandalwood-beads'
+        title: 'Pure Sandalwood Billets & Craft',
+        image: '/static/uploads/products/pure-sandalwood-prayer-beads_Pure-Sandalwood-Prayer-Beads.jpg',
+        link: '/products/sandalwood-product'
       }
     ],
     children: [
       {
         id: 'calibrated-beads',
         title: 'Calibrated Round Beads (6mm–20mm)',
-        href: '/products/loose-sandalwood-beads',
+        href: '/products/sandalwood-beads-semi-finished',
         tagline: 'High Essential Oil Spherical Beads'
       },
       {
         id: 'raw-beads',
         title: 'Semi-Finished Raw Beads',
-        href: '/products/loose-sandalwood-beads',
+        href: '/products/sandalwood-beads-semi-finished',
         tagline: 'Natural Unpolished Wood Texture'
       },
       {
         id: 'cylindrical-spacers',
         title: 'Cylindrical & Barrel Spacers',
-        href: '/products/loose-sandalwood-beads',
+        href: '/products/sandalwood-beads',
         tagline: 'Center-Drilled Guru Bead Sets'
       },
       {
         id: 'sandalwood-billets',
-        title: 'Aged Sandalwood Billets & Logs',
-        href: '/products/loose-sandalwood-beads',
-        tagline: '100% Genuine Certified Heartwood'
+        title: 'Natural Brown Wooden Beads',
+        href: '/products/natural-brown-wooden-beads',
+        tagline: '100% Genuine Certified Hardwood'
       },
       {
         id: 'all-beads',
         title: 'Explore All Loose Beads Wholesale',
-        href: '/products/loose-sandalwood-beads',
+        href: '/products/sandalwood-beads-semi-finished',
         tagline: 'View Complete Beads Collection'
       }
     ]
@@ -206,59 +206,59 @@ const CATEGORIES_SUBTREE: MenuItemNode[] = [
   {
     id: 'bracelets',
     title: 'Designer Bracelets & Jewelry',
-    href: '/products/designer-sandalwood-bracelets',
+    href: '/products/sandalwood-bracelet',
     tagline: 'Contemporary Spiritual Luxury',
     visualCards: [
       {
-        title: 'Everyday Fragrant Wrist Malas',
-        image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600',
-        link: '/products/designer-sandalwood-bracelets'
+        title: 'Sandalwood Hand Chain',
+        image: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
+        link: '/products/sandalwood-hand-chain'
       },
       {
-        title: 'Sterling Silver Capped Bracelet',
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
-        link: '/products/designer-sandalwood-bracelets'
+        title: 'Tiger Beads Bracelet',
+        image: '/static/uploads/products/15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong_0_20-mm-sandalwood-semi-finished-beads-500x500.png',
+        link: '/products/sandalwood-bracelet'
       },
       {
-        title: 'Sacred Wooden Pendants',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
-        link: '/products/designer-sandalwood-bracelets'
+        title: 'Buddhist Bead Bracelet',
+        image: '/static/uploads/products/buddhist-bead-bracelet_Buddhist-Bead-Bracelet.jpg',
+        link: '/products/sandalwood-beads-bracelet'
       },
       {
-        title: 'Adjustable Cord Wristlets',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600',
-        link: '/products/designer-sandalwood-bracelets'
+        title: 'Crafted Sandalwood Jewelry',
+        image: '/static/uploads/products/108-mala-bead-sandalwood-mala-beads-mala-necklace_108-mala-bead-sandalwood-mala-beads-mala-necklace.jpg',
+        link: '/products/crafted-sandalwood-jewelery'
       }
     ],
     children: [
       {
         id: 'elastic-bracelets',
         title: 'Stretchable Wrist Malas (8mm & 10mm)',
-        href: '/products/designer-sandalwood-bracelets',
+        href: '/products/sandalwood-bracelet',
         tagline: 'Durable Elastic Fit Daily Wear'
       },
       {
         id: 'silver-bracelets',
-        title: 'Sterling Silver Capped Bracelets',
-        href: '/products/designer-sandalwood-bracelets',
-        tagline: '925 Silver & Gold Accent Fittings'
+        title: 'Hand Chain & Designer Wristlets',
+        href: '/products/sandalwood-hand-chain',
+        tagline: 'Traditional Smooth Finish'
       },
       {
         id: 'pendants',
         title: 'Sacred Wooden Pendants & Amulets',
-        href: '/products/designer-sandalwood-bracelets',
+        href: '/products/crafted-sandalwood-jewelery',
         tagline: 'Om, Gayatri & Protective Charms'
       },
       {
         id: 'cord-bracelets',
-        title: 'Adjustable Braided Cord Wristlets',
-        href: '/products/designer-sandalwood-bracelets',
+        title: 'Carved Religious Jewelry',
+        href: '/products/religious-sandalwood-jewellery',
         tagline: 'Unisex Spiritual Luxury'
       },
       {
         id: 'all-bracelets',
         title: 'Explore All Designer Jewelry',
-        href: '/products/designer-sandalwood-bracelets',
+        href: '/products/crafted-sandalwood-jewelery',
         tagline: 'View Complete Jewelry Collection'
       }
     ]
@@ -283,26 +283,26 @@ const MEGA_MENU_ITEMS: MenuItemNode[] = [
     visualCards: [
       {
         title: 'Sacred 108 Japa Malas',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600',
-        link: '/products/sandalwood-japa-mala',
+        image: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
+        link: '/products/sandalwood-rosary',
         tagline: 'Certified Mysore Chandan'
       },
       {
         title: 'Royal Undercut Elephants',
-        image: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&q=80&w=600',
-        link: '/products/handcarved-elephants',
+        image: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
+        link: '/products/whitewood-handicrafts',
         tagline: 'Single Piece Carvings'
       },
       {
         title: 'Calibrated Loose Beads',
-        image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=600',
-        link: '/products/loose-sandalwood-beads',
+        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-beads-500x500.jpg',
+        link: '/products/sandalwood-beads-semi-finished',
         tagline: '4mm to 22mm Beads'
       },
       {
         title: 'Designer Wrist Malas',
-        image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600',
-        link: '/products/designer-sandalwood-bracelets',
+        image: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
+        link: '/products/sandalwood-hand-chain',
         tagline: 'Aromatic Spiritual Wear'
       }
     ],
@@ -740,11 +740,11 @@ export default function Header() {
                       className="group flex flex-col cursor-pointer bg-transparent"
                     >
                       {/* Compact Studio Photo Frame */}
-                      <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden relative mb-2 rounded-none border-none">
+                      <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden relative mb-2 rounded-none border-none flex items-center justify-center p-2">
                         <img
                           src={card.image}
                           alt={card.title}
-                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none"
                         />
                       </div>
 

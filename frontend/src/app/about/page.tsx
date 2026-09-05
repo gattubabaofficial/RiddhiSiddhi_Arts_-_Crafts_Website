@@ -54,7 +54,7 @@ export default function AboutPage() {
         {/* Clean Studio Workshop Image Frame */}
         <div className="relative w-full aspect-[4/5] bg-[#F6F5F2] rounded-2xl overflow-hidden shadow-sm">
           <img
-            src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80"
+            src="/static/uploads/banners/hero_banner_1_template_photo_2.jpg"
             alt="Riddhi Siddhi Sandalwood Workshop and Artisans"
             className="w-full h-full object-cover object-center"
           />

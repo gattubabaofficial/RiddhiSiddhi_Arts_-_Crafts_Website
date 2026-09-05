@@ -115,7 +115,7 @@ export default function AdminBannersPage() {
     try {
       await fetchAPI('/collaborations', {
         method: 'POST',
-        body: JSON.stringify({ title: collabTitle, logo_url: collabLogoUrl || 'https://images.unsplash.com/photo-1615529182904-14819c35db37' }),
+        body: JSON.stringify({ title: collabTitle, logo_url: collabLogoUrl || '/static/uploads/general/logo_template_photo_1.png' }),
       });
       setIsCollabModalOpen(false);
       setCollabTitle('');

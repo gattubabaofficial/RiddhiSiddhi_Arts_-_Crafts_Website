@@ -160,7 +160,7 @@ export default function ProductDetailPage() {
 
   const allImages = (product.images && product.images.length > 0)
     ? product.images
-    : ['https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1600&q=90'];
+    : ['/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'];
 
   const continuousMediaList: Array<{ type: 'image' | 'video'; url: string }> = [];
 
@@ -183,11 +183,11 @@ export default function ProductDetailPage() {
   if (continuousMediaList.length === 1) {
     continuousMediaList.push({
       type: 'image',
-      url: 'https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=1600&q=90',
+      url: '/static/uploads/banners/hero_banner_1_template_photo_2.jpg',
     });
     continuousMediaList.push({
       type: 'image',
-      url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1600&q=90',
+      url: '/static/uploads/banners/hero_banner_2_template_photo_3.jpg',
     });
   }
 
@@ -240,7 +240,7 @@ export default function ProductDetailPage() {
               {continuousMediaList.map((item, idx) => (
                 <div
                   key={idx}
-                  className="w-full min-w-full shrink-0 snap-center h-[46vh] sm:h-[54vh] max-h-[480px] relative bg-[#F6F5F2] flex items-center justify-center overflow-hidden"
+                  className="w-full min-w-full shrink-0 snap-center h-[46vh] sm:h-[54vh] max-h-[480px] relative bg-[#F6F5F2] flex items-center justify-center overflow-hidden p-4 sm:p-6"
                 >
                   {item.type === 'video' ? (
                     item.url.includes('youtube.com') || item.url.includes('youtu.be') ? (
@@ -258,14 +258,14 @@ export default function ProductDetailPage() {
                         muted
                         loop
                         playsInline
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     )
                   ) : (
                     <img
                       src={getMediaUrl(item.url)}
                       alt={`${product.title} - View ${idx + 1}`}
-                      className="w-full h-full object-cover object-center select-none"
+                      className="w-full h-full object-contain object-center select-none"
                     />
                   )}
                 </div>
@@ -291,7 +291,7 @@ export default function ProductDetailPage() {
             {continuousMediaList.map((item, idx) => (
               <div
                 key={idx}
-                className="w-full h-screen p-0 m-0 bg-[#EFEFEF] relative overflow-hidden flex items-center justify-center border-0"
+                className="w-full h-screen p-6 sm:p-10 md:p-14 m-0 bg-[#EFEFEF] relative overflow-hidden flex items-center justify-center border-0"
               >
                 {item.type === 'video' ? (
                   item.url.includes('youtube.com') || item.url.includes('youtu.be') ? (
@@ -308,14 +308,14 @@ export default function ProductDetailPage() {
                       autoPlay
                       muted
                       loop
-                      className="w-full h-full object-cover p-0 m-0 border-0"
+                      className="w-full h-full object-contain p-0 m-0 border-0"
                     />
                   )
                 ) : (
                   <img
                     src={getMediaUrl(item.url)}
                     alt={`${product.title} - View ${idx + 1}`}
-                    className="w-full h-full object-cover p-0 m-0 border-0 block select-none"
+                    className="w-full h-full max-h-[82vh] object-contain object-center p-0 m-0 border-0 block select-none"
                   />
                 )}
               </div>
@@ -656,7 +656,7 @@ export default function ProductDetailPage() {
                 >
                   <div className="h-64 bg-[#F6F6F6] overflow-hidden relative flex items-center justify-center p-6">
                     <img
-                      src={getMediaUrl(p.images[0]) || 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=400&q=80'}
+                      src={getMediaUrl(p.images[0]) || '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'}
                       alt={p.title}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />

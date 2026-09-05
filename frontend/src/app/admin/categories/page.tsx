@@ -139,11 +139,11 @@ export default function AdminCategoriesPage() {
         {categories.map((c) => (
           <div key={c.id} className="bg-brand-navy-900 border border-brand-gold-500/20 rounded-3xl p-5 space-y-4 flex flex-col justify-between shadow-xl hover:border-brand-gold-400/40 transition-all">
             <div className="space-y-3">
-              <div className="w-full h-40 bg-brand-navy-950 rounded-2xl overflow-hidden border border-brand-gold-500/20">
+              <div className="w-full h-40 bg-brand-navy-950 rounded-2xl overflow-hidden border border-brand-gold-500/20 flex items-center justify-center p-2">
                 <img
-                  src={getMediaUrl(c.image_url) || 'https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=600&q=80'}
+                  src={getMediaUrl(c.image_url) || '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'}
                   alt={c.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain object-center"
                 />
               </div>
               <h3 className="font-serif font-bold text-lg text-white">{c.name}</h3>
