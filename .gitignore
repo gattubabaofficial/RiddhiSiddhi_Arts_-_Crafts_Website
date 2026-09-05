@@ -30,8 +30,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# User-uploaded media (served from disk, not source)
-uploads/
-backend/uploads/
-!uploads/.gitkeep
-!backend/uploads/.gitkeep
+# User-uploaded dynamic media (ignore root uploads and temp uploads, keep backend catalog images)
+/uploads/
+backend/uploads/temp/

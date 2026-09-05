@@ -118,6 +118,20 @@ class Settings(BaseSettings):
         elif not key or key in COMPROMISED_SECRET_KEYS:
             object.__setattr__(self, "SECRET_KEY", _development_secret_key())
 
+        if self.DATABASE_URL:
+            import urllib.parse
+            url = self.DATABASE_URL.strip()
+            if url.startswith("postgres://") or url.startswith("postgresql://") or url.startswith("postgresql+asyncpg://"):
+                parsed = urllib.parse.urlsplit(url)
+                # Keep or translate ssl parameter for asyncpg
+                qs = urllib.parse.parse_qs(parsed.query)
+                new_qs = {}
+                if "sslmode" in qs or "ssl" in qs:
+                    new_qs["ssl"] = "require"
+                new_query = urllib.parse.urlencode(new_qs)
+                url = urllib.parse.urlunsplit(("postgresql+asyncpg", parsed.netloc, parsed.path, new_query, parsed.fragment))
+            object.__setattr__(self, "DATABASE_URL", url)
+
         return self
 
 

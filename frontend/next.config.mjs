@@ -17,10 +17,6 @@ const nextConfig = {
   devIndicators: false,
   reactStrictMode: false,
 
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'clsx', 'tailwind-merge'],
-  },
-
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
@@ -50,17 +46,6 @@ const nextConfig = {
     ];
   },
 
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.cache = false;
-      config.watchOptions = {
-        poll: 800,
-        aggregateTimeout: 200,
-        ignored: ['**/node_modules/**', '**/.next/**', '**/backend/**'],
-      };
-    }
-    return config;
-  },
 };
 
 export default nextConfig;
