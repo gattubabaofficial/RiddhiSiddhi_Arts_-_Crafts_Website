@@ -24,7 +24,10 @@ function serverOrigin(): string {
 
 export function getAPIBaseURL(): string {
   const configured = process.env.NEXT_PUBLIC_API_URL?.trim();
-  if (configured) return trimTrailingSlash(configured);
+  if (configured) {
+    const trimmed = trimTrailingSlash(configured);
+    return trimmed.endsWith('/api/v1') ? trimmed : `${trimmed}/api/v1`;
+  }
 
   if (typeof window === 'undefined') {
     return `${serverOrigin()}/api/v1`;
@@ -46,7 +49,19 @@ export function getMediaUrl(url?: string | null): string {
 
   const path = url.startsWith('/') ? url : `/${url}`;
   const configured = process.env.NEXT_PUBLIC_MEDIA_URL?.trim();
-  if (configured) return `${trimTrailingSlash(configured)}${path}`;
+  if (configured) {
+    return `${trimTrailingSlash(configured)}${path}`;
+  }
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (apiUrl) {
+    const baseOrigin = trimTrailingSlash(apiUrl)
+      .replace(/\/api\/v1\/?$/, '')
+      .replace(/\/api\/?$/, '');
+    if (baseOrigin && !baseOrigin.includes('vercel.app')) {
+      return `${baseOrigin}${path}`;
+    }
+  }
 
   // Same origin in the browser; absolute when rendering on the server.
   return typeof window === 'undefined' ? `${serverOrigin()}${path}` : path;

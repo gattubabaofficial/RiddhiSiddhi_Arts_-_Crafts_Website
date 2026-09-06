@@ -78,7 +78,12 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> List[str]:
-        return [o.strip() for o in self.ALLOWED_ORIGINS.split(",") if o.strip()]
+        origins: List[str] = []
+        for o in self.ALLOWED_ORIGINS.split(","):
+            cleaned = o.strip().rstrip("/")
+            if cleaned:
+                origins.append(cleaned)
+        return origins
 
     @property
     def max_upload_bytes(self) -> int:

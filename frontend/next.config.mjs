@@ -20,6 +20,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: '*.onrender.com' },
+      { protocol: 'https', hostname: '*.vercel.app' },
       { protocol: 'https', hostname: '*.imimg.com' },
       { protocol: 'https', hostname: '5.imimg.com' },
       { protocol: 'https', hostname: '3.imimg.com' },
