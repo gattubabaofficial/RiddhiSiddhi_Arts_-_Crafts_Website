@@ -159,7 +159,7 @@ const PARENT_UNIVERSES: ParentUniverse[] = [
     title: 'Loose Beads & Semi Finished Craft',
     subtitle: 'CALIBRATED JEWELRY COMPONENT SUPPLY',
     description: 'Precision spherical, cylindrical, and oval fragrant sandalwood beads from 4mm to 22mm for custom rosaries and luxury jewelry.',
-    coverImage: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-beads-500x500.jpg',
+    coverImage: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
     heroImage: '/static/uploads/banners/hero_banner_4_template_photo_5.jpg',
     exploreLink: '/products/sandalwood-beads-semi-finished',
     subcategories: [

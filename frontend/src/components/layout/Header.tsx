@@ -151,7 +151,7 @@ const CATEGORIES_SUBTREE: MenuItemNode[] = [
     visualCards: [
       {
         title: 'Semi Finished Beads',
-        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-beads-500x500.jpg',
+        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
         link: '/products/sandalwood-beads-semi-finished'
       },
       {
@@ -295,7 +295,7 @@ const MEGA_MENU_ITEMS: MenuItemNode[] = [
       },
       {
         title: 'Calibrated Loose Beads',
-        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-beads-500x500.jpg',
+        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
         link: '/products/sandalwood-beads-semi-finished',
         tagline: '4mm to 22mm Beads'
       },
