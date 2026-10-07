@@ -454,23 +454,13 @@ export default function HomePage() {
                     </Link>
 
                     {/* Top Badges */}
-                    <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start z-10">
-                      {prod.badge === 'BEST' && (
-                        <span className="bg-[#0B3C84] text-white font-cinzel text-[9px] font-bold px-2.5 py-0.5 tracking-wider uppercase shadow-sm rounded-xs">
-                          BEST
-                        </span>
-                      )}
-                      {prod.badge === 'SOLD OUT' && (
+                    {prod.badge === 'SOLD OUT' && (
+                      <div className="absolute top-3 left-3 z-10">
                         <span className="bg-neutral-800 text-white font-cinzel text-[9px] font-bold px-2.5 py-0.5 tracking-wider uppercase shadow-sm rounded-xs">
                           SOLD OUT
                         </span>
-                      )}
-                      {prod.hasVideo && (
-                        <span className="inline-flex items-center gap-1 bg-white/95 text-[#0B3C84] font-sans text-[10px] font-medium px-2 py-0.5 shadow-sm rounded-xs">
-                          <Play className="w-2.5 h-2.5 fill-[#0B3C84]" /> Detailed Video Inside
-                        </span>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     {/* Wishlist Button */}
                     <button
