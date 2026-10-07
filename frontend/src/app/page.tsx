@@ -326,69 +326,65 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#FDFBF7] text-[#010F34]">
 
       {/* ========================================================================= */}
-      {/* 1. HERO — YOUTUBE VIDEO (First section, directly below the navbar)         */}
+      {/* 1. HERO — FULL SCREEN YOUTUBE VIDEO                                       */}
       {/* ========================================================================= */}
-      <section className="relative w-full pt-28 sm:pt-32 md:pt-36 pb-12 md:pb-16 bg-[#FDFBF7] border-b border-[#EBE0CA]/60">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          
-          {/* Main Featured Video Player (Façade Pattern for Maximum Performance) */}
-          <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border border-neutral-200/80 group">
-            {isPlaying ? (
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-                title={activeVideo.title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+      <section className="relative w-full h-[calc(100vh-58px)] sm:h-[calc(100vh-68px)] min-h-[520px] pt-[58px] sm:pt-[68px] bg-black border-b border-[#EBE0CA]/40 overflow-hidden">
+        {/* Full-bleed Featured Video Player (Façade Pattern for Maximum Performance) */}
+        <div className="relative w-full h-full bg-neutral-950 group">
+          {isPlaying ? (
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+              title={activeVideo.title}
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div
+              onClick={() => setIsPlaying(true)}
+              className="relative w-full h-full cursor-pointer overflow-hidden flex items-center justify-center select-none"
+            >
+              {/* Lightweight Full-bleed Background Thumbnail */}
+              <img
+                src={activeVideo.thumbnail}
+                alt={activeVideo.title}
+                className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out brightness-90"
               />
-            ) : (
-              <div
-                onClick={() => setIsPlaying(true)}
-                className="relative w-full h-full cursor-pointer overflow-hidden flex items-center justify-center select-none"
-              >
-                {/* Lightweight Background Thumbnail */}
-                <img
-                  src={activeVideo.thumbnail}
-                  alt={activeVideo.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out brightness-90"
-                />
 
-                {/* Dark Vignette Overlay for Crisp Legibility */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 group-hover:bg-black/40 transition-colors" />
+              {/* Dark Vignette Overlay for Crisp Legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35 group-hover:bg-black/30 transition-colors" />
 
-                {/* Top Badge */}
-                <div className="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-2">
-                  <span className="bg-[#0B3C84] text-white font-cinzel text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
-                    {activeVideo.badge}
-                  </span>
-                  <span className="bg-black/60 text-white/90 backdrop-blur-md text-[11px] font-mono px-2.5 py-0.5 rounded-full">
-                    {activeVideo.duration}
-                  </span>
-                </div>
-
-                {/* Clean Centered Luxury Play Button Overlay */}
-                <div className="relative z-10 flex flex-col items-center gap-3">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 text-[#0B3C84] group-hover:bg-[#0B3C84] group-hover:text-white flex items-center justify-center shadow-2xl transition-all duration-300 transform group-hover:scale-110">
-                    <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1" />
-                  </div>
-                  <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-semibold text-white drop-shadow-md hidden sm:block">
-                    Click to Play Demonstration
-                  </span>
-                </div>
-
-                {/* Bottom Video Title Overlay */}
-                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-left">
-                  <h3 className="font-serif text-lg sm:text-2xl text-white font-normal drop-shadow-md line-clamp-1">
-                    {activeVideo.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-neutral-200 font-sans line-clamp-1 mt-0.5">
-                    {activeVideo.subtitle}
-                  </p>
-                </div>
+              {/* Top Badge */}
+              <div className="absolute top-4 left-4 sm:top-8 sm:left-8 flex items-center gap-2">
+                <span className="bg-[#0B3C84] text-white font-cinzel text-[10px] sm:text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                  {activeVideo.badge}
+                </span>
+                <span className="bg-black/60 text-white/90 backdrop-blur-md text-[11px] font-mono px-2.5 py-0.5 rounded-full">
+                  {activeVideo.duration}
+                </span>
               </div>
-            )}
-          </div>
 
+              {/* Clean Centered Luxury Play Button Overlay */}
+              <div className="relative z-10 flex flex-col items-center gap-3.5">
+                <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-full bg-white/95 text-[#0B3C84] group-hover:bg-[#0B3C84] group-hover:text-white flex items-center justify-center shadow-2xl transition-all duration-300 transform group-hover:scale-110">
+                  <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-current ml-1" />
+                </div>
+                <span className="font-cinzel text-xs sm:text-sm uppercase tracking-[0.25em] font-bold text-white drop-shadow-lg">
+                  Click to Play Demonstration
+                </span>
+              </div>
+
+              {/* Bottom Video Title Overlay */}
+              <div className="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-12 sm:right-12 max-w-4xl text-left space-y-1.5">
+                <h3 className="font-serif text-xl sm:text-3xl md:text-4xl text-white font-normal drop-shadow-md leading-tight">
+                  {activeVideo.title}
+                </h3>
+                <p className="text-xs sm:text-base text-neutral-200 font-sans line-clamp-2 drop-shadow-sm">
+                  {activeVideo.subtitle}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
