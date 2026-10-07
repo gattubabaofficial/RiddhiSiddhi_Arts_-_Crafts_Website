@@ -1,380 +1,484 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { fetchAPI, getMediaUrl, getEmbedUrl } from '@/lib/api';
-import { Product, Category, HeroBanner, Review, Reel, Collaboration } from '@/types';
-import { ArrowRight, Star, Send, ShieldCheck, MapPin, Play, Award, CheckCircle2, ChevronRight } from 'lucide-react';
+import {
+  ArrowRight,
+  Star,
+  Play,
+  Heart,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  ZoomIn,
+  MessageCircle,
+} from 'lucide-react';
 import EnquiryModal from '@/components/products/EnquiryModal';
 
-const DEFAULT_BANNERS: HeroBanner[] = [
-  {
-    id: 1,
-    heading: 'Authentic Mysore Sandalwood Handicrafts & Malas',
-    subheading: 'Jaipur’s leading manufacturer & exporter of certified pure Chandan artifacts, Japa malas, handcarved elephants & beads.',
-    image_url: '/static/uploads/banners/hero_banner_1_template_photo_2.jpg',
-    cta_label: 'Explore Sandalwood Catalog',
-    cta_link: '/products/sandalwood-beads',
-    display_order: 1,
-    is_active: true,
-  },
-  {
-    id: 2,
-    heading: 'Royal Handcrafted Sandalwood Rosaries & Japa Malas',
-    subheading: '108 beads natural aromatic malas meticulously hand-strung for meditation, temple rituals, and spiritual chanting.',
-    image_url: '/static/uploads/banners/hero_banner_2_template_photo_3.jpg',
-    cta_label: 'Browse Rosary Malas',
-    cta_link: '/products/sandalwood-rosary',
-    display_order: 2,
-    is_active: true,
-  },
-  {
-    id: 3,
-    heading: 'Exquisite Sandalwood Carved Bracelets & Jewelry',
-    subheading: 'Artisanal wrist malas, intricately carved deity charms, and luxury aromatic wooden jewelry crafted in Rajasthan.',
-    image_url: '/static/uploads/banners/hero_banner_3_template_photo_4.jpg',
-    cta_label: 'View Jewelry Collection',
-    cta_link: '/products/crafted-sandalwood-jewelery',
-    display_order: 3,
-    is_active: true,
-  },
-];
-
-const DEFAULT_CATEGORIES: Category[] = [
-  { id: 1, name: 'Sandalwood Beads', slug: 'sandalwood-beads', description: 'Certified pure Mysore sandalwood loose and rosary beads with natural essential aroma', image_url: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg', display_order: 1 },
-  { id: 2, name: 'Sandalwood Rosary', slug: 'sandalwood-rosary', description: '108 beads and custom prayer malas hand-turned for spiritual chanting and meditation', image_url: '/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg', display_order: 2 },
-  { id: 3, name: 'Crafted Sandalwood Jewelery', slug: 'crafted-sandalwood-jewelery', description: 'Intricate carved deity pendants, beads necklaces and artisanal jewelry', image_url: '/static/uploads/products/108-mala-bead-sandalwood-mala-beads-mala-necklace_108-mala-bead-sandalwood-mala-beads-mala-necklace.jpg', display_order: 3 },
-  { id: 4, name: 'Sandalwood Beads Semi Finished', slug: 'sandalwood-beads-semi-finished', description: 'Unpolished and semi-finished raw sandalwood beads for craftsmen & global export', image_url: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg', display_order: 4 },
-  { id: 5, name: 'Sandalwood Bracelet', slug: 'sandalwood-bracelet', description: 'Stretchable wrist malas, dhikr bracelets, and luxury designer wooden cuffs', image_url: '/static/uploads/products/15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong_0_20-mm-sandalwood-semi-finished-beads-500x500.png', display_order: 5 },
-  { id: 6, name: 'Whitewood Handicrafts', slug: 'whitewood-handicrafts', description: 'Traditional Rajasthani wood sculptures, decorative pots, jaali elephants and artifacts', image_url: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg', display_order: 6 },
-];
-
-const DEFAULT_PRODUCTS: Product[] = [
-  { id: 1, title: '10 mm Indian Sandalwood Mala', slug: '10-mm-indian-sandalwood-mala', short_description: 'Certified pure Mysore Sandalwood Japa Mala with natural long-lasting aroma. Perfect for meditation and spiritual practice.', images: ['/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'], moq: '10 Pieces', is_featured: true, category_id: 1 },
-  { id: 2, title: '10 mm Sandalwood Tasbih Rosary', slug: '10-mm-sandalwood-tasbih-supplier-in-uae', short_description: 'Natural aromatic chandan rosary mala hand-strung by Jaipur artisans with authentic sandalwood fragrance.', images: ['/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg'], moq: '10 Pieces', is_featured: true, category_id: 2 },
-  { id: 3, title: '10 mm Sandalwood Hand Chain', slug: '10-mm-sandalwood-hand-chain-in-china', short_description: 'Exquisite sandalwood hand chain and wrist mala with natural smooth finish and soothing essential aroma.', images: ['/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png'], moq: '10 Pieces', is_featured: true, category_id: 17 },
-  { id: 4, title: 'Elephant Wood Carving Sculpture', slug: 'elephant-carving-statue', short_description: 'Masterfully hand-carved traditional wooden royal elephant created by Jaipur royal handicraft artisans.', images: ['/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg'], moq: '1 Piece', is_featured: true, category_id: 15 },
-];
-
-interface SubCategoryItem {
-  name: string;
-  slug: string;
-  image: string;
-  tagline: string;
-  specs: string;
-}
-
-interface ParentUniverse {
+interface VideoShowcase {
   id: string;
   title: string;
   subtitle: string;
-  description: string;
-  coverImage: string;
-  heroImage: string;
-  exploreLink: string;
-  subcategories: SubCategoryItem[];
+  youtubeId: string;
+  thumbnail: string;
+  duration: string;
+  badge: string;
 }
 
-const PARENT_UNIVERSES: ParentUniverse[] = [
+const HERO_VIDEOS: VideoShowcase[] = [
+  {
+    id: 'sink-test',
+    title: 'Water Density Purity Test — Does Real Sandalwood Sink in Water?',
+    subtitle: 'Demonstrating genuine high-oil Mysuru heartwood density in pure water',
+    youtubeId: '4yVb9g14Hj0',
+    thumbnail: '/static/uploads/banners/hero_banner_1_template_photo_2.jpg',
+    duration: '2:45',
+    badge: 'Featured Test',
+  },
+  {
+    id: 'mala-making',
+    title: 'Handcrafting 108 Beads Mysore Sandalwood Japa Mala',
+    subtitle: 'Master artisans lathe-turning and silk-knotting spiritual beads in Jaipur',
+    youtubeId: 'gH7dvcCgk1E',
+    thumbnail: '/static/uploads/banners/hero_banner_2_template_photo_3.jpg',
+    duration: '3:15',
+    badge: 'Artisan Workshop',
+  },
+  {
+    id: 'elephant-carving',
+    title: 'Undercut Net Jaali Royal Elephant Single-Piece Carving',
+    subtitle: 'Centuries-old Rajasthani royal carving technique inside a single wood block',
+    youtubeId: 'jNQXAC9IVRw',
+    thumbnail: '/static/uploads/banners/hero_banner_5_template_photo_6.jpg',
+    duration: '4:10',
+    badge: 'Master Carving',
+  },
+  {
+    id: 'aroma-grain',
+    title: 'Natural Aroma & Grain Density Verification Guide',
+    subtitle: 'Friction warmth test & botanical heartwood grain identification',
+    youtubeId: 'L_LUpnjgPso',
+    thumbnail: '/static/uploads/banners/hero_banner_4_template_photo_5.jpg',
+    duration: '1:50',
+    badge: 'Buyer Guide',
+  },
+];
+
+const CATEGORY_CARDS = [
   {
     id: 'malas',
     title: 'Sacred Malas & Rosaries',
-    subtitle: 'SPIRITUAL CHANTING & DEVOTIONAL JEWELRY',
-    description: 'Certified 108 pure Mysuru Sandalwood Japa malas, hand-strung spiritual necklaces, and authentic Islamic Tashbih prayer beads.',
-    coverImage: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
-    heroImage: '/static/uploads/banners/hero_banner_2_template_photo_3.jpg',
-    exploreLink: '/products/sandalwood-rosary',
-    subcategories: [
-      {
-        name: '108 Beads Pure Japa Mala',
-        slug: 'sandalwood-rosary',
-        image: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
-        tagline: 'Traditional Chanting Rosary (6mm–12mm)',
-        specs: 'Certified 100% Mysuru Chandan'
-      },
-      {
-        name: 'Sandalwood Beads',
-        slug: 'sandalwood-beads',
-        image: '/static/uploads/products/10-mm-sandalwood-beads-unpolished_0_sandalwood-beads-unpolished-500x500.jpg',
-        tagline: 'Decorative & Temple Spiritual Necklaces',
-        specs: 'Natural Essential Aroma'
-      },
-      {
-        name: 'Islamic Tasbih Beads',
-        slug: 'sandalwood-rosary',
-        image: '/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg',
-        tagline: '33 & 99 Beads Islamic Prayer Rosary',
-        specs: 'Hand-Turned Imame'
-      },
-      {
-        name: 'Religious Sandalwood Jewelry',
-        slug: 'religious-sandalwood-jewellery',
-        image: '/static/uploads/products/religious-sandalwood-prayer-beads_0_religious-sandalwood-prayer-beads-500x500.jpg',
-        tagline: 'Amulets & Mantra Beads',
-        specs: 'Jaipur Master Knotting'
-      }
-    ]
+    slug: 'malas',
+    link: '/collections/malas',
+    image: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
+    specs: '108 Beads & Prayer Rosaries',
   },
   {
-    id: 'elephants',
+    id: 'sculptures',
     title: 'Royal Sculptures & Idols',
-    subtitle: 'JAIPUR MASTER ARTISAN HERITAGE',
-    description: 'Bespoke single-piece undercut net-jaali elephants, baby-inside-mother carvings, and sacred temple deities.',
-    coverImage: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
-    heroImage: '/static/uploads/banners/hero_banner_5_template_photo_6.jpg',
-    exploreLink: '/products/sandalwood-religious-god-statues',
-    subcategories: [
-      {
-        name: 'Deity God Statues',
-        slug: 'sandalwood-religious-god-statues',
-        image: '/static/uploads/products/hindu-god-idol-sandalwood-ganesha_0_hindu-god-idol-sandalwood-ganesha-500x500.jpg',
-        tagline: 'Ganesha & Divine Altar Statues',
-        specs: 'Solid Pure Sandalwood'
-      },
-      {
-        name: 'Whitewood Handicrafts',
-        slug: 'whitewood-handicrafts',
-        image: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
-        tagline: 'Undercut Net Jaali Elephants',
-        specs: 'Single Piece Carving'
-      },
-      {
-        name: 'Religious Handicrafts',
-        slug: 'religious-handicraft-sandalwood',
-        image: '/static/uploads/products/aromatic-muslim-bead_Aromatic-Muslim-Bead.jpg',
-        tagline: 'Sacred Temple Puja Crafts',
-        specs: 'Master Artisanal Finish'
-      },
-      {
-        name: 'Royal Gift Items',
-        slug: 'sandalwood-gift-items',
-        image: '/static/uploads/products/mysore-sandal-beads-souvenirs-craft-japa-mala_0_mysore-sandal-beads-souvenirs-craft-japa-mala-500x500.jpg',
-        tagline: 'Heritage Boxes & Souvenirs',
-        specs: 'Luxury Presentation'
-      }
-    ]
+    slug: 'sculptures',
+    link: '/collections/sculptures',
+    image: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
+    specs: 'Single-Piece Net Jaali Carvings',
   },
   {
-    id: 'beads',
-    title: 'Loose Beads & Semi Finished Craft',
-    subtitle: 'CALIBRATED JEWELRY COMPONENT SUPPLY',
-    description: 'Precision spherical, cylindrical, and oval fragrant sandalwood beads from 4mm to 22mm for custom rosaries and luxury jewelry.',
-    coverImage: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
-    heroImage: '/static/uploads/banners/hero_banner_4_template_photo_5.jpg',
-    exploreLink: '/products/sandalwood-beads-semi-finished',
-    subcategories: [
-      {
-        name: 'Semi Finished Beads',
-        slug: 'sandalwood-beads-semi-finished',
-        image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
-        tagline: 'Raw Unpolished Beads',
-        specs: 'Wholesale Export Packs'
-      },
-      {
-        name: 'Natural Brown Wooden Beads',
-        slug: 'natural-brown-wooden-beads',
-        image: '/static/uploads/products/brown-beads_Brown-Beads.jpg',
-        tagline: 'Rustic Dark & Golden Beads',
-        specs: 'Natural Wood Grain'
-      },
-      {
-        name: 'Wooden Beads',
-        slug: 'wooden-beads',
-        image: '/static/uploads/products/10-mm-sandalwood-beads-unpolished_0_sandalwood-beads-unpolished-500x500.jpg',
-        tagline: 'Hardwood & Rosewood Beads',
-        specs: 'Precision Center-Drilled'
-      },
-      {
-        name: 'Pure Sandalwood Products',
-        slug: 'sandalwood-product',
-        image: '/static/uploads/products/pure-sandalwood-prayer-beads_Pure-Sandalwood-Prayer-Beads.jpg',
-        tagline: 'Billets, Logs & Wood Craft',
-        specs: '100% Pure Santalum Album'
-      }
-    ]
+    id: 'loose-beads',
+    title: 'Loose Sandalwood Beads',
+    slug: 'loose-beads',
+    link: '/collections/loose-beads',
+    image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
+    specs: 'Calibrated 4mm to 22mm Spherical',
   },
   {
     id: 'bracelets',
-    title: 'Designer Bracelets & Hand Chains',
-    subtitle: 'CONTEMPORARY SPIRITUAL LUXURY',
-    description: 'Everyday fragrant wrist malas, hand chains, carved charms, and protective sandalwood jewelry.',
-    coverImage: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
-    heroImage: '/static/uploads/banners/hero_banner_3_template_photo_4.jpg',
-    exploreLink: '/products/sandalwood-bracelet',
-    subcategories: [
-      {
-        name: 'Sandalwood Hand Chain',
-        slug: 'sandalwood-hand-chain',
-        image: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
-        tagline: 'Artisanal Wrist Mala Chain',
-        specs: 'Unisex Daily Spiritual Wear'
-      },
-      {
-        name: 'Sandalwood Bracelets',
-        slug: 'sandalwood-bracelet',
-        image: '/static/uploads/products/15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong_0_20-mm-sandalwood-semi-finished-beads-500x500.png',
-        tagline: 'Tiger Sandalwood Wristlet',
-        specs: 'Elastic Stretch Fit'
-      },
-      {
-        name: 'Carved Bracelets',
-        slug: 'sandalwood-carvings-bracelets',
-        image: '/static/uploads/products/10-mm-white-sandalwood-jap-mala-in-hong-kong_0_gemstone-mala-with-sandalwood-beads-500x500.jpg',
-        tagline: 'Embossed Motifs & Mantras',
-        specs: 'Master Engraved'
-      },
-      {
-        name: 'Crafted Jewelry',
-        slug: 'crafted-sandalwood-jewelery',
-        image: '/static/uploads/products/108-mala-bead-sandalwood-mala-beads-mala-necklace_108-mala-bead-sandalwood-mala-beads-mala-necklace.jpg',
-        tagline: 'Pendants & Statement Pieces',
-        specs: 'Jaipur Art Studio'
-      }
-    ]
-  }
+    title: 'Designer Sandalwood Bracelets',
+    slug: 'bracelets',
+    link: '/collections/bracelets',
+    image: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
+    specs: 'Hand Chains & Elastic Wristlets',
+  },
+];
+
+interface ShowcaseProductItem {
+  id: number;
+  title: string;
+  slug: string;
+  category_slug: string;
+  category_name: string;
+  image: string;
+  priceRange: string;
+  rating: number;
+  reviewCount: number;
+  variants: string[];
+  badge?: 'BEST' | 'SOLD OUT' | 'NEW';
+  hasVideo: boolean;
+}
+
+const SHOWCASE_PRODUCTS: ShowcaseProductItem[] = [
+  {
+    id: 1,
+    title: '10 mm Pure Indian Mysore Sandalwood 108 Japa Mala',
+    slug: '10-mm-indian-sandalwood-mala',
+    category_slug: 'sandalwood-rosary',
+    category_name: 'Sacred Malas',
+    image: '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg',
+    priceRange: '₹2,800 – ₹5,400',
+    rating: 5,
+    reviewCount: 42,
+    variants: ['20–25g', '50g', '100g'],
+    badge: 'BEST',
+    hasVideo: true,
+  },
+  {
+    id: 2,
+    title: '10 mm Sandalwood Islamic Tasbih Prayer Rosary (99 Beads)',
+    slug: '10-mm-sandalwood-tasbih-supplier-in-uae',
+    category_slug: 'sandalwood-rosary',
+    category_name: 'Tasbih Rosaries',
+    image: '/static/uploads/products/10-mm-sandalwood-tasbih-supplier-in-uae_0_sandalwood-tasbih-500x500.jpg',
+    priceRange: '₹1,900 – ₹3,800',
+    rating: 5,
+    reviewCount: 28,
+    variants: ['33 Beads', '66 Beads', '99 Beads'],
+    hasVideo: true,
+  },
+  {
+    id: 3,
+    title: '10 mm Artisanal Sandalwood Hand Chain Wrist Mala',
+    slug: '10-mm-sandalwood-hand-chain-in-china',
+    category_slug: 'sandalwood-bracelet',
+    category_name: 'Bracelets',
+    image: '/static/uploads/products/10-mm-sandalwood-hand-chain-in-china_0_sandalwood-hand-chain-in-china-500x500.png',
+    priceRange: '₹1,200 – ₹2,400',
+    rating: 5,
+    reviewCount: 19,
+    variants: ['8mm', '10mm', '12mm'],
+    hasVideo: true,
+  },
+  {
+    id: 4,
+    title: 'Undercut Net Jaali Royal Sandalwood Elephant Carving',
+    slug: 'elephant-carving-statue',
+    category_slug: 'whitewood-handicrafts',
+    category_name: 'Sculptures',
+    image: '/static/uploads/products/elephant-carving-statue_0_elephant-carving-statue-500x500.jpg',
+    priceRange: '₹4,500 – ₹9,200',
+    rating: 5,
+    reviewCount: 35,
+    variants: ['3 Inch', '4 Inch', '6 Inch'],
+    badge: 'BEST',
+    hasVideo: true,
+  },
+  {
+    id: 5,
+    title: '12 mm Calibrated Loose Mysore Sandalwood Beads Pack',
+    slug: '12-mm-sandalwood-semi-finished-beads',
+    category_slug: 'sandalwood-beads-semi-finished',
+    category_name: 'Loose Beads',
+    image: '/static/uploads/products/12-mm-sandalwood-semi-finished-beads_0_sandalwood-semi-finished-500x500.jpg',
+    priceRange: '₹3,200 – ₹6,500',
+    rating: 5,
+    reviewCount: 22,
+    variants: ['50 Pcs', '108 Pcs', '250 Pcs'],
+    hasVideo: true,
+  },
+  {
+    id: 6,
+    title: '15 mm Natural Tiger Sandalwood Meditation Bracelet',
+    slug: '15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong',
+    category_slug: 'sandalwood-bracelet',
+    category_name: 'Bracelets',
+    image: '/static/uploads/products/15-mm-sandalwood-tiger-beads-bracelet-supplier-in-hong-kong_0_20-mm-sandalwood-semi-finished-beads-500x500.png',
+    priceRange: '₹1,600 – ₹3,100',
+    rating: 5,
+    reviewCount: 16,
+    variants: ['12mm', '15mm', '18mm'],
+    hasVideo: true,
+  },
+  {
+    id: 7,
+    title: 'Handcarved Sandalwood Lord Ganesha Deity Idol',
+    slug: 'hindu-god-idol-sandalwood-ganesha',
+    category_slug: 'sandalwood-religious-god-statues',
+    category_name: 'Deities',
+    image: '/static/uploads/products/hindu-god-idol-sandalwood-ganesha_0_hindu-god-idol-sandalwood-ganesha-500x500.jpg',
+    priceRange: '₹6,800 – ₹14,500',
+    rating: 5,
+    reviewCount: 31,
+    variants: ['2.5 Inch', '4 Inch', '5.5 Inch'],
+    badge: 'SOLD OUT',
+    hasVideo: true,
+  },
+  {
+    id: 8,
+    title: '108 Beads Sandalwood Mala with Om Sacred Pendant',
+    slug: '108-mala-bead-sandalwood-mala-beads-mala-necklace',
+    category_slug: 'crafted-sandalwood-jewelery',
+    category_name: 'Sacred Jewelry',
+    image: '/static/uploads/products/108-mala-bead-sandalwood-mala-beads-mala-necklace_108-mala-bead-sandalwood-mala-beads-mala-necklace.jpg',
+    priceRange: '₹3,500 – ₹6,900',
+    rating: 5,
+    reviewCount: 27,
+    variants: ['6mm Beads', '8mm Beads', '10mm Beads'],
+    hasVideo: true,
+  },
+];
+
+// Exact WhatsApp Testimonial Screenshot list from purechandan.com
+const PURECHANDAN_TESTIMONIALS = [
+  'https://purechandan.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-09.15.47_33ed6c3d.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-09.15.48_d45577e1.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-09.15.49_a4dd680a.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-09.15.48_aaeaa146.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-24-11-52-45-553_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-24-11-52-35-325_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-21-08-41-56-313_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-27-35-626_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-24-33-184_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-24-11-58-05-624_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-20-24-543_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-18-17-696_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-18-07-019_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-16-22-961_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-15-50-987_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-15-25-182_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-12-27-102_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-05-50-395_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2025/05/Screenshot_2025-05-20-07-03-24-047_com.whatsapp.w4b.jpg',
+  'https://purechandan.com/wp-content/uploads/2024/11/1000060243-rotated.jpg',
+  'https://purechandan.com/wp-content/uploads/2024/10/IMG_0048-rotated.jpeg',
+];
+
+// YouTube Shorts list from purechandan.com
+const PURECHANDAN_SHORTS = [
+  { id: '1', embedUrl: 'https://www.youtube.com/embed/K6zDM2rynSs', title: 'Sandalwood Purity Demo' },
+  { id: '2', embedUrl: 'https://www.youtube.com/embed/qo_8SWhjC-Y', title: 'Chandan Stick Quality Test' },
+  { id: '3', embedUrl: 'https://www.youtube.com/embed/UHxLGI3fq6w', title: 'Authentic Heartwood Check' },
+  {
+    id: '4',
+    embedUrl: 'https://www.youtube.com/embed/2niTTYVh98s',
+    title: 'Does Red Sandalwood Sink in Water?',
+    thumbnail: 'https://purechandan.com/wp-content/uploads/2024/08/WhatsApp-Image-2025-01-27-at-17.06.07_718345c9-e1737977824540.jpg',
+  },
 ];
 
 export default function HomePage() {
-  const [banners, setBanners] = useState<HeroBanner[]>(DEFAULT_BANNERS);
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>(DEFAULT_PRODUCTS);
-  const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
-  const [selectedUniverseId, setSelectedUniverseId] = useState<string>('all');
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [reels, setReels] = useState<Reel[]>([]);
-  const [collabs, setCollabs] = useState<Collaboration[]>([]);
-  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
+  // Hero Video state
+  const [activeVideoIdx, setActiveVideoIdx] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  // Products state
+  const [selectedVariants, setSelectedVariants] = useState<Record<number, string>>({});
+  const [wishlist, setWishlist] = useState<Record<number, boolean>>({});
+
+  // WhatsApp Screenshot Carousel state
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+
+  // YouTube Shorts playing states
+  const [playingShorts, setPlayingShorts] = useState<Record<string, boolean>>({});
+
+  // Enquiry Modal state
   const [enquiryModalOpen, setEnquiryModalOpen] = useState(false);
   const [selectedProductTitle, setSelectedProductTitle] = useState('');
   const [selectedProductId, setSelectedProductId] = useState<number | undefined>(undefined);
+  const [selectedVariantPill, setSelectedVariantPill] = useState<string>('');
 
-  useEffect(() => {
-    async function loadHomeData() {
-      try {
-        const [bRes, pRes, cRes, rRes, relRes, colRes] = await Promise.all([
-          fetchAPI<HeroBanner[]>('/banners').catch(() => []),
-          fetchAPI<Product[]>('/products?featured=true&limit=8').catch(() => []),
-          fetchAPI<Category[]>('/categories').catch(() => []),
-          fetchAPI<Review[]>('/reviews?status_filter=approved&featured_only=true').catch(() => []),
-          fetchAPI<Reel[]>('/reels').catch(() => []),
-          fetchAPI<Collaboration[]>('/collaborations').catch(() => []),
-        ]);
-        if (bRes && bRes.length > 0) setBanners(bRes);
-        if (pRes && pRes.length > 0) setFeaturedProducts(pRes);
-        if (cRes && cRes.length > 0) setCategories(cRes);
-        if (rRes && rRes.length > 0) setReviews(rRes);
-        if (relRes && relRes.length > 0) setReels(relRes);
-        if (colRes && colRes.length > 0) setCollabs(colRes);
-      } catch (err) {
-        console.error('Failed loading homepage data:', err);
-      }
-    }
-    loadHomeData();
-  }, []);
+  const activeVideo = HERO_VIDEOS[activeVideoIdx];
 
-  // Auto banner carousel
-  useEffect(() => {
-    if (banners.length <= 1) return;
-    const interval = setInterval(() => {
-      setActiveBannerIdx((prev) => (prev + 1) % banners.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [banners.length]);
+  const handleSelectVideo = (idx: number) => {
+    setActiveVideoIdx(idx);
+    setIsPlaying(true);
+  };
 
-  const openQuoteModal = (title: string, id: number) => {
-    setSelectedProductTitle(title);
-    setSelectedProductId(id);
+  const toggleWishlist = (productId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setWishlist((prev) => ({ ...prev, [productId]: !prev[productId] }));
+  };
+
+  const handleVariantSelect = (productId: number, variant: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedVariants((prev) => ({ ...prev, [productId]: variant }));
+  };
+
+  const openQuoteModal = (product: ShowcaseProductItem) => {
+    setSelectedProductTitle(product.title);
+    setSelectedProductId(product.id);
+    setSelectedVariantPill(selectedVariants[product.id] || product.variants[0]);
     setEnquiryModalOpen(true);
   };
 
+  // Testimonial auto-carousel
+  useEffect(() => {
+    if (isCarouselHovered) return;
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % PURECHANDAN_TESTIMONIALS.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [isCarouselHovered]);
+
+  const prevSlide = () => {
+    setCarouselIndex((prev) => (prev === 0 ? PURECHANDAN_TESTIMONIALS.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCarouselIndex((prev) => (prev + 1) % PURECHANDAN_TESTIMONIALS.length);
+  };
+
   return (
-    <div className="space-y-16 pb-16">
-      
-      {/* 1. LOUIS VUITTON STYLE LUXURY HERO */}
-      <section className="relative w-full h-[88vh] min-h-[560px] max-h-[860px] md:h-[92vh] overflow-hidden flex flex-col justify-end items-center text-center pb-8 sm:pb-12 md:pb-14">
-        {/* Background Banners */}
-        {banners.map((b, idx) => (
-          <div
-            key={b.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              idx === activeBannerIdx ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center brightness-80 transition-transform duration-1000 ease-out transform scale-100"
-              style={{ backgroundImage: `url(${getMediaUrl(b.image_url)})` }}
-            />
-            {/* Top dark gradient for navbar legibility & bottom gradient for title legibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/50" />
+    <div className="min-h-screen bg-[#FDFBF7] text-[#010F34]">
+
+      {/* ========================================================================= */}
+      {/* 1. HERO — YOUTUBE VIDEO (First section, directly below the navbar)         */}
+      {/* ========================================================================= */}
+      <section className="relative w-full pt-28 sm:pt-32 md:pt-36 pb-12 md:pb-16 bg-[#FDFBF7] border-b border-[#EBE0CA]/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          
+          {/* Hero Editorial Header */}
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="font-cinzel text-[11px] sm:text-xs uppercase tracking-[0.25em] font-bold text-[#B3873E] block">
+              Botanical Authenticity & Purity
+            </span>
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#0B3C84] tracking-tight leading-tight">
+              See the Purity for Yourself
+            </h1>
+            <p className="text-sm sm:text-base text-neutral-600 font-sans tracking-wide leading-relaxed max-w-2xl mx-auto">
+              Watch our authentic Mysore Sandalwood water density test and master handicraft workshop in Jaipur, India.
+            </p>
           </div>
-        ))}
 
-        {/* Center-Bottom Hero Content (Matching Louis Vuitton Layout) */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 space-y-2.5 sm:space-y-3.5 mb-2 sm:mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {/* Small Category / Heritage Tag */}
-          <span className="font-cinzel text-[11px] sm:text-xs md:text-sm font-semibold tracking-[0.25em] md:tracking-[0.3em] uppercase text-brand-gold-200/90 block drop-shadow-md">
-            HERITAGE COLLECTION 2026
-          </span>
-
-          {/* Prominent Editorial Title */}
-          <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-white tracking-wide leading-tight md:leading-[1.15] drop-shadow-xl max-w-3xl mx-auto">
-            {banners[activeBannerIdx]?.heading || 'Royal Sandalwood Malas & Artifacts'}
-          </h1>
-
-          {/* Underlined Minimalist Action Links with Reverse White Directional Line */}
-          {/* Underlined Minimalist Action Links with Reverse White Directional Line */}
-          <div className="pt-2 sm:pt-3 flex flex-wrap items-center justify-center gap-4 sm:gap-8 md:gap-10 text-white font-sans text-xs sm:text-sm md:text-base tracking-wide">
-            <Link
-              href={banners[activeBannerIdx]?.cta_link || '/products'}
-              className="text-white hover:text-white/90 animated-underline-reverse-white font-medium py-1 drop-shadow-md"
-            >
-              {banners[activeBannerIdx]?.cta_label || 'Discover the Collection'}
-            </Link>
-            {banners[activeBannerIdx]?.cta_label?.toLowerCase() !== 'explore latest artifacts' && (
-              <Link
-                href="/products"
-                className="text-white hover:text-white/90 animated-underline-reverse-white font-medium py-1 drop-shadow-md"
-              >
-                Explore Latest Artifacts
-              </Link>
-            )}
-            {banners[activeBannerIdx]?.cta_label?.toLowerCase() !== 'request custom quote' && (
-              <button
-                type="button"
-                onClick={() => openQuoteModal('General Wholesale Requirement', 0)}
-                className="text-white hover:text-white/90 animated-underline-reverse-white font-medium py-1 drop-shadow-md cursor-pointer"
-              >
-                Request Custom Quote
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Minimalist Slide Indicators */}
-        {banners.length > 1 && (
-          <div className="absolute bottom-3 sm:bottom-4 right-4 sm:right-8 md:right-12 z-20 flex items-center gap-2">
-            {banners.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setActiveBannerIdx(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  idx === activeBannerIdx
-                    ? 'w-7 bg-brand-gold-400 shadow-md shadow-brand-gold-500/50'
-                    : 'w-2 bg-white/40 hover:bg-white/70'
-                }`}
+          {/* Main Featured Video Player (Façade Pattern for Maximum Performance) */}
+          <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border border-neutral-200/80 group">
+            {isPlaying ? (
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                title={activeVideo.title}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
               />
-            ))}
+            ) : (
+              <div
+                onClick={() => setIsPlaying(true)}
+                className="relative w-full h-full cursor-pointer overflow-hidden flex items-center justify-center select-none"
+              >
+                {/* Lightweight Background Thumbnail */}
+                <img
+                  src={activeVideo.thumbnail}
+                  alt={activeVideo.title}
+                  className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out brightness-90"
+                />
+
+                {/* Dark Vignette Overlay for Crisp Legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 group-hover:bg-black/40 transition-colors" />
+
+                {/* Top Badge */}
+                <div className="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-2">
+                  <span className="bg-[#0B3C84] text-white font-cinzel text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+                    {activeVideo.badge}
+                  </span>
+                  <span className="bg-black/60 text-white/90 backdrop-blur-md text-[11px] font-mono px-2.5 py-0.5 rounded-full">
+                    {activeVideo.duration}
+                  </span>
+                </div>
+
+                {/* Clean Centered Luxury Play Button Overlay */}
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 text-[#0B3C84] group-hover:bg-[#0B3C84] group-hover:text-white flex items-center justify-center shadow-2xl transition-all duration-300 transform group-hover:scale-110">
+                    <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1" />
+                  </div>
+                  <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-semibold text-white drop-shadow-md hidden sm:block">
+                    Click to Play Demonstration
+                  </span>
+                </div>
+
+                {/* Bottom Video Title Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-left">
+                  <h3 className="font-serif text-lg sm:text-2xl text-white font-normal drop-shadow-md line-clamp-1">
+                    {activeVideo.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-neutral-200 font-sans line-clamp-1 mt-0.5">
+                    {activeVideo.subtitle}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Small Horizontal Strip of Additional Video Thumbnails */}
+          <div className="pt-2">
+            <div className="flex items-center justify-between mb-3 px-1">
+              <span className="font-cinzel text-[11px] uppercase tracking-wider text-neutral-500 font-semibold">
+                More Atelier Demonstrations
+              </span>
+              <span className="text-xs font-sans text-neutral-500">
+                {activeVideoIdx + 1} of {HERO_VIDEOS.length}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              {HERO_VIDEOS.map((vid, idx) => {
+                const isActive = idx === activeVideoIdx;
+                return (
+                  <button
+                    key={vid.id}
+                    type="button"
+                    onClick={() => handleSelectVideo(idx)}
+                    className={`group text-left p-2 sm:p-2.5 rounded-xl transition-all duration-300 border flex flex-col gap-2 cursor-pointer ${
+                      isActive
+                        ? 'bg-white border-[#0B3C84] shadow-md ring-2 ring-[#0B3C84]/20'
+                        : 'bg-white/70 border-neutral-200/80 hover:bg-white hover:border-[#0B3C84]/50'
+                    }`}
+                  >
+                    <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-neutral-900">
+                      <img
+                        src={vid.thumbnail}
+                        alt={vid.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center shadow-md transition-transform ${
+                          isActive ? 'bg-[#0B3C84] text-white scale-110' : 'bg-white/90 text-[#0B3C84] group-hover:scale-110'
+                        }`}>
+                          <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                        </div>
+                      </div>
+                      <span className="absolute bottom-1 right-1 bg-black/70 text-white font-mono text-[9px] px-1.5 py-0.2 rounded">
+                        {vid.duration}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className={`font-serif text-xs font-medium line-clamp-1 ${
+                        isActive ? 'text-[#0B3C84]' : 'text-neutral-800 group-hover:text-[#0B3C84]'
+                      }`}>
+                        {vid.title}
+                      </h4>
+                      <p className="text-[10px] text-neutral-500 font-sans line-clamp-1 mt-0.5">
+                        {vid.badge}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
       </section>
 
-      {/* 2. LOUIS VUITTON STYLE "EXPLORE A SELECTION OF THE ATELIER'S CREATIONS" */}
-      <section className="bg-white py-16 md:py-24 border-b border-brand-sandalwood-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
+      {/* ========================================================================= */}
+      {/* 2. CATEGORIES (Second section)                                             */}
+      {/* Replicate reference style: Centered serif heading, 4 off-white cards        */}
+      {/* ========================================================================= */}
+      <section className="bg-white py-16 md:py-24 border-b border-[#EBE0CA]/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          {/* Section Heading - Clean Minimalist Royal Blue */}
+          {/* Centered Serif Heading & Muted Subheading */}
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84] tracking-wide">
               Explore a Selection of the Atelier&apos;s Creations
@@ -384,31 +488,31 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Luxury Studio Creation Cards Grid - Full Frame Images, No Border, Sharp Corners */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {PARENT_UNIVERSES.map((universe) => (
+          {/* 4 Category Cards Grid: 4-col desktop, 2-col tablet, 1-col mobile */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {CATEGORY_CARDS.map((cat) => (
               <Link
-                key={universe.id}
-                href={universe.exploreLink}
-                className="group flex flex-col cursor-pointer"
+                key={cat.id}
+                href={cat.link}
+                className="group flex flex-col cursor-pointer select-none"
               >
-                {/* Full Frame Studio Photo Container */}
-                <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden relative mb-4 rounded-none border-none flex items-center justify-center p-3 sm:p-4">
+                {/* Soft Off-White / Cream Card Container with Centered Product Image */}
+                <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden relative mb-4 rounded-xl border border-neutral-200/60 flex items-center justify-center p-6 shadow-xs group-hover:shadow-md transition-shadow">
                   <img
-                    src={universe.coverImage || universe.heroImage}
-                    alt={universe.title}
-                    className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none"
+                    src={cat.image}
+                    alt={cat.title}
+                    className="w-full h-full object-contain object-center group-hover:scale-106 transition-transform duration-700 ease-out select-none"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/3 transition-colors pointer-events-none" />
                 </div>
 
-                {/* Typography Below Image */}
-                <div className="space-y-1 text-center px-1">
-                  <h3 className="font-serif text-base sm:text-lg text-[#0B3C84] font-normal tracking-wide group-hover:opacity-75 transition-opacity leading-snug">
-                    {universe.title}
+                {/* Typography Below Card: Blue Serif Title & Underline Link */}
+                <div className="space-y-1.5 text-center px-1">
+                  <h3 className="font-serif text-lg sm:text-xl text-[#0B3C84] font-normal tracking-wide group-hover:opacity-80 transition-opacity leading-snug">
+                    {cat.title}
                   </h3>
-                  <div className="pt-1">
-                    <span className="text-xs font-sans text-neutral-700 group-hover:text-[#0B3C84] animated-underline inline-block">
+                  <div className="pt-0.5">
+                    <span className="text-xs font-sans text-neutral-700 group-hover:text-[#0B3C84] animated-underline inline-block font-medium">
                       Discover the Collection
                     </span>
                   </div>
@@ -416,161 +520,174 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* 3. LOUIS VUITTON EDITORIAL UNIVERSE SHOWCASES WITH SUB-CATEGORIES */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 space-y-28 py-8">
-        {PARENT_UNIVERSES.map((universe, uIdx) => (
-          <div key={universe.id} className="space-y-10">
-            
-            {/* Split Editorial Feature Banner (Alternating Left/Right) */}
-            <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center ${uIdx % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-              
-              {/* Editorial Large Visual - Full Bleed, No Border, Sharp Corners */}
-              <div className={`lg:col-span-7 ${uIdx % 2 === 1 ? 'lg:order-2' : ''}`}>
-                <div className="relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-none border-none shadow-md bg-[#F6F5F2]">
-                  <img
-                    src={universe.heroImage}
-                    alt={universe.title}
-                    className="w-full h-full object-cover hover:scale-103 transition-transform duration-1000 ease-out"
-                  />
-                </div>
-              </div>
-
-              {/* Editorial Text Block */}
-              <div className={`lg:col-span-5 space-y-4 sm:space-y-6 ${uIdx % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <h3 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84] leading-tight">
-                  {universe.title}
-                </h3>
-                <p className="text-sm sm:text-base text-neutral-700 font-sans leading-relaxed">
-                  {universe.description}
-                </p>
-                <div className="pt-2">
-                  <Link
-                    href={universe.exploreLink}
-                    className="text-[#0B3C84] hover:text-[#0B3C84] animated-underline text-sm font-sans tracking-wide inline-flex items-center gap-2 font-medium transition-all"
-                  >
-                    Explore Entire {universe.title} Collection <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-
+      {/* ========================================================================= */}
+      {/* 3. PRODUCTS (Third section)                                                */}
+      {/* Product cards with: image, Video badge, title, star rating, price range,   */}
+      {/* selectable variant pills, and "Select options" button                      */}
+      {/* ========================================================================= */}
+      <section className="bg-[#FDFBF7] py-16 md:py-24 border-b border-[#EBE0CA]/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EBE0CA]/80 pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <span className="font-cinzel text-xs uppercase tracking-[0.25em] font-bold text-[#B3873E] block">
+                Master Handicrafts
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
+                Featured Sandalwood Catalog
+              </h2>
+              <p className="text-sm text-neutral-600 font-sans">
+                Each piece preserves the pure, soothing botanical essential oils of genuine Mysuru Chandan.
+              </p>
             </div>
 
-            {/* Sub-Category Studio Gallery Row (4 Columns) - Full Bleed, No Borders, Sharp Corners */}
-            <div className="space-y-4 pt-4 border-t border-brand-sandalwood-100">
-              <div className="flex items-center justify-between">
-                <span className="font-serif text-sm sm:text-base font-normal text-[#0B3C84]">
-                  Subcategories in {universe.title}
-                </span>
-                <Link
-                  href={universe.exploreLink}
-                  className="text-xs font-sans text-neutral-600 hover:text-[#0B3C84] animated-underline transition-colors"
-                >
-                  View All {universe.subcategories.length} Categories
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                {universe.subcategories.map((sub, sIdx) => (
-                  <Link
-                    key={sIdx}
-                    href={`/products/${sub.slug}`}
-                    className="group flex flex-col cursor-pointer"
-                  >
-                    {/* Subcategory Studio Card Frame */}
-                    <div className="w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden mb-3 relative rounded-none border-none flex items-center justify-center p-3 sm:p-4">
-                      <img
-                        src={sub.image}
-                        alt={sub.name}
-                        className="w-full h-full object-contain object-center group-hover:scale-106 transition-transform duration-700 ease-out select-none"
-                      />
-                      <span className="absolute top-2.5 left-2.5 bg-white/95 text-black font-cinzel text-[8px] sm:text-[9px] font-bold px-2 py-0.5 tracking-wider shadow-sm">
-                        {sub.specs}
-                      </span>
-                    </div>
-
-                    {/* Subcategory Info */}
-                    <div className="space-y-1">
-                      <h4 className="font-serif text-sm sm:text-base text-[#0B3C84] font-medium group-hover:opacity-75 transition-opacity line-clamp-1">
-                        {sub.name}
-                      </h4>
-                      <p className="text-[11px] sm:text-xs text-neutral-500 font-sans line-clamp-1">
-                        {sub.tagline}
-                      </p>
-                      <span className="text-[11px] font-sans text-neutral-700 group-hover:text-[#0B3C84] animated-underline inline-block pt-1">
-                        Explore
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+            <div>
+              <Link
+                href="/products"
+                className="text-xs font-cinzel font-bold text-[#0B3C84] animated-underline uppercase tracking-wider inline-flex items-center gap-1.5 py-1"
+              >
+                Browse All 50+ Artifacts <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-
-          </div>
-        ))}
-      </section>
-
-      {/* 4. FEATURED PRODUCTS */}
-      <section className="bg-white py-16 md:py-24 border-t border-brand-sandalwood-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
-              Featured Handicraft Products
-            </h2>
-            <p className="text-sm text-neutral-600 font-sans">
-              Every item is intricately handcrafted from genuine, fragrant Indian Sandalwood by skilled Jaipuri artisans.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            {featuredProducts.map((p) => {
-              const catSlug = categories.find(c => c.id === p.category_id)?.slug || p.category_name?.toLowerCase().replace(/\s+/g, '-') || 'all';
+          {/* 4 Cards per row on Desktop, 2 on Tablet, 1 on Mobile */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {SHOWCASE_PRODUCTS.map((prod) => {
+              const isWishlisted = !!wishlist[prod.id];
+              const selectedVariant = selectedVariants[prod.id] || prod.variants[0];
+              const isSoldOut = prod.badge === 'SOLD OUT';
+
               return (
                 <div
-                  key={p.id}
-                  className="bg-white rounded-none border-none flex flex-col justify-between group"
+                  key={prod.id}
+                  className="bg-white rounded-xl border border-neutral-200/80 overflow-hidden flex flex-col justify-between group shadow-xs hover:shadow-md transition-all select-none"
                 >
-                  <Link href={`/products/${catSlug}/${p.slug}`} className="block">
-                    <div className="w-full aspect-[4/5] bg-[#F6F5F2] relative overflow-hidden rounded-none border-none flex items-center justify-center p-3 sm:p-4">
+                  {/* Card Header / Image Container */}
+                  <div className="relative w-full aspect-[4/5] bg-[#F6F5F2] overflow-hidden flex items-center justify-center p-4">
+                    <Link
+                      href={`/products/${prod.category_slug}/${prod.slug}`}
+                      className="w-full h-full flex items-center justify-center"
+                    >
                       <img
-                        src={getMediaUrl(p.images[0]) || '/static/uploads/products/10-mm-indian-sandalwood-mala_0_indian-sandalwood-mala-500x500.jpg'}
-                        alt={p.title}
-                        className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none"
+                        src={prod.image}
+                        alt={prod.title}
+                        className={`w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none ${
+                          isSoldOut ? 'opacity-70 grayscale-[20%]' : ''
+                        }`}
                       />
-                      <span className="absolute top-3 left-3 bg-white/95 text-black font-cinzel text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider shadow-sm">
-                        MOQ: {p.moq}
-                      </span>
-                    </div>
-                  </Link>
+                    </Link>
 
-                  <div className="pt-4 flex-1 flex flex-col justify-between space-y-3">
+                    {/* Top Badges */}
+                    <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start z-10">
+                      {prod.badge === 'BEST' && (
+                        <span className="bg-[#0B3C84] text-white font-cinzel text-[9px] font-bold px-2.5 py-0.5 tracking-wider uppercase shadow-sm rounded-xs">
+                          BEST
+                        </span>
+                      )}
+                      {prod.badge === 'SOLD OUT' && (
+                        <span className="bg-neutral-800 text-white font-cinzel text-[9px] font-bold px-2.5 py-0.5 tracking-wider uppercase shadow-sm rounded-xs">
+                          SOLD OUT
+                        </span>
+                      )}
+                      {prod.hasVideo && (
+                        <span className="inline-flex items-center gap-1 bg-white/95 text-[#0B3C84] font-sans text-[10px] font-medium px-2 py-0.5 shadow-sm rounded-xs">
+                          <Play className="w-2.5 h-2.5 fill-[#0B3C84]" /> Detailed Video Inside
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Wishlist Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => toggleWishlist(prod.id, e)}
+                      aria-label="Add to wishlist"
+                      className="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white text-neutral-700 hover:text-black transition-colors z-10 shadow-xs"
+                    >
+                      <Heart
+                        className={`w-4 h-4 transition-colors ${
+                          isWishlisted ? 'fill-red-500 text-red-500' : 'text-neutral-700'
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  {/* Card Content */}
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
                     <div className="space-y-1.5">
-                      <span className="text-[11px] font-sans text-neutral-500 uppercase tracking-wider block">
-                        {p.category_name}
+                      <span className="text-[10px] font-cinzel text-[#B3873E] font-semibold uppercase tracking-wider block">
+                        {prod.category_name}
                       </span>
-                      <Link href={`/products/${catSlug}/${p.slug}`}>
-                        <h3 className="font-serif text-[#0B3C84] text-base sm:text-lg hover:opacity-75 transition-opacity line-clamp-1 font-normal">
-                          {p.title}
+
+                      <Link href={`/products/${prod.category_slug}/${prod.slug}`}>
+                        <h3 className="font-serif text-[#0B3C84] text-base sm:text-lg hover:opacity-80 transition-opacity line-clamp-2 font-normal leading-snug">
+                          {prod.title}
                         </h3>
                       </Link>
-                      <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed">
-                        {p.short_description}
-                      </p>
+
+                      {/* Star Rating & Review Count */}
+                      <div className="flex items-center gap-1.5 pt-0.5">
+                        <div className="flex items-center text-amber-500">
+                          {[...Array(prod.rating)].map((_, i) => (
+                            <Star key={i} className="w-3.5 h-3.5 fill-amber-500" />
+                          ))}
+                        </div>
+                        <span className="text-[11px] font-sans text-neutral-500">
+                          ({prod.reviewCount} reviews)
+                        </span>
+                      </div>
+
+                      {/* Price Range */}
+                      <div className="pt-1.5">
+                        <span className="font-sans font-semibold text-[#0B3C84] text-base">
+                          {prod.priceRange}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="pt-3 border-t border-brand-sandalwood-100 flex items-center justify-between">
-                      <div>
-                        <span className="text-[11px] text-neutral-400 block uppercase tracking-wider">Wholesale</span>
-                        <span className="font-bold text-[#0B3C84] text-sm sm:text-base">{p.price || 'Contact for Price'}</span>
+                    {/* Selectable Size/Weight Variant Pills */}
+                    <div className="space-y-1.5 pt-2 border-t border-neutral-100">
+                      <span className="text-[10px] uppercase font-cinzel text-neutral-500 font-semibold tracking-wider block">
+                        Available Variants
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {prod.variants.map((variant) => {
+                          const isSelected = selectedVariant === variant;
+                          return (
+                            <button
+                              key={variant}
+                              type="button"
+                              onClick={(e) => handleVariantSelect(prod.id, variant, e)}
+                              className={`px-2.5 py-1 text-[11px] font-sans font-medium transition-all rounded cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#0B3C84] text-white border border-[#0B3C84] shadow-xs'
+                                  : 'bg-[#F6F5F2] text-neutral-700 border border-neutral-200/80 hover:border-neutral-400'
+                              }`}
+                            >
+                              {variant}
+                            </button>
+                          );
+                        })}
                       </div>
+                    </div>
+
+                    {/* Select Options Action Button */}
+                    <div className="pt-2">
                       <button
                         type="button"
-                        onClick={() => openQuoteModal(p.title, p.id)}
-                        className="text-xs font-sans font-medium text-[#0B3C84] hover:text-[#0B3C84] animated-underline uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
+                        onClick={() => openQuoteModal(prod)}
+                        className={`w-full font-cinzel font-bold text-xs uppercase tracking-wider py-2.5 px-4 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs rounded-lg ${
+                          isSoldOut
+                            ? 'bg-neutral-100 text-neutral-600 border border-neutral-300 hover:bg-neutral-200'
+                            : 'bg-[#0B3C84] hover:bg-[#082C62] text-white'
+                        }`}
                       >
-                        Get Quote <ArrowRight className="w-3.5 h-3.5" />
+                        {isSoldOut ? 'Request Restock Quote' : 'Select options'} <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -578,187 +695,371 @@ export default function HomePage() {
               );
             })}
           </div>
+
         </div>
       </section>
 
-      {/* 5. ABOUT COMPANY INFO BLOCK */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div className="space-y-6">
-          <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0B3C84] leading-tight">
-            WELCOME TO Riddhi Siddhi Arts & Crafts
-          </h2>
-          <p className="text-neutral-700 text-base leading-relaxed">
-            Headquartered in the cultural capital of Jaipur, Rajasthan, <strong>Riddhi Siddhi Arts & Crafts</strong> (Proprietor: Ghanshyam Agrawal) is a premier manufacturer, exporter, and supplier of authentic Indian Sandalwood handicraft items.
-          </p>
-          <p className="text-neutral-600 text-sm leading-relaxed">
-            We specialize in crafting 108 Japa Malas, handcarved royal sandalwood elephants, loose sandalwood beads (4mm to 22mm), designer bracelets, religious wristlets, and Muslim Tashbih prayer beads. Every piece preserves the natural aromatic essence and timeless luxury of pure Mysore sandalwood.
-          </p>
-
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-brand-sandalwood-200 wood-card-shadow">
-              <CheckCircle2 className="w-5 h-5 text-neutral-600 shrink-0 mt-0.5" />
-              <div>
-                <h4 className="font-serif font-bold text-[#0B3C84] text-sm">100% Genuine Wood</h4>
-                <p className="text-xs text-neutral-500">Pure Indian Mysore Sandalwood</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-brand-sandalwood-200 wood-card-shadow">
-              <Award className="w-5 h-5 text-neutral-600 shrink-0 mt-0.5" />
-              <div>
-                <h4 className="font-serif font-bold text-[#0B3C84] text-sm">Global Exporter</h4>
-                <p className="text-xs text-neutral-500">IEC & GST Verified Supplier</p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 bg-[#0B3C84] hover:bg-[#082C62] text-white font-cinzel text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-full transition-all shadow-md"
-            >
-              Read Full Brand Story <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div className="w-full h-[450px] overflow-hidden rounded-none border-none shadow-xl">
-            <img
-              src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80"
-              alt="Jaipur Sandalwood Artisan"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute -bottom-6 -left-6 bg-[#0B3C84] text-white p-6 rounded-none shadow-2xl max-w-xs hidden sm:block">
-            <span className="font-serif text-2xl font-bold text-white block">Jaipur Craft</span>
-            <p className="text-xs text-blue-100 mt-1">Master wood carvers preserving centuries of royal Rajasthani heritage.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. REELS & VIDEO SHOWCASE */}
-      {reels.length > 0 && (
-        <section className="bg-white py-16 border-t border-brand-sandalwood-100">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-10">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
-                Short Reels & Workshop Demonstrations
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {reels.map((r) => (
-                <div key={r.id} className="bg-[#F6F5F2] overflow-hidden shadow-sm space-y-3 p-4">
-                  <div className="w-full h-64 overflow-hidden relative group">
-                    {r.video_url.includes('youtube.com') || r.video_url.includes('youtu.be') ? (
-                      <iframe
-                        src={getEmbedUrl(r.video_url)}
-                        title={r.title}
-                        className="w-full h-full"
-                        allowFullScreen
-                      />
-                    ) : (
-                      <video src={getMediaUrl(r.video_url)} controls className="w-full h-full object-cover" />
-                    )}
-                  </div>
-                  <h3 className="font-serif font-semibold text-sm text-[#0B3C84] line-clamp-2">
-                    {r.title}
-                  </h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 7. VERIFIED CUSTOMER REVIEWS */}
-      {reviews.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 md:px-8 space-y-8 py-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
-              What Our Buyers Say
+      {/* ========================================================================= */}
+      {/* 4. TRUST WE BUILT IN 8 YEARS (Exact content & layout from purechandan.com) */}
+      {/* ========================================================================= */}
+      <section className="bg-white py-16 md:py-20 border-b border-[#EBE0CA]/60">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84] tracking-wide">
+              Trust We Built In 8 Years
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {reviews.map((rev) => (
-              <div key={rev.id} className="bg-[#F6F5F2] p-6 shadow-sm space-y-4">
-                <div className="flex items-center gap-1 text-amber-500">
-                  {[...Array(rev.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-500" />
-                  ))}
-                </div>
-                <p className="text-sm text-neutral-700 italic leading-relaxed">
-                  &ldquo;{rev.text}&rdquo;
-                </p>
-                <div className="pt-2 border-t border-brand-sandalwood-200 flex items-center justify-between">
-                  <span className="font-serif font-bold text-sm text-[#0B3C84]">{rev.user_name}</span>
-                  <span className="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                    Verified Buyer
-                  </span>
-                </div>
+          {/* 2 Big Counters matching purechandan.com elementor-counter structure */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10 max-w-3xl mx-auto">
+            
+            {/* Counter 1: Orders Delivered Across India */}
+            <div className="bg-[#F6F5F2] p-8 sm:p-10 rounded-2xl border border-neutral-200/80 text-center space-y-2 shadow-xs hover:border-[#0B3C84]/40 transition-colors">
+              <div className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#0B3C84] tracking-tight">
+                140,000<span className="text-[#B3873E] font-bold">+</span>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+              <div className="font-sans text-sm sm:text-base text-neutral-700 font-medium pt-1">
+                Orders Delivered Across India
+              </div>
+            </div>
 
-      {/* 7. BRAND COLLABORATIONS & CERTIFICATES */}
-      <section className="bg-brand-sandalwood-100/60 py-12 border-y border-brand-sandalwood-200">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6 text-center">
-          <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-semibold text-brand-navy-900/70 block">
-            Certifications & Registered Trade Licenses
-          </span>
-          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
-            <div className="bg-white px-6 py-3 rounded-xl border border-brand-sandalwood-300 font-serif font-bold text-brand-navy-900 text-sm shadow-sm">
-              GST Registration: <span className="text-brand-gold-600 font-mono">08ADOPA9061E1ZK</span>
+            {/* Counter 2: By Over 24,000+ Happy Customers */}
+            <div className="bg-[#F6F5F2] p-8 sm:p-10 rounded-2xl border border-neutral-200/80 text-center space-y-2 shadow-xs hover:border-[#0B3C84]/40 transition-colors">
+              <div className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#0B3C84] tracking-tight flex items-center justify-center gap-2">
+                <span className="text-2xl sm:text-3xl text-neutral-500 font-serif">Rated </span>
+                <span>4.3</span>
+                <span className="text-2xl sm:text-3xl text-neutral-500 font-serif">/5</span>
+              </div>
+              <div className="flex items-center justify-center gap-1 text-amber-500 pb-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-500" />
+                ))}
+              </div>
+              <div className="font-sans text-sm sm:text-base text-neutral-700 font-medium">
+                By Over 24,000+ Happy Customers
+              </div>
             </div>
-            <div className="bg-white px-6 py-3 rounded-xl border border-brand-sandalwood-300 font-serif font-bold text-brand-navy-900 text-sm shadow-sm">
-              IEC Code Certified Exporter
-            </div>
-            <div className="bg-white px-6 py-3 rounded-xl border border-brand-sandalwood-300 font-serif font-bold text-brand-navy-900 text-sm shadow-sm">
-              Trustseal Verified Manufacturer
-            </div>
+
           </div>
+
         </div>
       </section>
 
-      {/* 8. LOCATION & GOOGLE MAP */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="bg-brand-navy-950 text-white p-8 rounded-3xl space-y-6 flex flex-col justify-between border border-brand-gold-500/20 shadow-xl">
-          <div className="space-y-4">
-            <span className="font-cinzel text-xs uppercase tracking-[0.2em] font-bold text-brand-gold-400">Visit Workshop</span>
-            <h3 className="font-serif text-2xl font-bold">Factory & Office Address</h3>
-            <p className="text-sm text-brand-gold-100/80 leading-relaxed">
-              Basement, Plot 115, Mohan Nagar Triveni Nagar, Gopalpura By Pass Road, Jaipur - 302018, Rajasthan, India
+      {/* ========================================================================= */}
+      {/* 5. SOCIAL RESPONSIBILITY (Exact content from purechandan.com)              */}
+      {/* ========================================================================= */}
+      <section className="bg-[#FDFBF7] py-16 md:py-20 border-b border-[#EBE0CA]/60">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
+          
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
+            Social Responsibility
+          </h2>
+
+          <div className="bg-white p-8 sm:p-12 rounded-3xl border border-neutral-200/80 shadow-sm max-w-3xl mx-auto text-neutral-700 font-sans text-sm sm:text-base leading-relaxed space-y-4">
+            <p>
+              At <strong className="text-[#0B3C84]">PureChandan.com</strong>, we believe in giving back to the community. That&apos;s why 2% of our revenue is dedicated to supporting initiatives like the mid-day meal program, which helps provide nutritious meals to schoolchildren across India. By choosing our products, you&apos;re not just enhancing your experience, but also contributing to a brighter future for children in need.
             </p>
-            <div className="space-y-2 text-sm pt-2">
-              <p><span className="text-brand-gold-400 font-medium font-cinzel">Proprietor:</span> Ghanshyam Agrawal</p>
-              <p><span className="text-brand-gold-400 font-medium font-cinzel">GSTIN:</span> <span className="font-mono">08ADOPA9061E1ZK</span></p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. CUSTOMER TESTIMONIAL (WhatsApp Screenshots Carousel from purechandan.com) */}
+      {/* ========================================================================= */}
+      <section className="bg-white py-16 md:py-24 border-b border-[#EBE0CA]/60 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
+              Customer Testimonial
+            </h2>
+          </div>
+
+          {/* Testimonial Images Carousel */}
+          <div
+            onMouseEnter={() => setIsCarouselHovered(true)}
+            onMouseLeave={() => setIsCarouselHovered(false)}
+            className="relative"
+          >
+            {/* Sliding Track */}
+            <div className="overflow-hidden py-4">
+              <div
+                className="flex transition-transform duration-500 ease-out gap-4 sm:gap-6"
+                style={{
+                  transform: `translateX(-${carouselIndex * (100 / (typeof window !== 'undefined' && window.innerWidth < 640 ? 2 : typeof window !== 'undefined' && window.innerWidth < 1024 ? 3 : 4))}%)`,
+                }}
+              >
+                {PURECHANDAN_TESTIMONIALS.map((imgUrl, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setLightboxImg(imgUrl)}
+                    className="shrink-0 w-1/2 sm:w-1/3 lg:w-1/4 cursor-pointer group"
+                  >
+                    <div className="relative aspect-[9/16] max-h-[420px] bg-[#F6F5F2] rounded-2xl overflow-hidden border border-neutral-200/80 shadow-sm group-hover:shadow-lg group-hover:border-[#0B3C84]/40 transition-all flex items-center justify-center p-2">
+                      <img
+                        src={imgUrl}
+                        alt={`Customer Testimonial ${idx + 1}`}
+                        className="w-full h-full object-contain rounded-xl select-none group-hover:scale-103 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-white/90 text-[#0B3C84] shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <ZoomIn className="w-5 h-5" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              type="button"
+              onClick={prevSlide}
+              aria-label="Previous testimonial"
+              className="absolute top-1/2 -translate-y-1/2 left-0 -ml-2 sm:-ml-4 w-11 h-11 rounded-full bg-white text-[#0B3C84] shadow-lg border border-neutral-200 flex items-center justify-center hover:bg-[#0B3C84] hover:text-white transition-all cursor-pointer z-10"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              type="button"
+              onClick={nextSlide}
+              aria-label="Next testimonial"
+              className="absolute top-1/2 -translate-y-1/2 right-0 -mr-2 sm:-mr-4 w-11 h-11 rounded-full bg-white text-[#0B3C84] shadow-lg border border-neutral-200 flex items-center justify-center hover:bg-[#0B3C84] hover:text-white transition-all cursor-pointer z-10"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Dot indicators */}
+            <div className="flex justify-center items-center gap-1.5 pt-6">
+              {PURECHANDAN_TESTIMONIALS.slice(0, 10).map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setCarouselIndex(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    carouselIndex % 10 === idx
+                      ? 'w-7 bg-[#0B3C84]'
+                      : 'w-2 bg-neutral-300 hover:bg-neutral-400'
+                  }`}
+                />
+              ))}
             </div>
           </div>
 
-          <a
-            href="https://maps.google.com/?q=26.87013,75.77491"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-navy-950 font-cinzel font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full text-center flex items-center justify-center gap-2 transition-all shadow-md"
-          >
-            <MapPin className="w-4 h-4" /> Get Directions on Google Maps
-          </a>
-        </div>
+          {/* Chat With Amit Button (Exact WhatsApp button from purechandan.com) */}
+          <div className="pt-8 flex justify-center">
+            <a
+              href="https://api.whatsapp.com/send/?phone=919971918546&text&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 select-none"
+            >
+              <svg className="w-6 h-6 fill-current" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+              </svg>
+              <span>Chat With Amit</span>
+            </a>
+          </div>
 
-        <div className="lg:col-span-2 w-full h-[380px] rounded-3xl overflow-hidden border border-brand-sandalwood-300 wood-card-shadow">
-          <iframe
-            src="https://maps.google.com/maps?q=26.87013,75.77491&z=15&output=embed"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-          />
         </div>
       </section>
+
+      {/* ========================================================================= */}
+      {/* 7. YOUTUBE SHORTS (Exact section from purechandan.com)                    */}
+      {/* ========================================================================= */}
+      <section className="bg-[#FDFBF7] py-16 md:py-24 border-b border-[#EBE0CA]/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
+              YouTube Shorts
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PURECHANDAN_SHORTS.map((s) => {
+              const isPlayingShort = playingShorts[s.id];
+
+              return (
+                <div
+                  key={s.id}
+                  className="bg-neutral-900 rounded-2xl overflow-hidden aspect-[9/16] shadow-md border border-neutral-200/60 relative group"
+                >
+                  {isPlayingShort || !s.thumbnail ? (
+                    <iframe
+                      src={`${s.embedUrl}?autoplay=1&rel=0`}
+                      title={s.title}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <div
+                      onClick={() => setPlayingShorts((prev) => ({ ...prev, [s.id]: true }))}
+                      className="relative w-full h-full cursor-pointer overflow-hidden flex items-center justify-center select-none"
+                    >
+                      <img
+                        src={s.thumbnail}
+                        alt={s.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-90"
+                      />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
+
+                      {/* YouTube Play Icon Overlay */}
+                      <div className="relative z-10 w-16 h-12 bg-red-600 group-hover:bg-red-700 text-white rounded-2xl flex items-center justify-center shadow-2xl transition-all transform group-hover:scale-110">
+                        <Play className="w-6 h-6 fill-white ml-0.5" />
+                      </div>
+
+                      <div className="absolute bottom-3 left-3 right-3 text-left">
+                        <p className="text-xs font-sans text-white font-medium drop-shadow-md line-clamp-2">
+                          {s.title}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 8. FOLLOW US & DESCRIPTION (Exact layout & links from purechandan.com)     */}
+      {/* ========================================================================= */}
+      <section className="bg-white py-16 md:py-20 border-b border-[#EBE0CA]/60">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-center">
+          
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
+            Follow Us
+          </h2>
+
+          <div className="space-y-3 max-w-2xl mx-auto text-neutral-600 font-sans text-sm sm:text-base leading-relaxed">
+            <p>
+              PureChandan.com offers 100% pure and premium-quality sandalwood, carefully sourced for authenticity and freshness, perfect for religious rituals, meditation, or personal care, designed to enhance your experience and delivered with complete trust.
+            </p>
+            <p className="font-medium text-neutral-800 pt-1">
+              2199, Gali Hinga Beg, Tilak Bazar, Khari Baoli, Chandni Chowk, Delhi-110006
+            </p>
+          </div>
+
+          {/* Social Icons matching purechandan.com */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            {/* X / Twitter */}
+            <a
+              href="https://x.com/AmitGoyal837495?t=NfcmJZVQe54AfAr9tV-YKQ&s=09"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on X"
+              className="w-10 h-10 rounded-full bg-[#F6F5F2] hover:bg-[#0B3C84] text-neutral-700 hover:text-white border border-neutral-200/80 flex items-center justify-center transition-all shadow-xs"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+
+            {/* Facebook */}
+            <a
+              href="https://www.facebook.com/profile.php?id=61568239840771"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Facebook"
+              className="w-10 h-10 rounded-full bg-[#F6F5F2] hover:bg-[#1877F2] text-neutral-700 hover:text-white border border-neutral-200/80 flex items-center justify-center transition-all shadow-xs"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 32 32">
+                <path d="M 19.253906 2 C 15.311906 2 13 4.0821719 13 8.8261719 L 13 13 L 8 13 L 8 18 L 13 18 L 13 30 L 18 30 L 18 18 L 22 18 L 23 13 L 18 13 L 18 9.671875 C 18 7.884875 18.582766 7 20.259766 7 L 23 7 L 23 2.2050781 C 22.526 2.1410781 21.144906 2 19.253906 2 z"/>
+              </svg>
+            </a>
+
+            {/* Pinterest */}
+            <a
+              href="https://pin.it/7mt2Ks9S4"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Pinterest"
+              className="w-10 h-10 rounded-full bg-[#F6F5F2] hover:bg-[#E60023] text-neutral-700 hover:text-white border border-neutral-200/80 flex items-center justify-center transition-all shadow-xs"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 16 16">
+                <path d="M 7.5 1 C 3.910156 1 1 3.910156 1 7.5 C 1 10.253906 2.714844 12.605469 5.132813 13.554688 C 5.074219 13.039063 5.023438 12.25 5.152344 11.6875 C 5.273438 11.183594 5.914063 8.457031 5.914063 8.457031 C 5.914063 8.457031 5.722656 8.066406 5.722656 7.492188 C 5.722656 6.589844 6.246094 5.914063 6.898438 5.914063 C 7.453125 5.914063 7.71875 6.332031 7.71875 6.828125 C 7.71875 7.386719 7.363281 8.222656 7.183594 8.992188 C 7.027344 9.640625 7.507813 10.167969 8.144531 10.167969 C 9.300781 10.167969 10.1875 8.949219 10.1875 7.191406 C 10.1875 5.636719 9.070313 4.546875 7.472656 4.546875 C 5.625 4.546875 4.539063 5.933594 4.539063 7.367188 C 4.539063 7.925781 4.753906 8.527344 5.023438 8.851563 C 5.074219 8.917969 5.082031 8.972656 5.066406 9.039063 C 5.019531 9.242188 4.90625 9.6875 4.886719 9.777344 C 4.859375 9.894531 4.792969 9.921875 4.667969 9.863281 C 3.855469 9.484375 3.347656 8.296875 3.347656 7.34375 C 3.347656 5.292969 4.839844 3.410156 7.644531 3.410156 C 9.898438 3.410156 11.652344 5.015625 11.652344 7.164063 C 11.652344 9.402344 10.238281 11.207031 8.277344 11.207031 C 7.617188 11.207031 7 10.863281 6.789063 10.460938 C 6.789063 10.460938 6.460938 11.703125 6.382813 12.007813 C 6.234375 12.570313 5.839844 13.277344 5.574219 13.710938 C 6.183594 13.898438 6.828125 14 7.5 14 C 11.089844 14 14 11.089844 14 7.5 C 14 3.910156 11.089844 1 7.5 1 Z"/>
+              </svg>
+            </a>
+
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/pure_chandan/profilecard/?igsh=MWo5N3VqMXlhdnFqYw=="
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Instagram"
+              className="w-10 h-10 rounded-full bg-[#F6F5F2] hover:bg-[#E4405F] text-neutral-700 hover:text-white border border-neutral-200/80 flex items-center justify-center transition-all shadow-xs"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 48 48">
+                <path d="M 16.5 5 C 10.16639 5 5 10.16639 5 16.5 L 5 31.5 C 5 37.832757 10.166209 43 16.5 43 L 31.5 43 C 37.832938 43 43 37.832938 43 31.5 L 43 16.5 C 43 10.166209 37.832757 5 31.5 5 L 16.5 5 z M 16.5 8 L 31.5 8 C 36.211243 8 40 11.787791 40 16.5 L 40 31.5 C 40 36.211062 36.211062 40 31.5 40 L 16.5 40 C 11.787791 40 8 36.211243 8 31.5 L 8 16.5 C 8 11.78761 11.78761 8 16.5 8 z M 34 12 C 32.895 12 32 12.895 32 14 C 32 15.105 32.895 16 34 16 C 35.105 16 36 15.105 36 14 C 36 12.895 35.105 12 34 12 z M 24 14 C 18.495178 14 14 18.495178 14 24 C 14 29.504822 18.495178 34 24 34 C 29.504822 34 34 29.504822 34 24 C 34 18.495178 29.504822 14 24 14 z M 24 17 C 27.883178 17 31 20.116822 31 24 C 31 27.883178 27.883178 31 24 31 C 20.116822 31 17 27.883178 17 24 C 17 20.116822 20.116822 17 24 17 z"/>
+              </svg>
+            </a>
+
+            {/* YouTube */}
+            <a
+              href="https://youtube.com/@purechandandotcom?si=_-egO8NbA533pVSk"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on YouTube"
+              className="w-10 h-10 rounded-full bg-[#F6F5F2] hover:bg-[#FF0000] text-neutral-700 hover:text-white border border-neutral-200/80 flex items-center justify-center transition-all shadow-xs"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,14.598V9.402c0-0.385,0.417-0.625,0.75-0.433l4.5,2.598c0.333,0.192,0.333,0.674,0,0.866l-4.5,2.598 C10.417,15.224,10,14.983,10,14.598z"/>
+              </svg>
+            </a>
+
+            {/* WhatsApp */}
+            <a
+              href="https://api.whatsapp.com/send/?phone=919971918546&text&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on WhatsApp"
+              className="w-10 h-10 rounded-full bg-[#F6F5F2] hover:bg-[#25D366] text-neutral-700 hover:text-white border border-neutral-200/80 flex items-center justify-center transition-all shadow-xs"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M 12.011719 2 C 6.5057187 2 2.0234844 6.478375 2.0214844 11.984375 C 2.0204844 13.744375 2.4814687 15.462563 3.3554688 16.976562 L 2 22 L 7.2324219 20.763672 C 8.6914219 21.559672 10.333859 21.977516 12.005859 21.978516 L 12.009766 21.978516 C 17.514766 21.978516 21.995047 17.499141 21.998047 11.994141 C 22.000047 9.3251406 20.962172 6.8157344 19.076172 4.9277344 C 17.190172 3.0407344 14.683719 2.001 12.011719 2 z M 12.009766 4 C 14.145766 4.001 16.153109 4.8337969 17.662109 6.3417969 C 19.171109 7.8517969 20.000047 9.8581875 19.998047 11.992188 C 19.996047 16.396187 16.413812 19.978516 12.007812 19.978516 C 10.674812 19.977516 9.3544062 19.642812 8.1914062 19.007812 L 7.5175781 18.640625 L 6.7734375 18.816406 L 4.8046875 19.28125 L 5.2851562 17.496094 L 5.5019531 16.695312 L 5.0878906 15.976562 C 4.3898906 14.768562 4.0204844 13.387375 4.0214844 11.984375 C 4.0234844 7.582375 7.6067656 4 12.009766 4 z M 8.4765625 7.375 C 8.3095625 7.375 8.0395469 7.4375 7.8105469 7.6875 C 7.5815469 7.9365 6.9355469 8.5395781 6.9355469 9.7675781 C 6.9355469 10.995578 7.8300781 12.182609 7.9550781 12.349609 C 8.0790781 12.515609 9.68175 15.115234 12.21875 16.115234 C 14.32675 16.946234 14.754891 16.782234 15.212891 16.740234 C 15.670891 16.699234 16.690438 16.137687 16.898438 15.554688 C 17.106437 14.971687 17.106922 14.470187 17.044922 14.367188 C 16.982922 14.263188 16.816406 14.201172 16.566406 14.076172 C 16.317406 13.951172 15.090328 13.348625 14.861328 13.265625 C 14.632328 13.182625 14.464828 13.140625 14.298828 13.390625 C 14.132828 13.640625 13.655766 14.201187 13.509766 14.367188 C 13.363766 14.534188 13.21875 14.556641 12.96875 14.431641 C 12.71875 14.305641 11.914938 14.041406 10.960938 13.191406 C 10.218937 12.530406 9.7182656 11.714844 9.5722656 11.464844 C 9.4272656 11.215844 9.5585938 11.079078 9.6835938 10.955078 C 9.7955938 10.843078 9.9316406 10.663578 10.056641 10.517578 C 10.180641 10.371578 10.223641 10.267562 10.306641 10.101562 C 10.389641 9.9355625 10.347156 9.7890625 10.285156 9.6640625 C 10.223156 9.5390625 9.737625 8.3065 9.515625 7.8125 C 9.328625 7.3975 9.131125 7.3878594 8.953125 7.3808594 C 8.808125 7.3748594 8.6425625 7.375 8.4765625 7.375 z"/>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Lightbox for WhatsApp Testimonial Screenshots */}
+      {lightboxImg && (
+        <div
+          onClick={() => setLightboxImg(null)}
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+        >
+          <button
+            type="button"
+            onClick={() => setLightboxImg(null)}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white bg-white/20 hover:bg-white/40 p-2 rounded-full transition-colors cursor-pointer z-10"
+            aria-label="Close image preview"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-2xl max-h-[90vh] bg-white rounded-2xl overflow-hidden p-2 shadow-2xl"
+          >
+            <img
+              src={lightboxImg}
+              alt="Testimonial Full View"
+              className="w-full h-full max-h-[85vh] object-contain rounded-xl"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Enquiry Modal */}
       <EnquiryModal
@@ -766,7 +1067,9 @@ export default function HomePage() {
         onClose={() => setEnquiryModalOpen(false)}
         productTitle={selectedProductTitle}
         productId={selectedProductId}
+        selectedSize={selectedVariantPill}
       />
+
     </div>
   );
 }
