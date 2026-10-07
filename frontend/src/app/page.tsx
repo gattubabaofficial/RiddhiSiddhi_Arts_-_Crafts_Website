@@ -264,7 +264,6 @@ const PURECHANDAN_SHORTS = [
 
 export default function HomePage() {
   // Hero Video state
-  const [activeVideoIdx, setActiveVideoIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   // Products state
@@ -285,12 +284,7 @@ export default function HomePage() {
   const [selectedProductId, setSelectedProductId] = useState<number | undefined>(undefined);
   const [selectedVariantPill, setSelectedVariantPill] = useState<string>('');
 
-  const activeVideo = HERO_VIDEOS[activeVideoIdx];
-
-  const handleSelectVideo = (idx: number) => {
-    setActiveVideoIdx(idx);
-    setIsPlaying(true);
-  };
+  const activeVideo = HERO_VIDEOS[0];
 
   const toggleWishlist = (productId: number, e: React.MouseEvent) => {
     e.preventDefault();
@@ -337,19 +331,6 @@ export default function HomePage() {
       <section className="relative w-full pt-28 sm:pt-32 md:pt-36 pb-12 md:pb-16 bg-[#FDFBF7] border-b border-[#EBE0CA]/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
-          {/* Hero Editorial Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="font-cinzel text-[11px] sm:text-xs uppercase tracking-[0.25em] font-bold text-[#B3873E] block">
-              Botanical Authenticity & Purity
-            </span>
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#0B3C84] tracking-tight leading-tight">
-              See the Purity for Yourself
-            </h1>
-            <p className="text-sm sm:text-base text-neutral-600 font-sans tracking-wide leading-relaxed max-w-2xl mx-auto">
-              Watch our authentic Mysore Sandalwood water density test and master handicraft workshop in Jaipur, India.
-            </p>
-          </div>
-
           {/* Main Featured Video Player (Façade Pattern for Maximum Performance) */}
           <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border border-neutral-200/80 group">
             {isPlaying ? (
@@ -406,66 +387,6 @@ export default function HomePage() {
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Small Horizontal Strip of Additional Video Thumbnails */}
-          <div className="pt-2">
-            <div className="flex items-center justify-between mb-3 px-1">
-              <span className="font-cinzel text-[11px] uppercase tracking-wider text-neutral-500 font-semibold">
-                More Atelier Demonstrations
-              </span>
-              <span className="text-xs font-sans text-neutral-500">
-                {activeVideoIdx + 1} of {HERO_VIDEOS.length}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              {HERO_VIDEOS.map((vid, idx) => {
-                const isActive = idx === activeVideoIdx;
-                return (
-                  <button
-                    key={vid.id}
-                    type="button"
-                    onClick={() => handleSelectVideo(idx)}
-                    className={`group text-left p-2 sm:p-2.5 rounded-xl transition-all duration-300 border flex flex-col gap-2 cursor-pointer ${
-                      isActive
-                        ? 'bg-white border-[#0B3C84] shadow-md ring-2 ring-[#0B3C84]/20'
-                        : 'bg-white/70 border-neutral-200/80 hover:bg-white hover:border-[#0B3C84]/50'
-                    }`}
-                  >
-                    <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-neutral-900">
-                      <img
-                        src={vid.thumbnail}
-                        alt={vid.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center shadow-md transition-transform ${
-                          isActive ? 'bg-[#0B3C84] text-white scale-110' : 'bg-white/90 text-[#0B3C84] group-hover:scale-110'
-                        }`}>
-                          <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
-                        </div>
-                      </div>
-                      <span className="absolute bottom-1 right-1 bg-black/70 text-white font-mono text-[9px] px-1.5 py-0.2 rounded">
-                        {vid.duration}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className={`font-serif text-xs font-medium line-clamp-1 ${
-                        isActive ? 'text-[#0B3C84]' : 'text-neutral-800 group-hover:text-[#0B3C84]'
-                      }`}>
-                        {vid.title}
-                      </h4>
-                      <p className="text-[10px] text-neutral-500 font-sans line-clamp-1 mt-0.5">
-                        {vid.badge}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
           </div>
 
         </div>
@@ -700,73 +621,7 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. TRUST WE BUILT IN 8 YEARS (Exact content & layout from purechandan.com) */}
-      {/* ========================================================================= */}
-      <section className="bg-white py-16 md:py-20 border-b border-[#EBE0CA]/60">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84] tracking-wide">
-              Trust We Built In 8 Years
-            </h2>
-          </div>
-
-          {/* 2 Big Counters matching purechandan.com elementor-counter structure */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10 max-w-3xl mx-auto">
-            
-            {/* Counter 1: Orders Delivered Across India */}
-            <div className="bg-[#F6F5F2] p-8 sm:p-10 rounded-2xl border border-neutral-200/80 text-center space-y-2 shadow-xs hover:border-[#0B3C84]/40 transition-colors">
-              <div className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#0B3C84] tracking-tight">
-                140,000<span className="text-[#B3873E] font-bold">+</span>
-              </div>
-              <div className="font-sans text-sm sm:text-base text-neutral-700 font-medium pt-1">
-                Orders Delivered Across India
-              </div>
-            </div>
-
-            {/* Counter 2: By Over 24,000+ Happy Customers */}
-            <div className="bg-[#F6F5F2] p-8 sm:p-10 rounded-2xl border border-neutral-200/80 text-center space-y-2 shadow-xs hover:border-[#0B3C84]/40 transition-colors">
-              <div className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#0B3C84] tracking-tight flex items-center justify-center gap-2">
-                <span className="text-2xl sm:text-3xl text-neutral-500 font-serif">Rated </span>
-                <span>4.3</span>
-                <span className="text-2xl sm:text-3xl text-neutral-500 font-serif">/5</span>
-              </div>
-              <div className="flex items-center justify-center gap-1 text-amber-500 pb-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-500" />
-                ))}
-              </div>
-              <div className="font-sans text-sm sm:text-base text-neutral-700 font-medium">
-                By Over 24,000+ Happy Customers
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 5. SOCIAL RESPONSIBILITY (Exact content from purechandan.com)              */}
-      {/* ========================================================================= */}
-      <section className="bg-[#FDFBF7] py-16 md:py-20 border-b border-[#EBE0CA]/60">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
-          
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#0B3C84]">
-            Social Responsibility
-          </h2>
-
-          <div className="bg-white p-8 sm:p-12 rounded-3xl border border-neutral-200/80 shadow-sm max-w-3xl mx-auto text-neutral-700 font-sans text-sm sm:text-base leading-relaxed space-y-4">
-            <p>
-              At <strong className="text-[#0B3C84]">PureChandan.com</strong>, we believe in giving back to the community. That&apos;s why 2% of our revenue is dedicated to supporting initiatives like the mid-day meal program, which helps provide nutritious meals to schoolchildren across India. By choosing our products, you&apos;re not just enhancing your experience, but also contributing to a brighter future for children in need.
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 6. CUSTOMER TESTIMONIAL (WhatsApp Screenshots Carousel from purechandan.com) */}
+      {/* 4. CUSTOMER TESTIMONIAL (WhatsApp Screenshots Carousel from purechandan.com) */}
       {/* ========================================================================= */}
       <section className="bg-white py-16 md:py-24 border-b border-[#EBE0CA]/60 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">

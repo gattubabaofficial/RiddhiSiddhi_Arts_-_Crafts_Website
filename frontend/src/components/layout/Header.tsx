@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { Search, Send, Menu, X, Phone, MapPin, ChevronRight, ChevronLeft, Heart, User, Sparkles, ArrowRight } from 'lucide-react';
+import { Search, Send, Menu, X, Phone, MapPin, ChevronRight, ChevronLeft, Heart, User } from 'lucide-react';
 
 interface MenuVisualCard {
   title: string;
@@ -328,7 +328,6 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
-  const [navHovered, setNavHovered] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchModalRef = useRef<HTMLDivElement>(null);
   const [hasInteractedMenu, setHasInteractedMenu] = useState(false);
@@ -417,68 +416,43 @@ export default function Header() {
     }
   };
 
-  const isHome = pathname === '/';
-  const isProductsPage = pathname?.startsWith('/products');
-  const isTransparentNav = isHome && !scrolled && !navHovered;
-
-  const MAIN_NAV_BAR_CATEGORIES = [
-    { name: 'Sacred Malas & Rosaries', href: '/products/sandalwood-japa-mala' },
-    { name: 'Royal Handcarved Sculptures', href: '/products/handcarved-elephants' },
-    { name: 'Loose Sandalwood Beads', href: '/products/loose-sandalwood-beads' },
-    { name: 'Designer Bracelets & Jewelry', href: '/products/designer-sandalwood-bracelets' },
+  const NAV_LINKS = [
+    { name: 'Home', href: '/' },
+    { name: 'Sacred Malas', href: '/collections/malas' },
+    { name: 'Royal Sculptures', href: '/collections/sculptures' },
+    { name: 'Loose Beads', href: '/collections/loose-beads' },
+    { name: 'Bracelets', href: '/collections/bracelets' },
+    { name: 'Our Catalog', href: '/products' },
+    { name: 'About Heritage', href: '/about' },
+    { name: 'Contact Us', href: '/contact' },
   ];
 
   return (
     <>
       <header
-        onMouseEnter={() => setNavHovered(true)}
-        onMouseLeave={() => setNavHovered(false)}
-        className={`w-full z-40 fixed top-0 left-0 right-0 transition-colors duration-300 ease-in-out ${isTransparentNav
-          ? 'bg-transparent border-b border-transparent shadow-none'
-          : 'bg-white/95 backdrop-blur-md shadow-sm border-b border-neutral-200/60'
-          }`}
+        className="w-full z-40 fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-xs border-b border-neutral-200/80 transition-all duration-300 ease-in-out"
       >
-        {/* Top Main Bar: Logo, Menu, Search, Call Us (Always Sticky & Visible in Mobile & Desktop) */}
-        <div
-          className={`transition-all duration-300 ease-in-out ${scrolled
-            ? 'py-2 sm:py-2.5'
-            : 'py-2.5 sm:py-3.5'
-            }`}
-        >
-          <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-2 md:gap-4">
-            <div className="flex items-center gap-1 sm:gap-4 shrink-0">
+        {/* Main Navbar: Brand Left, Desktop Nav Links Center, Actions Right */}
+        <div className={`transition-all duration-300 ease-in-out ${scrolled ? 'py-2 sm:py-2.5' : 'py-2.5 sm:py-3.5'}`}>
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-4">
+            
+            {/* Left: Mobile Menu Toggle + Brand Logo */}
+            <div className="flex items-center gap-3 shrink-0">
+              {/* Mobile Hamburger Toggle (Visible on Mobile/Tablet only) */}
               <button
                 type="button"
                 onClick={openMenu}
-                className="flex items-center gap-2 py-1.5 px-1 bg-transparent border-none cursor-pointer transition-colors"
+                className="lg:hidden flex items-center gap-1.5 p-1.5 text-[#0B3C84] hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
                 aria-label="Open Navigation Menu"
                 aria-expanded={menuOpen}
               >
-                <Menu className={`w-5 h-5 drop-shadow-sm transition-colors ${isTransparentNav ? 'text-[#E5C278]' : 'text-[#B3873E]'}`} />
-                <span className={`text-[11px] md:text-xs font-cinzel font-bold tracking-wider uppercase hidden sm:inline drop-shadow-sm transition-colors ${isTransparentNav ? 'text-white' : 'text-[#0B3C84]'}`}>
-                  Menu
-                </span>
+                <Menu className="w-5 h-5 text-[#B3873E]" />
+                <span className="text-[11px] font-cinzel font-bold uppercase text-[#0B3C84]">Menu</span>
               </button>
-              <button
-                type="button"
-                onClick={() => setSearchOpen(true)}
-                className="flex items-center gap-2 py-1.5 px-1 bg-transparent border-none cursor-pointer transition-colors"
-                aria-label="Search Products"
-                aria-expanded={searchOpen}
-              >
-                <Search className={`w-4 h-4 md:w-5 md:h-5 drop-shadow-sm transition-colors ${isTransparentNav ? 'text-[#E5C278]' : 'text-[#B3873E]'}`} />
-                <span className={`text-[11px] md:text-xs font-cinzel font-bold tracking-wider uppercase hidden sm:inline drop-shadow-sm transition-colors ${isTransparentNav ? 'text-white' : 'text-[#0B3C84]'}`}>
-                  Search
-                </span>
-              </button>
-            </div>
 
-            <div className="flex items-center justify-center flex-1 px-2">
-              <Link href="/" className="flex items-center gap-2.5 md:gap-3.5 group text-center">
-                <div className={`relative w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-xl p-1 shadow-sm flex items-center justify-center overflow-hidden shrink-0 transition-colors ${isTransparentNav
-                  ? 'bg-white/95 border border-white/40'
-                  : 'bg-white border border-brand-gold-200/80'
-                  }`}>
+              {/* Brand Logo & Name */}
+              <Link href="/" className="flex items-center gap-2.5 md:gap-3 group">
+                <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl p-1 bg-white border border-brand-gold-200/80 shadow-xs flex items-center justify-center overflow-hidden shrink-0">
                   <Image
                     src="/logo-compact.jpeg"
                     alt="Riddhi Siddhi Arts & Crafts Logo"
@@ -488,72 +462,93 @@ export default function Header() {
                     priority
                   />
                 </div>
-                <div className="text-left sm:text-center">
-                  <div className={`font-serif font-bold text-sm sm:text-lg md:text-xl tracking-wide leading-tight whitespace-nowrap drop-shadow-sm transition-colors ${isTransparentNav ? 'text-white' : 'text-[#0B3C84]'}`}>
+                <div className="text-left">
+                  <div className="font-serif font-bold text-base sm:text-lg md:text-xl text-[#0B3C84] tracking-wide leading-tight group-hover:opacity-85 transition-opacity whitespace-nowrap">
                     Riddhi Siddhi
                   </div>
-                  <div className="flex items-center justify-center gap-1.5 mt-0.5">
-                    <span className={`h-[1px] w-2 sm:w-3 transition-colors ${isTransparentNav ? 'bg-[#E5C278]' : 'bg-brand-gold-400/70'}`}></span>
-                    <span className={`font-cinzel text-[7px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-semibold whitespace-nowrap drop-shadow-sm transition-colors ${isTransparentNav ? 'text-brand-gold-200' : 'text-[#0B3C84]/80'}`}>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <span className="h-[1px] w-2 bg-brand-gold-400/70"></span>
+                    <span className="font-cinzel text-[8px] sm:text-[9px] uppercase tracking-[0.2em] font-semibold text-[#B3873E] whitespace-nowrap">
                       Arts & Crafts
                     </span>
-                    <span className={`h-[1px] w-2 sm:w-3 transition-colors ${isTransparentNav ? 'bg-[#E5C278]' : 'bg-brand-gold-400/70'}`}></span>
+                    <span className="h-[1px] w-2 bg-brand-gold-400/70"></span>
                   </div>
                 </div>
               </Link>
             </div>
 
+            {/* Center: Full Desktop Navbar Links (Visible on Desktop) */}
+            <nav className="hidden lg:flex items-center gap-3.5 xl:gap-6 text-[12px] xl:text-[13.5px] font-sans">
+              {NAV_LINKS.map((link) => {
+                const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`group relative py-1.5 px-1 tracking-wide transition-colors whitespace-nowrap font-medium ${
+                      isActive
+                        ? 'text-[#0B3C84] font-bold'
+                        : 'text-neutral-800 hover:text-[#0B3C84]'
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                    {isActive ? (
+                      <span className="absolute -bottom-1 left-1 right-1 h-[2.5px] bg-[#0B3C84] rounded-full" />
+                    ) : (
+                      <span className="absolute -bottom-1 left-1 right-1 h-[2px] bg-[#B3873E] scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left rounded-full" />
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Right: Quick Search, Call Us & Admin Portal */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Search Button */}
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                className="flex items-center gap-1.5 p-1.5 text-neutral-700 hover:text-[#0B3C84] hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+                aria-label="Search Products"
+                aria-expanded={searchOpen}
+              >
+                <Search className="w-4 h-4 md:w-4.5 md:h-4.5 text-[#B3873E]" />
+                <span className="text-[11px] font-cinzel font-bold uppercase text-[#0B3C84] hidden sm:inline">Search</span>
+              </button>
+
+              {/* Call Us Button */}
               <a
                 href="tel:+917942625339"
-                className="flex items-center gap-1.5 py-1.5 px-1 bg-transparent border-none cursor-pointer transition-colors"
+                className="hidden sm:inline-flex items-center gap-1.5 bg-[#0B3C84] hover:bg-[#082C62] text-white font-cinzel font-bold text-[11px] uppercase tracking-wider py-2 px-3.5 rounded-full shadow-xs transition-all select-none"
                 title="Call Us Directly"
               >
-                <Phone className={`w-4 h-4 transition-colors ${isTransparentNav ? 'text-[#E5C278]' : 'text-[#B3873E]'}`} />
-                <span className={`font-cinzel text-[11px] sm:text-xs font-bold tracking-wider uppercase hidden sm:inline-block transition-colors ${isTransparentNav ? 'text-white' : 'text-[#0B3C84]'}`}>
-                  Call Us
-                </span>
+                <Phone className="w-3.5 h-3.5 text-[#E5C278]" />
+                <span>Call Us</span>
               </a>
+
+              {/* Wishlist Icon */}
               <Link
                 href="/products"
-                className="py-1.5 px-1 bg-transparent border-none cursor-pointer transition-colors"
+                className="p-1.5 text-neutral-600 hover:text-[#0B3C84] hover:bg-neutral-100 rounded-lg transition-colors"
                 title="Browse Catalog"
-                aria-label="Wishlist Catalog"
+                aria-label="Browse Catalog"
               >
-                <Heart className={`w-4 h-4 transition-colors ${isTransparentNav ? 'text-[#E5C278]' : 'text-[#B3873E]'}`} />
+                <Heart className="w-4 h-4 text-neutral-700 hover:text-[#0B3C84]" />
               </Link>
+
+              {/* Admin Portal */}
               <Link
                 href="/admin/login"
-                className="py-1.5 px-1 bg-transparent border-none cursor-pointer transition-colors"
+                className="p-1.5 text-neutral-600 hover:text-[#0B3C84] hover:bg-neutral-100 rounded-lg transition-colors"
                 title="Admin Portal"
                 aria-label="Admin Portal Login"
               >
-                <User className={`w-4 h-4 transition-colors ${isTransparentNav ? 'text-[#E5C278]' : 'text-[#B3873E]'}`} />
+                <User className="w-4 h-4 text-neutral-700 hover:text-[#0B3C84]" />
               </Link>
             </div>
+
           </div>
         </div>
-
-        {/* Secondary Category Bar: The 4 Main Categories (Only on products/categories routes) */}
-        {isProductsPage && (
-          <div
-            className="w-full transition-all duration-300 border-t border-b border-neutral-200/60 bg-white/95 backdrop-blur-md py-2.5 sm:py-3 px-5 sm:px-8 md:px-12 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x"
-          >
-            <div className="max-w-7xl mx-auto flex items-center justify-start md:justify-center gap-6 sm:gap-8 md:gap-12 lg:gap-16 whitespace-nowrap min-w-max pr-6 md:pr-0">
-              {MAIN_NAV_BAR_CATEGORIES.map((cat, idx) => (
-                <Link
-                  key={idx}
-                  href={cat.href}
-                  className="group py-0.5 cursor-pointer select-none"
-                >
-                  <span className="text-xs sm:text-[13px] md:text-sm font-sans tracking-wide text-[#0B3C84] animated-underline font-normal">
-                    {cat.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </header>
 
       {searchOpen && (
